@@ -63,16 +63,6 @@ This doesn't change the ranking or threshold — it's a plausibility check that 
 
 ---
 
-## Deep Dive — Time/Seasonality (y)
-
-**Purpose.** `train.csv` is date-ordered (May 2008 – Nov 2010) but the `month` column has no year, so the per-month countplot from the univariate pass collapses all 3 years together and can't show drift over the campaign's actual timeline. Binning by row order (a chronological proxy, since the data is sorted by contact date) lets us see whether `y`-rate and call volume changed over the life of the campaign — directly relevant to whether a time-based train/validation split is appropriate.
-
-**Method.** Row index split into `N_CHUNKS = 20` equal-sized sequential bins (`pd.cut` on `np.arange(len(train))`), then per-chunk `y`-rate (share of `yes`) and call volume (`n_calls`), plotted as two stacked line/bar charts.
-
-**Result.** Clear upward drift, not flat: `y`-rate starts around 2–5% in the earliest chunks (chunk 0: 2.1%, chunk 1: 3.8%, chunk 4: 4.6%) and rises steadily through the middle chunks (chunk 8: 6.0%, chunk 12: 4.7%) before jumping sharply in the final chunks — chunk 13: 16.2%, chunk 17: 23.8%, chunk 18: 41.2%, chunk 19 (final, most recent): **52.9%**. Call volume per chunk is roughly even (~2,260 rows each, by construction of the equal-size bins). This is a ~25x increase in conversion rate from the earliest to latest chunk of the campaign — strong evidence of real temporal drift (later-stage campaign targeting/conditions were far more effective), which supports doing a time-based train/validation split rather than a random split, and suggests any model should account for a temporal signal even without an explicit year column. This split recommendation applies to the `balance` regression track too (see `REGRESSION_NOTES.md`), since it's about row ordering, not the classification target specifically.
-
----
-
 ## Deep Dive — Categorical-Categorical Redundancy (y)
 
 **Purpose.** The multicollinearity section above only covers numeric-numeric redundancy. Categorical features can be just as redundant with each other (e.g. `contact` method and `month` might move together for operational reasons), and this matters for feature selection and for interpreting the relevance ranking. Also directly tests the suspected `poutcome`/`pdays` redundancy noted in the univariate pass (both driven by "was this client ever contacted before"), across two different dtypes (categorical `poutcome` vs. numeric `pdays`), which a same-dtype Cramér's V matrix can't capture on its own.
@@ -173,6 +163,16 @@ Two notable divergences, both informative rather than just noise:
 - **`pdays` ranks much higher in MI (3rd) than in either the correlation ranking (7th, right at the 0.1 threshold) or RF (9th, 0.038).** `pdays` has step-like structure (`-1` = "never contacted" vs. an actual day count for previously-contacted clients — see the categorical-redundancy deep dive's near-total `poutcome`/`pdays==-1` overlap), which a linear point-biserial correlation understates and which RF may be discounting because `poutcome`/`previous` already carry overlapping signal via greedy splitting. MI, bivariate like correlation but non-linear, picks this up without either limitation — a case where the third method adds genuinely new information rather than just confirming the other two.
 - **`balance` and `age` land in MI's top 7 (5th, 7th)**, echoing RF's elevation of the same two features (3rd, 4th) over their low correlation ranks (0.053, 0.025). Because MI is model-free, this is independent evidence that RF's high ranking for `balance`/`age` isn't *purely* the known continuous-feature/split-point bias — a second, differently-biased method finds real (if modest) non-linear signal here too. That said, both `balance` (MI 0.022) and `age` (MI 0.013) still sit well below the leakage/behavioral-signal cluster at the top (`duration`, `poutcome`, `pdays`, `month`), so this tempers rather than overturns the original correlation-based screening.
 - At the bottom, `default` is the weakest feature in all three views (correlation 0.022, RF 0.002, MI 0.0003) — consistent agreement it carries essentially no signal.
+
+---
+
+## Deep Dive — Time/Seasonality (y)
+
+**Purpose.** `train.csv` is date-ordered (May 2008 – Nov 2010) but the `month` column has no year, so the per-month countplot from the univariate pass collapses all 3 years together and can't show drift over the campaign's actual timeline. Binning by row order (a chronological proxy, since the data is sorted by contact date) lets us see whether `y`-rate and call volume changed over the life of the campaign — directly relevant to whether a time-based train/validation split is appropriate.
+
+**Method.** Row index split into `N_CHUNKS = 20` equal-sized sequential bins (`pd.cut` on `np.arange(len(train))`), then per-chunk `y`-rate (share of `yes`) and call volume (`n_calls`), plotted as two stacked line/bar charts.
+
+**Result.** Clear upward drift, not flat: `y`-rate starts around 2–5% in the earliest chunks (chunk 0: 2.1%, chunk 1: 3.8%, chunk 4: 4.6%) and rises steadily through the middle chunks (chunk 8: 6.0%, chunk 12: 4.7%) before jumping sharply in the final chunks — chunk 13: 16.2%, chunk 17: 23.8%, chunk 18: 41.2%, chunk 19 (final, most recent): **52.9%**. Call volume per chunk is roughly even (~2,260 rows each, by construction of the equal-size bins). This is a ~25x increase in conversion rate from the earliest to latest chunk of the campaign — strong evidence of real temporal drift (later-stage campaign targeting/conditions were far more effective), which supports doing a time-based train/validation split rather than a random split, and suggests any model should account for a temporal signal even without an explicit year column. This split recommendation applies to the `balance` regression track too (see `REGRESSION_NOTES.md`), since it's about row ordering, not the classification target specifically.
 
 ---
 

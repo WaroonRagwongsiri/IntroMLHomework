@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -L -o '/mnt/e/Second Year/First Semester/IntroML/IntroMLHomework/Data/banking-dataset-marketing-targets.zip' 'https://www.kaggle.com/api/v1/datasets/download/prakharrathi25/banking-dataset-marketing-targets'
