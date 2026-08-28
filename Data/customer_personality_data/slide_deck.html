@@ -1,0 +1,810 @@
+<title>Customer Signal Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,650&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EEF2E9; --paper-line:#D8E1CD; --surface:#E4EADB;
+  --ink:#1C231B; --muted:#5B6355;
+  --brass:#93662C; --brass-soft:#E3D3B0;
+  --red:#8C3327; --red-soft:#F1DAD2;
+  --teal:#1B6B72; --teal-soft:#D3E6E4;
+  --shadow: rgba(28,35,27,0.14);
+  --font-display:'Fraunces', Georgia, serif;
+  --font-body:'Public Sans', -apple-system, sans-serif;
+  --font-mono:'IBM Plex Mono', 'SF Mono', monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12150E; --paper-line:#2B3324; --surface:#1A2015;
+    --ink:#E9EEE0; --muted:#98A48A;
+    --brass:#D2A55E; --brass-soft:#3A2E17;
+    --red:#E0876F; --red-soft:#3A1F19;
+    --teal:#5FC4C6; --teal-soft:#13302F;
+    --shadow: rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12150E; --paper-line:#2B3324; --surface:#1A2015;
+  --ink:#E9EEE0; --muted:#98A48A;
+  --brass:#D2A55E; --brass-soft:#3A2E17;
+  --red:#E0876F; --red-soft:#3A1F19;
+  --teal:#5FC4C6; --teal-soft:#13302F;
+  --shadow: rgba(0,0,0,0.45);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font-body); font-size:16px; line-height:1.5;
+  height:100dvh; overflow-y:auto; overflow-x:hidden;
+  scroll-snap-type:y mandatory;
+}
+
+.slide{
+  min-height:100dvh; width:100%; display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  scroll-snap-align:start; scroll-snap-stop:always;
+  padding:5vh 6vw; position:relative; border-bottom:1px solid var(--paper-line);
+}
+.slide-inner{
+  width:100%; max-width:1180px; opacity:0; transform:translateY(14px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.slide.is-active .slide-inner{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){
+  .slide-inner{ opacity:1; transform:none; transition:none; }
+}
+
+.eyebrow{
+  font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.14em;
+  font-size:.72rem; color:var(--muted); margin:0 0 .9rem;
+  display:flex; align-items:center; gap:.6em;
+}
+.eyebrow .num{ color:var(--accent, var(--brass)); font-weight:600; }
+.eyebrow::after{ content:""; height:1px; flex:1; background:var(--paper-line); }
+
+h1,h2{ font-family:var(--font-display); font-weight:650; line-height:1.06; text-wrap:balance; margin:0 0 .5rem; letter-spacing:-.01em; }
+h2{ font-size:clamp(1.7rem, 3.4vw, 2.6rem); color:var(--ink); }
+h3{ font-family:var(--font-display); font-weight:600; font-size:1.15rem; margin:0 0 .4rem; }
+p{ margin:0 0 .8rem; color:var(--ink); }
+.lede{ font-size:1.05rem; color:var(--muted); max-width:62ch; }
+.mono{ font-family:var(--font-mono); }
+.tab{ font-variant-numeric:tabular-nums; }
+
+/* ---- Divider slides ---- */
+.slide--divider .slide-inner{ text-align:center; display:flex; flex-direction:column; align-items:center; }
+.slide--divider h1{ font-size:clamp(2.6rem, 7vw, 5.2rem); }
+.slide--divider .sub{ font-family:var(--font-mono); color:var(--muted); font-size:.95rem; margin-top:.8rem; }
+.fill-slot{
+  border:1px dashed var(--paper-line); border-radius:8px; padding:.5rem 1.1rem;
+  color:var(--muted); font-family:var(--font-mono); font-size:.8rem; display:inline-block; margin-top:1.4rem;
+}
+
+/* ---- Layout helpers ---- */
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:2.6rem; align-items:start; }
+.grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+@media (max-width:820px){ .grid2{ grid-template-columns:1fr; } .grid3{ grid-template-columns:1fr; } }
+
+.card{
+  background:var(--surface); border:1px solid var(--paper-line); border-radius:10px;
+  padding:1.3rem 1.5rem;
+}
+.card h3{ color:var(--accent, var(--ink)); }
+
+.callout{
+  border-left:3px solid var(--accent, var(--brass)); background:var(--surface);
+  border-radius:0 8px 8px 0; padding:1rem 1.3rem; margin-top:1rem;
+}
+.callout .tag{
+  font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.1em; font-size:.66rem;
+  color:var(--accent, var(--brass)); display:block; margin-bottom:.35rem; font-weight:600;
+}
+.callout--red{ --accent:var(--red); }
+.callout--teal{ --accent:var(--teal); }
+.callout--brass{ --accent:var(--brass); }
+
+.stat-row{ display:flex; gap:2.2rem; flex-wrap:wrap; }
+.stat{ min-width:120px; }
+.stat .n{ font-family:var(--font-display); font-weight:650; font-size:clamp(1.8rem,3.4vw,2.6rem); color:var(--accent, var(--ink)); line-height:1; }
+.stat .l{ font-size:.78rem; color:var(--muted); margin-top:.35rem; }
+
+.chips{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem; }
+.chip{
+  font-family:var(--font-mono); font-size:.72rem; padding:.3rem .7rem; border-radius:20px;
+  background:var(--surface); border:1px solid var(--paper-line); color:var(--muted);
+}
+
+.ledger-list{ list-style:none; margin:.6rem 0 0; padding:0; display:flex; flex-direction:column; gap:.55rem; }
+.ledger-list li{
+  display:flex; gap:.7rem; align-items:baseline; font-size:.86rem; padding-bottom:.55rem;
+  border-bottom:1px dotted var(--paper-line);
+}
+.ledger-list .mark{ font-family:var(--font-mono); color:var(--accent, var(--brass)); flex:none; }
+.ledger-list.col-list{ gap:.28rem; }
+.ledger-list.col-list li{ font-size:.76rem; padding-bottom:.28rem; }
+.ledger-list.col-list .mark{ min-width:9.5em; }
+.group-note{ font-family:var(--font-mono); font-size:.7rem; color:var(--muted); font-weight:400; }
+
+/* ---- Bar chart ---- */
+.barchart{ display:flex; flex-direction:column; gap:5px; position:relative; }
+.bar-row{ display:grid; grid-template-columns:150px 1fr 52px; align-items:center; gap:.6rem; }
+.bar-row.dim{ opacity:.55; }
+.bar-name{ font-family:var(--font-mono); font-size:.68rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar-track{ position:relative; height:13px; background:var(--surface); border-radius:2px; }
+.bar-fill{ position:absolute; inset:0 auto 0 0; border-radius:2px; background:var(--accent, var(--brass)); }
+.bar-val{ font-family:var(--font-mono); font-size:.68rem; text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); }
+.threshold-line{ position:absolute; top:-3px; bottom:-3px; width:1px; background:var(--ink); opacity:.4; }
+.threshold-label{
+  position:absolute; top:-1.3rem; left:0; font-family:var(--font-mono); font-size:.6rem; color:var(--muted);
+  transform:translateX(-50%); white-space:nowrap;
+}
+.chart-cols{ display:grid; grid-template-columns:1fr 1fr; gap:0 2.2rem; position:relative; }
+.chart-axis-wrap{ position:relative; }
+@media (max-width:820px){ .chart-cols{ grid-template-columns:1fr; } .bar-row{ grid-template-columns:120px 1fr 46px; } }
+
+/* ---- Rank leaderboard ---- */
+.leaderboard{ display:flex; gap:1rem; flex-wrap:wrap; }
+.rank-tile{ background:var(--surface); border:1px solid var(--paper-line); border-radius:10px; padding:.9rem 1.1rem; flex:1; min-width:150px; }
+.rank-tile .method{ font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+.rank-tile .pos{ font-family:var(--font-display); font-weight:650; font-size:1.6rem; margin:.25rem 0; }
+.rank-tile .val{ font-family:var(--font-mono); font-size:.78rem; color:var(--muted); }
+
+/* ---- Mini gauge ---- */
+.gauge{ height:10px; border-radius:5px; background:var(--surface); overflow:hidden; margin-top:.5rem; }
+.gauge-fill{ height:100%; background:var(--accent, var(--brass)); border-radius:5px; }
+
+/* ---- Nav rail ---- */
+.hud{
+  position:fixed; top:1.4rem; left:1.6rem; z-index:20; font-family:var(--font-mono);
+  font-size:.72rem; color:var(--muted); display:flex; align-items:baseline; gap:.6rem;
+  background:color-mix(in srgb, var(--paper) 82%, transparent); padding:.3rem .6rem; border-radius:6px;
+}
+.hud .n{ color:var(--accent, var(--brass)); font-weight:600; }
+.rail{
+  position:fixed; right:1.1rem; top:50%; transform:translateY(-50%); z-index:20;
+  display:flex; flex-direction:column; gap:5px;
+}
+.rail button{
+  width:7px; height:7px; border-radius:50%; border:none; padding:0; cursor:pointer;
+  background:var(--paper-line); opacity:.8; transition:transform .2s, background .2s;
+}
+.rail button.on{ background:var(--accent, var(--brass)); transform:scale(1.6); }
+@media (max-width:720px){ .rail{ display:none; } }
+
+/* ---- Triangle diagram ---- */
+.tri-wrap{ display:flex; justify-content:center; }
+.tri-wrap svg text{ font-family:var(--font-mono); fill:var(--ink); }
+.tri-wrap svg .lab{ font-size:11px; fill:var(--muted); }
+.tri-wrap svg .r{ font-size:12px; font-weight:600; }
+.tri-wrap svg line{ stroke:var(--teal); }
+.tri-wrap svg circle{ fill:var(--surface); stroke:var(--teal); stroke-width:1.5; }
+
+footer.slide-foot{
+  position:absolute; bottom:1.3rem; left:6vw; right:6vw; display:flex; justify-content:space-between;
+  font-family:var(--font-mono); font-size:.66rem; color:var(--muted); letter-spacing:.04em;
+}
+</style>
+
+<div class="hud" id="hud"><span class="n">01</span><span>/ 23</span><span id="hud-title" style="margin-left:.4em;"></span></div>
+<nav class="rail" id="rail" aria-label="Slide navigation"></nav>
+
+<!-- 1 : INTRO (placeholder) -->
+<section class="slide slide--divider" id="s1" data-track="neutral" data-title="Intro">
+  <div class="slide-inner">
+    <h1>Customer Personality Analysis</h1>
+    <div class="sub">EDA · Classification (Response) + Regression (Income)</div>
+    <div class="fill-slot">[ names / course / date — fill in ]</div>
+  </div>
+</section>
+
+<!-- 2 : DATASET OVERVIEW -->
+<section class="slide" id="s2" data-track="neutral" data-title="Dataset Overview">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">02</span> Foundation</div>
+    <h2>Dataset Overview</h2>
+    <div class="grid2" style="margin-top:1.4rem;">
+      <div>
+        <div class="stat-row">
+          <div class="stat"><div class="n">2,240</div><div class="l">rows × 29 cols</div></div>
+          <div class="stat"><div class="n">2</div><div class="l">native targets, one file</div></div>
+          <div class="stat"><div class="n">1.1%</div><div class="l">missing (Income only, 24 rows)</div></div>
+        </div>
+        <p style="margin-top:1.2rem;"><code class="mono">marketing_campaign.csv</code> — tab-separated. Kaggle <span class="mono">imakash3011/customer-personality-analysis</span>, CC0.</p>
+        <div class="chips">
+          <span class="chip">People</span><span class="chip">Products</span><span class="chip">Promotion</span><span class="chip">Place</span>
+        </div>
+        <div class="callout callout--brass">
+          <span class="tag">Why this dataset</span>
+          Two natural targets in one file — <b>Response</b> (classification) and <b>Income</b> (regression) — no engineering needed for either.
+        </div>
+      </div>
+      <div>
+        <h3 style="color:var(--muted); font-family:var(--font-mono); font-size:.75rem; text-transform:uppercase; letter-spacing:.1em;">Cleaning applied</h3>
+        <ul class="ledger-list">
+          <li><span class="mark">01</span> Drop <span class="mono">ID</span> — identifier, not a feature</li>
+          <li><span class="mark">02</span> Drop <span class="mono">Z_CostContact</span> / <span class="mono">Z_Revenue</span> — constant columns</li>
+          <li><span class="mark">03</span> Parse <span class="mono">Dt_Customer</span> → derive <span class="mono">Customer_Tenure_Days</span></li>
+          <li><span class="mark">04</span> Derive <span class="mono">Age</span> from <span class="mono">Year_Birth</span> — 3 outlier rows (121/115/114 yo) dropped</li>
+          <li><span class="mark">05</span> Collapse <span class="mono">Marital_Status</span> joke categories (<span class="mono">Absurd</span>/<span class="mono">YOLO</span>/<span class="mono">Alone</span> → <span class="mono">Single</span>)</li>
+        </ul>
+        <p style="margin-top:1rem; font-family:var(--font-mono); font-size:.85rem;">Final cleaned shape: <b>2,237 rows × 28 cols</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 : DATASET OVERVIEW — ALL COLUMNS -->
+<section class="slide" id="s3" data-track="neutral" data-title="Dataset Overview — Columns">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">03</span> Foundation</div>
+    <h2 style="margin-bottom:.3rem;">Every Column, Grouped &amp; Explained</h2>
+    <p class="lede" style="margin-bottom:.3rem;">29 raw columns, grouped exactly as the dataset's own documentation groups them — People, Products, Promotion, Place — plus two dropped outright.</p>
+    <div class="grid2" style="margin-top:.5rem; grid-template-columns:1.15fr 1fr;">
+      <div class="card" style="padding:.85rem 1.2rem;">
+        <h3>People</h3>
+        <ul class="ledger-list col-list">
+          <li><span class="mark">ID</span> identifier — dropped</li>
+          <li><span class="mark">Year_Birth</span> → derived <span class="mono">Age</span>; 3 outliers dropped</li>
+          <li><span class="mark">Education</span> 5 levels</li>
+          <li><span class="mark">Marital_Status</span> 5 levels (joke entries collapsed)</li>
+          <li><span class="mark">Income</span> yearly household income · <b>regression target</b></li>
+          <li><span class="mark">Kidhome / Teenhome</span> # children / teens, 0–2</li>
+          <li><span class="mark">Dt_Customer</span> → derived <span class="mono">Customer_Tenure_Days</span></li>
+          <li><span class="mark">Recency</span> days since last purchase</li>
+          <li><span class="mark">Complain</span> complaint flag — 0.9% positive</li>
+        </ul>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:.5rem;">
+        <div class="card" style="padding:.75rem 1.2rem;">
+          <h3 style="margin-bottom:.35rem;">Products &amp; Place <span class="group-note">— spend &amp; purchase channel</span></h3>
+          <p style="font-size:.76rem; margin:0 0 .25rem;">Six right-skewed spend columns (9–11% outlier rows each):</p>
+          <div class="chips">
+            <span class="chip">MntWines</span><span class="chip">MntFruits</span><span class="chip">MntMeatProducts</span>
+            <span class="chip">MntFishProducts</span><span class="chip">MntSweetProducts</span><span class="chip">MntGoldProds</span>
+          </div>
+          <p style="font-size:.76rem; margin:.4rem 0 .25rem;">Purchase counts by channel, plus site visits:</p>
+          <div class="chips">
+            <span class="chip">NumWebPurchases</span><span class="chip">NumCatalogPurchases</span>
+            <span class="chip">NumStorePurchases</span><span class="chip">NumWebVisitsMonth</span>
+          </div>
+        </div>
+        <div class="card" style="padding:.75rem 1.2rem;">
+          <h3 style="margin-bottom:.2rem;">Promotion</h3>
+          <ul class="ledger-list col-list">
+            <li><span class="mark">NumDealsPurchases</span> purchases made with a discount</li>
+            <li><span class="mark">AcceptedCmp1–5</span> accepted prior campaign N — leakage-adjacent</li>
+            <li><span class="mark">Response</span> accepted latest campaign · <b>classification target</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout--brass" style="margin-top:.6rem; padding:.7rem 1.3rem;">
+      <span class="tag">Dropped entirely</span>
+      <span class="mono">Z_CostContact</span> / <span class="mono">Z_Revenue</span> — constant across all 2,240 rows (always 3 and 11), zero variance, no predictive content.
+    </div>
+  </div>
+</section>
+
+<!-- 4 : CLASSIFICATION DIVIDER (placeholder) -->
+<section class="slide slide--divider" id="s4" data-track="classify" data-title="Classification Start" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <h1>Classification EDA</h1>
+    <div class="sub">Target: <span class="mono">Response</span> — accepted the latest campaign</div>
+    <div class="fill-slot">[ section intro — fill in ]</div>
+  </div>
+</section>
+
+<!-- 4 : RELEVANCE EXPLANATION (classify) -->
+<section class="slide" id="s5" data-track="classify" data-title="Relevance Score — Explanation" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">05</span> Classification</div>
+    <h2>Relevance Score — How It's Computed</h2>
+    <p class="lede">Two methods, chosen by feature type, both scored against <span class="mono">Response</span> (0/1).</p>
+    <div class="grid2" style="margin-top:1.2rem;">
+      <div class="card">
+        <h3>Point-biserial correlation</h3>
+        <p style="font-size:.9rem;">Numeric feature vs. binary <span class="mono">Response</span>. Mathematically identical to Pearson <i>r</i> applied to a 0/1 variable.</p>
+        <p class="mono" style="font-size:.78rem; color:var(--muted);">range −1 to +1</p>
+      </div>
+      <div class="card">
+        <h3>Cramér's V</h3>
+        <p style="font-size:.9rem;"><span class="mono">Education</span> / <span class="mono">Marital_Status</span> vs. <span class="mono">Response</span>, via chi-square on a contingency table.</p>
+        <p class="mono" style="font-size:.78rem; color:var(--muted);">range 0 to 1</p>
+      </div>
+    </div>
+    <div class="callout callout--red"><span class="tag">Threshold</span> |score| ≥ 0.10 to be considered relevant.</div>
+  </div>
+</section>
+
+<!-- 5 : RELEVANCE RESULT (classify) -->
+<section class="slide" id="s6" data-track="classify" data-title="Relevance Score — Result" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">06</span> Classification</div>
+    <h2>Relevance Score — Result</h2>
+    <div class="stat-row" style="margin:.6rem 0 1rem;">
+      <div class="stat"><div class="n">19 / 25</div><div class="l">clear the 0.10 threshold</div></div>
+      <div class="stat"><div class="n">0.328</div><div class="l">top score — AcceptedCmp5</div></div>
+    </div>
+    <div class="chart-cols" id="chart5"></div>
+    <div class="callout callout--brass">
+      <span class="tag">Leakage note</span>
+      <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> dominate the top of the ranking. Response rate given <i>any</i> prior campaign acceptance is <b>40.7%</b> (n=462) vs. <b>8.2%</b> given none (n=1,775) — a 5× gap. Flagged as leakage-adjacent, not dropped.
+    </div>
+  </div>
+</section>
+
+<!-- 6 : MULTICOLLINEARITY (classify) -->
+<section class="slide" id="s7" data-track="classify" data-title="Multicollinearity + Categorical Redundancy" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">07</span> Classification</div>
+    <h2>Multicollinearity + Categorical Redundancy</h2>
+    <div class="grid2" style="margin-top:1rem;">
+      <div>
+        <h3 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:var(--font-mono);">Top correlated pairs (of 23×23)</h3>
+        <ul class="ledger-list" style="margin-top:.7rem;">
+          <li><span class="mark tab">0.724</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+          <li><span class="mark tab">0.642</span><span class="mono">MntWines</span> ↔ <span class="mono">NumStorePurchases</span></li>
+          <li><span class="mark tab">0.635</span><span class="mono">MntWines</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+          <li><span class="mark tab">0.589</span><span class="mono">Income</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+          <li><span class="mark tab">−0.553</span><span class="mono">Income</span> ↔ <span class="mono">NumWebVisitsMonth</span></li>
+        </ul>
+        <p style="margin-top:.9rem; font-size:.88rem;"><span class="mono">Income</span> + <span class="mono">Mnt*</span> spend + purchase-channel columns move together as one "affluent high-spender" cluster. <span class="mono">NumWebVisitsMonth</span> is the exception — negatively tied to <span class="mono">Income</span>.</p>
+      </div>
+      <div class="card">
+        <h3>Categorical redundancy</h3>
+        <p style="font-size:.85rem;">Cramér's V(<span class="mono">Education</span>, <span class="mono">Marital_Status</span>)</p>
+        <div class="n" style="font-family:var(--font-display); font-weight:650; font-size:2.4rem;">0.043</div>
+        <div class="gauge"><div class="gauge-fill" style="width:4.3%;"></div></div>
+        <p style="font-size:.82rem; color:var(--muted); margin-top:.7rem;">Essentially independent — both categorical features usable together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 : RF EXPLANATION (classify) -->
+<section class="slide" id="s8" data-track="classify" data-title="RF — Explanation" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">08</span> Classification</div>
+    <h2>Model-Based Importance — Random Forest</h2>
+    <div class="grid2" style="margin-top:1.2rem;">
+      <div class="card">
+        <h3>Method</h3>
+        <p style="font-size:.9rem;"><span class="mono">RandomForestClassifier(n_estimators=300, random_state=42)</span> fit on all 25 candidates (dummy-encoded categoricals, median-filled <span class="mono">Income</span>). Dummy importances summed back to parent columns.</p>
+      </div>
+      <div class="card">
+        <h3>Purpose</h3>
+        <p style="font-size:.9rem;">Bivariate correlation misses interactions and non-linearities. A tree ensemble can capture what a single-feature score can't.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 : RF RESULT (classify) -->
+<section class="slide" id="s9" data-track="classify" data-title="RF — Result" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">09</span> Classification</div>
+    <h2>RF Importance — Result</h2>
+    <div class="grid2" style="margin-top:.6rem; align-items:start;">
+      <div class="barchart" id="chart8"></div>
+      <div>
+        <div class="leaderboard">
+          <div class="rank-tile"><div class="method">Bivariate</div><div class="pos">#1</div><div class="val tab">0.328</div></div>
+          <div class="rank-tile"><div class="method">Random Forest</div><div class="pos">#12</div><div class="val tab">0.040</div></div>
+        </div>
+        <div class="callout callout--red">
+          <span class="tag">RF demotes, not amplifies</span>
+          <span class="mono">AcceptedCmp5</span> falls from #1 bivariate to 12th under RF. RF instead elevates <span class="mono">Recency</span> / <span class="mono">Customer_Tenure_Days</span> (7th/8th bivariate) to 1st/2nd.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 : MI EXPLANATION (classify) -->
+<section class="slide" id="s10" data-track="classify" data-title="MI — Explanation" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">10</span> Classification</div>
+    <h2>Cross-Check — Mutual Information</h2>
+    <div class="card" style="max-width:640px;">
+      <p style="font-size:.95rem; margin:0;"><span class="mono">mutual_info_classif</span> — a third, non-parametric lens — run to check whether RF's re-ranking above is RF-specific, or a broader pattern in the data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 : MI RESULT (classify) -->
+<section class="slide" id="s11" data-track="classify" data-title="MI — Result" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">11</span> Classification</div>
+    <h2>Mutual Information — Result</h2>
+    <div class="grid2" style="margin-top:.6rem; align-items:start;">
+      <div class="barchart" id="chart10"></div>
+      <div>
+        <h3 style="font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:var(--font-mono);"><span class="mono">AcceptedCmp5</span> across methods</h3>
+        <div class="leaderboard" style="margin-top:.6rem;">
+          <div class="rank-tile"><div class="method">Bivariate</div><div class="pos">#1</div><div class="val tab">0.328</div></div>
+          <div class="rank-tile"><div class="method">RF</div><div class="pos">#12</div><div class="val tab">0.040</div></div>
+          <div class="rank-tile"><div class="method">MI</div><div class="pos">#2</div><div class="val tab">0.042</div></div>
+        </div>
+        <div class="callout callout--brass">
+          <span class="tag">Genuine 3-way disagreement</span>
+          MI puts the leakage-adjacent feature back near the top, contradicting RF's demotion but partly matching the bivariate ranking. No single method is the final word — <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> inclusion is a deployment-scenario decision.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 : CLASSIFICATION SUMMARY -->
+<section class="slide" id="s12" data-track="classify" data-title="Classification Summary" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">12</span> Classification</div>
+    <h2>Classification Summary</h2>
+    <div class="stat-row" style="margin:1rem 0;">
+      <div class="stat"><div class="n">2,237</div><div class="l">rows</div></div>
+      <div class="stat"><div class="n">14.9% / 85.1%</div><div class="l">Response class balance</div></div>
+      <div class="stat"><div class="n">19 / 25</div><div class="l">clear relevance threshold</div></div>
+    </div>
+    <p class="lede">Strongest bivariate signal of any dataset explored in this project. But the three methods — bivariate, RF, MI — genuinely disagree on how much weight to give the leakage-adjacent <span class="mono">AcceptedCmp*</span> features vs. <span class="mono">Recency</span> / <span class="mono">Customer_Tenure_Days</span> / spend. Reported honestly, not resolved into one story.</p>
+  </div>
+</section>
+
+<!-- 12 : REGRESSION DIVIDER (placeholder) -->
+<section class="slide slide--divider" id="s13" data-track="regression" data-title="Regression Start" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <h1>Regression EDA</h1>
+    <div class="sub">Target: <span class="mono">Income</span> — yearly household income</div>
+    <div class="fill-slot">[ section intro — fill in ]</div>
+  </div>
+</section>
+
+<!-- 13 : DATASET OVERVIEW (regression recap) -->
+<section class="slide" id="s14" data-track="regression" data-title="Dataset Overview — Regression" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">14</span> Regression</div>
+    <h2>Dataset Overview — Recap</h2>
+    <p class="lede">Target: <span class="mono">Income</span> — yearly household income, a raw column, no engineering needed.</p>
+    <div class="stat-row" style="margin-top:1.2rem;">
+      <div class="stat"><div class="n">2,213</div><div class="l">rows (24 missing-Income rows dropped — imputing the target would be wrong)</div></div>
+      <div class="stat"><div class="n">8</div><div class="l">outliers above IQR bound $118,349</div></div>
+      <div class="stat"><div class="n">$666,666</div><div class="l">most extreme value — ~4× the next-highest</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 : RELEVANCE EXPLANATION (regression) -->
+<section class="slide" id="s15" data-track="regression" data-title="Relevance Score — Explanation" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">15</span> Regression</div>
+    <h2>Relevance Score — How It's Computed</h2>
+    <div class="grid2" style="margin-top:1.2rem;">
+      <div class="card">
+        <h3>Pearson |r|</h3>
+        <p style="font-size:.9rem;">22 numeric candidates vs. <span class="mono">Income</span>.</p>
+        <p class="mono" style="font-size:.78rem; color:var(--muted);">range −1 to +1, reported as |r|</p>
+      </div>
+      <div class="card">
+        <h3>Correlation ratio η</h3>
+        <p style="font-size:.9rem;"><span class="mono">Education</span> / <span class="mono">Marital_Status</span> vs. <span class="mono">Income</span> — categorical analogue of Pearson <i>r</i>: share of target variance explained by group membership.</p>
+        <p class="mono" style="font-size:.78rem; color:var(--muted);">range 0 to 1</p>
+      </div>
+    </div>
+    <div class="callout callout--teal"><span class="tag">Threshold</span> |score| ≥ 0.10 — same rule as the classification track.</div>
+  </div>
+</section>
+
+<!-- 15 : RELEVANCE RESULT (regression) -->
+<section class="slide" id="s16" data-track="regression" data-title="Relevance Score — Result" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">16</span> Regression</div>
+    <h2>Relevance Score — Result</h2>
+    <div class="stat-row" style="margin:.6rem 0 1rem;">
+      <div class="stat"><div class="n">16 / 24</div><div class="l">clear the 0.10 threshold</div></div>
+      <div class="stat"><div class="n">0.589</div><div class="l">top score — NumCatalogPurchases</div></div>
+    </div>
+    <div class="chart-cols" id="chart15"></div>
+    <div class="callout callout--brass">
+      <span class="tag">Education outlier</span>
+      η(<span class="mono">Education</span>) = 0.218 — <span class="mono">Basic</span> group mean income ≈ $20,306, roughly <b>2.5×</b> lower than every other level ($47.6k–$56.1k band).
+    </div>
+  </div>
+</section>
+
+<!-- 16 : MULTICOLLINEARITY (regression) -->
+<section class="slide" id="s17" data-track="regression" data-title="Multicollinearity + Categorical Redundancy" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">17</span> Regression</div>
+    <h2>Multicollinearity — Circularity Made Concrete</h2>
+    <div class="grid2" style="margin-top:.6rem; align-items:center;">
+      <div class="tri-wrap">
+        <svg viewBox="0 0 340 260" width="100%" style="max-width:360px;">
+          <line x1="170" y1="34" x2="60" y2="220"></line>
+          <line x1="170" y1="34" x2="280" y2="220"></line>
+          <line x1="60" y1="220" x2="280" y2="220"></line>
+          <text x="170" y="18" text-anchor="middle" class="lab">correlation with target / each other</text>
+          <text x="115" y="120" class="r" text-anchor="middle">0.589</text>
+          <text x="228" y="120" class="r" text-anchor="middle">0.584</text>
+          <text x="170" y="238" class="r" text-anchor="middle">0.734</text>
+          <circle cx="170" cy="34" r="30"></circle>
+          <text x="170" y="30" text-anchor="middle" font-size="10">Income</text>
+          <text x="170" y="42" text-anchor="middle" font-size="8" class="lab">target</text>
+          <circle cx="60" cy="220" r="42"></circle>
+          <text x="60" y="216" text-anchor="middle" font-size="9">NumCatalog</text>
+          <text x="60" y="228" text-anchor="middle" font-size="9">Purchases</text>
+          <circle cx="280" cy="220" r="42"></circle>
+          <text x="280" y="216" text-anchor="middle" font-size="9">MntMeat</text>
+          <text x="280" y="228" text-anchor="middle" font-size="9">Products</text>
+        </svg>
+      </div>
+      <div>
+        <p style="font-size:.92rem;"><span class="mono">NumCatalogPurchases</span> — #1 bivariate driver of <span class="mono">Income</span> (0.589) — is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not three independent economic drivers; one signal, repeated across columns.</p>
+        <div class="card" style="margin-top:1rem;">
+          <h3>Categorical redundancy</h3>
+          <p style="font-size:.85rem; margin:0;">Cramér's V(<span class="mono">Education</span>, <span class="mono">Marital_Status</span>) = <b class="tab">0.043</b> — same as the classification track, still essentially independent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 : RF EXPLANATION (regression) -->
+<section class="slide" id="s18" data-track="regression" data-title="RF — Explanation" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">18</span> Regression</div>
+    <h2>Model-Based Importance — Random Forest</h2>
+    <div class="card" style="max-width:640px;">
+      <p style="font-size:.95rem; margin:0;"><span class="mono">RandomForestRegressor(n_estimators=300, random_state=42)</span> fit on <span class="mono">Income</span>. Same feature-matrix and aggregation method as the classification track's RF pass.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 18 : RF RESULT (regression) -->
+<section class="slide" id="s19" data-track="regression" data-title="RF — Result" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">19</span> Regression</div>
+    <h2>RF Importance — Result</h2>
+    <div class="grid2" style="margin-top:.6rem; align-items:start;">
+      <div class="barchart" id="chart18"></div>
+      <div>
+        <div class="leaderboard">
+          <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.444</div><div class="val">RF top feature</div></div>
+          <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.146</div><div class="val">runner-up (3× smaller)</div></div>
+        </div>
+        <div class="callout callout--teal">
+          <span class="tag">Greedy-splitting artifact</span>
+          <span class="mono">MntWines</span> dominates despite <span class="mono">MntMeatProducts</span> scoring marginally higher bivariately (0.584 vs 0.578). <span class="mono">NumCatalogPurchases</span> — #1 bivariate (0.589) — collapses to 7th (0.027). Textbook multicollinearity effect, not evidence it's a weak predictor.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 : MI EXPLANATION (regression) -->
+<section class="slide" id="s20" data-track="regression" data-title="MI — Explanation" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">20</span> Regression</div>
+    <h2>Cross-Check — Mutual Information</h2>
+    <div class="card" style="max-width:640px;">
+      <p style="font-size:.95rem; margin:0;"><span class="mono">mutual_info_regression</span> — checking whether RF's specific choice of <span class="mono">MntWines</span> over <span class="mono">MntMeatProducts</span> is a real relationship or an RF-specific (greedy, order-dependent) artifact.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 20 : MI RESULT (regression) -->
+<section class="slide" id="s21" data-track="regression" data-title="MI — Result" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">21</span> Regression</div>
+    <h2>Mutual Information — Result</h2>
+    <div class="grid2" style="margin-top:.6rem; align-items:start;">
+      <div class="barchart" id="chart20"></div>
+      <div>
+        <div class="leaderboard">
+          <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.723</div><div class="val">edges out MntWines</div></div>
+          <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.679</div><div class="val">runner-up</div></div>
+        </div>
+        <div class="callout callout--brass">
+          <span class="tag">Matches bivariate, not RF</span>
+          MI's order confirms RF's 3× gap was a greedy-splitting artifact. <span class="mono">NumCatalogPurchases</span> (0.572) / <span class="mono">NumStorePurchases</span> (0.549) remain strong under MI despite RF demoting both.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 : REGRESSION SUMMARY -->
+<section class="slide" id="s22" data-track="regression" data-title="Regression Summary" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">22</span> Regression</div>
+    <h2>Regression Summary</h2>
+    <div class="stat-row" style="margin:1rem 0;">
+      <div class="stat"><div class="n">2,213</div><div class="l">rows</div></div>
+      <div class="stat"><div class="n">16 / 24</div><div class="l">clear threshold, several &gt; 0.5</div></div>
+    </div>
+    <div class="grid2" style="margin-top:.4rem;">
+      <div class="callout callout--teal" style="margin-top:0;">
+        <span class="tag">Opposite pattern from the other two datasets</span>
+        <span class="mono">banking_dataset</span>'s <span class="mono">balance</span> and <span class="mono">google_play_data</span>'s <span class="mono">Rating</span> both showed "no dominant predictor" (every |r| &lt; ~0.2). <span class="mono">Income</span> is naturally continuous and economically grounded — spend scales with income across every category and channel.
+      </div>
+      <div>
+        <div class="leaderboard">
+          <div class="rank-tile"><div class="method">Non-responders (n=1,880)</div><div class="pos tab">$50,824</div><div class="val">mean · median $50,150</div></div>
+          <div class="rank-tile"><div class="method">Responders (n=333)</div><div class="pos tab">$60,210</div><div class="val">mean · median $64,090</div></div>
+        </div>
+        <p style="font-size:.82rem; color:var(--muted); margin-top:.6rem;">Responders earn <b>+18.5%</b> mean / <b>+27.8%</b> median more — the two tracks' targets are meaningfully linked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 22 : CLOSE -->
+<section class="slide slide--divider" id="s23" data-track="neutral" data-title="Questions">
+  <div class="slide-inner">
+    <h1>Questions</h1>
+    <div class="sub">Customer Personality Analysis · Response &amp; Income EDA</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var slides = Array.from(document.querySelectorAll(".slide"));
+  var accentOf = { neutral:"var(--brass)", classify:"var(--red)", regression:"var(--teal)" };
+
+  // ---- rail + hud ----
+  var rail = document.getElementById("rail");
+  slides.forEach(function(s, i){
+    var b = document.createElement("button");
+    b.style.background = accentOf[s.dataset.track] || "var(--brass)";
+    b.addEventListener("click", function(){ s.scrollIntoView({behavior:"smooth", block:"start"}); });
+    b.setAttribute("aria-label", "Go to slide " + (i+1));
+    rail.appendChild(b);
+  });
+  var railBtns = Array.from(rail.children);
+  var hudNum = document.querySelector("#hud .n");
+  var hudTitle = document.getElementById("hud-title");
+
+  function setActive(i){
+    slides.forEach(function(s, idx){ s.classList.toggle("is-active", idx === i); });
+    railBtns.forEach(function(b, idx){ b.classList.toggle("on", idx === i); });
+    hudNum.textContent = String(i+1).padStart(2, "0");
+    hudTitle.textContent = "— " + slides[i].dataset.title;
+    document.getElementById("hud").style.setProperty("--accent", accentOf[slides[i].dataset.track] || "var(--brass)");
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting && e.intersectionRatio > 0.5){
+        setActive(slides.indexOf(e.target));
+      }
+    });
+  }, { threshold:[0.5] });
+  slides.forEach(function(s){ io.observe(s); });
+  setActive(0);
+
+  // ---- keyboard nav ----
+  window.addEventListener("keydown", function(e){
+    var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var cur = slides.findIndex(function(s){ return s.classList.contains("is-active"); });
+    if (["ArrowDown","PageDown"," "].includes(e.key)){
+      e.preventDefault();
+      var next = slides[Math.min(cur+1, slides.length-1)];
+      next.scrollIntoView({behavior: reduced ? "auto" : "smooth", block:"start"});
+    } else if (["ArrowUp","PageUp"].includes(e.key)){
+      e.preventDefault();
+      var prev = slides[Math.max(cur-1, 0)];
+      prev.scrollIntoView({behavior: reduced ? "auto" : "smooth", block:"start"});
+    }
+  });
+
+  // ---- bar chart renderer ----
+  function renderBars(container, data, axisMax, accentVar, threshold){
+    container.innerHTML = "";
+    container.style.position = "relative";
+    data.forEach(function(d, idx){
+      var row = document.createElement("div");
+      row.className = "bar-row" + (threshold && Math.abs(d.v) < threshold ? " dim" : "");
+      var name = document.createElement("div");
+      name.className = "bar-name"; name.textContent = d.n + (d.cat ? " ·cat" : "");
+      var track = document.createElement("div");
+      track.className = "bar-track";
+      var fill = document.createElement("div");
+      fill.className = "bar-fill";
+      fill.style.width = (Math.abs(d.v)/axisMax*100) + "%";
+      fill.style.setProperty("--accent", accentVar);
+      track.appendChild(fill);
+      if (threshold){
+        var tick = document.createElement("div");
+        tick.className = "threshold-line";
+        tick.style.left = (threshold/axisMax*100) + "%";
+        track.appendChild(tick);
+        if (idx === 0){
+          var lab = document.createElement("div");
+          lab.className = "threshold-label";
+          lab.style.left = (threshold/axisMax*100) + "%";
+          lab.textContent = "0.10 threshold";
+          track.appendChild(lab);
+        }
+      }
+      var val = document.createElement("div");
+      val.className = "bar-val tab";
+      val.textContent = (d.v<0?"−":"") + Math.abs(d.v).toFixed(3);
+      row.appendChild(name); row.appendChild(track); row.appendChild(val);
+      container.appendChild(row);
+    });
+  }
+
+  function renderTwoCol(containerId, data, axisMax, accentVar, threshold, splitAt){
+    var el = document.getElementById(containerId);
+    var colA = document.createElement("div"); colA.className = "barchart";
+    var colB = document.createElement("div"); colB.className = "barchart";
+    renderBars(colA, data.slice(0, splitAt), axisMax, accentVar, threshold);
+    renderBars(colB, data.slice(splitAt), axisMax, accentVar, threshold);
+    el.appendChild(colA); el.appendChild(colB);
+  }
+
+  var RED = "var(--red)", TEAL = "var(--teal)";
+
+  // Slide 5 — classify relevance (25, axis 0.35, threshold 0.10)
+  renderTwoCol("chart5", [
+    {n:"AcceptedCmp5", v:0.328},{n:"AcceptedCmp1", v:0.294},{n:"AcceptedCmp3", v:0.254},
+    {n:"MntWines", v:0.247},{n:"MntMeatProducts", v:0.237},{n:"NumCatalogPurchases", v:0.221},
+    {n:"Recency", v:0.199},{n:"Customer_Tenure_Days", v:0.194},{n:"AcceptedCmp4", v:0.177},
+    {n:"AcceptedCmp2", v:0.169},{n:"Teenhome", v:0.155},{n:"Marital_Status", v:0.152, cat:true},
+    {n:"NumWebPurchases", v:0.148}
+  ].concat([
+    {n:"MntGoldProds", v:0.141},{n:"Income", v:0.133},{n:"MntFruits", v:0.126},
+    {n:"MntSweetProducts", v:0.117},{n:"MntFishProducts", v:0.111},{n:"Education", v:0.102, cat:true},
+    {n:"Kidhome", v:0.080},{n:"NumStorePurchases", v:0.039},{n:"Age", v:0.018},
+    {n:"NumWebVisitsMonth", v:0.004},{n:"NumDealsPurchases", v:0.002},{n:"Complain", v:0.0002}
+  ]), 0.35, RED, 0.10, 13);
+
+  // Slide 8 — classify RF top15 (axis 0.09)
+  renderBars(document.getElementById("chart8"), [
+    {n:"Recency", v:0.088},{n:"Customer_Tenure_Days", v:0.082},{n:"Income", v:0.072},
+    {n:"MntWines", v:0.070},{n:"MntMeatProducts", v:0.069},{n:"MntGoldProds", v:0.050},
+    {n:"Marital_Status", v:0.046, cat:true},{n:"Age", v:0.045},{n:"AcceptedCmp3", v:0.042},
+    {n:"MntSweetProducts", v:0.042},{n:"MntFishProducts", v:0.040},{n:"AcceptedCmp5", v:0.040},
+    {n:"MntFruits", v:0.039},{n:"NumStorePurchases", v:0.039},{n:"NumCatalogPurchases", v:0.038}
+  ], 0.09, RED);
+
+  // Slide 10 — classify MI top15 (axis 0.045)
+  renderBars(document.getElementById("chart10"), [
+    {n:"MntMeatProducts", v:0.043},{n:"AcceptedCmp5", v:0.042},{n:"MntWines", v:0.040},
+    {n:"Income", v:0.037},{n:"MntGoldProds", v:0.034},{n:"NumCatalogPurchases", v:0.034},
+    {n:"Customer_Tenure_Days", v:0.032},{n:"NumWebPurchases", v:0.032},{n:"AcceptedCmp3", v:0.027},
+    {n:"Recency", v:0.025},{n:"AcceptedCmp1", v:0.024},{n:"Age", v:0.024},
+    {n:"AcceptedCmp2", v:0.022},{n:"NumStorePurchases", v:0.022},{n:"MntFruits", v:0.020}
+  ], 0.045, RED);
+
+  // Slide 15 — regression relevance (24, axis 0.6, threshold 0.10)
+  renderTwoCol("chart15", [
+    {n:"NumCatalogPurchases", v:0.589},{n:"MntMeatProducts", v:0.584},{n:"MntWines", v:0.578},
+    {n:"NumWebVisitsMonth", v:-0.553},{n:"NumStorePurchases", v:0.530},{n:"MntSweetProducts", v:0.441},
+    {n:"MntFishProducts", v:0.439},{n:"MntFruits", v:0.430},{n:"Kidhome", v:-0.428},
+    {n:"NumWebPurchases", v:0.388},{n:"AcceptedCmp5", v:0.335},{n:"MntGoldProds", v:0.325}
+  ].concat([
+    {n:"AcceptedCmp1", v:0.277},{n:"Education", v:0.218, cat:true},{n:"AcceptedCmp4", v:0.185},
+    {n:"Age", v:0.163},{n:"AcceptedCmp2", v:0.088},{n:"NumDealsPurchases", v:-0.083},
+    {n:"Marital_Status", v:0.046, cat:true},{n:"Complain", v:0.025},{n:"Teenhome", v:0.019},
+    {n:"Customer_Tenure_Days", v:0.018},{n:"AcceptedCmp3", v:0.016},{n:"Recency", v:0.003}
+  ]), 0.6, TEAL, 0.10, 12);
+
+  // Slide 18 — regression RF top12 (axis 0.45)
+  renderBars(document.getElementById("chart18"), [
+    {n:"MntWines", v:0.444},{n:"MntMeatProducts", v:0.146},{n:"NumWebVisitsMonth", v:0.077},
+    {n:"MntFruits", v:0.075},{n:"NumDealsPurchases", v:0.060},{n:"Recency", v:0.028},
+    {n:"NumCatalogPurchases", v:0.027},{n:"MntSweetProducts", v:0.025},{n:"MntGoldProds", v:0.017},
+    {n:"NumWebPurchases", v:0.015},{n:"Customer_Tenure_Days", v:0.014},{n:"MntFishProducts", v:0.013}
+  ], 0.45, TEAL);
+
+  // Slide 20 — regression MI top12 (axis 0.75)
+  renderBars(document.getElementById("chart20"), [
+    {n:"MntMeatProducts", v:0.723},{n:"MntWines", v:0.679},{n:"NumCatalogPurchases", v:0.572},
+    {n:"NumStorePurchases", v:0.549},{n:"MntFruits", v:0.459},{n:"MntSweetProducts", v:0.420},
+    {n:"MntFishProducts", v:0.407},{n:"NumWebVisitsMonth", v:0.397},{n:"NumWebPurchases", v:0.348},
+    {n:"MntGoldProds", v:0.269},{n:"NumDealsPurchases", v:0.255},{n:"Kidhome", v:0.217}
+  ], 0.75, TEAL);
+})();
+</script>
