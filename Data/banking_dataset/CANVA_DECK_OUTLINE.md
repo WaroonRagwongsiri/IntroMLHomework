@@ -254,6 +254,7 @@ Paste-ready content for the middle section of "01076641: ML Project" (design `DA
 - `duration` topped RF (0.262) but that rank isn't trustworthy — near-zero Step 1 score (0.022) and 13th-of-16 by MI both flag it as a continuous-feature artifact, not a real driver
 - `y` scores real but modest everywhere (rank 8 in both Step 1 and MI) yet is excluded outright — same logic as `duration` in the classification track: it's the outcome of the same call a pre-call `balance` model would need to run before
 - **Class distribution:** `balance` is right-skewed with negative values present (min -8,019, max 102,127) — needs a signed-log or robust-scaling transform before modeling
+- **Why every score is weak — tested, not assumed:** trimming `balance`'s extreme 2% (cutting skew from 8.36 to 2.80) barely moves any relevance score — rules out outliers as the cause. Real reason: every feature here describes the marketing campaign or coarse demographics, not direct financial history (no income, spending, or other accounts recorded) — `balance` is shaped by factors this dataset was never built to capture
 
 **[IMAGE PLACEHOLDER: Final Feature Shortlist Checklist (regression) + balance Distribution/Skew Chart]** — split source: the skew/distribution half is `regression.ipynb` cell 16 (raw `balance` histogram, back in Train Distribution Check — shows right-skew and negative values). The checklist half is a **GAP: no notebook chart** — same as B14, build it by hand.
 
