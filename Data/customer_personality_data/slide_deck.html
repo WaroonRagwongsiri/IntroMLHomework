@@ -151,6 +151,7 @@ p{ margin:0 0 .8rem; color:var(--ink); }
 .bar-fill.leak{ background:var(--brass); }
 .bar-name.leak{ color:var(--brass); }
 .bar-val{ font-family:var(--font-mono); font-size:.68rem; text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); }
+.bar-row.count-row{ grid-template-columns:130px 1fr 104px; }
 .chart-caption{ font-size:.72rem; color:var(--muted); margin:0 0 .4rem; max-width:56em; }
 .chart-legend{ display:flex; align-items:center; gap:.4rem; font-family:var(--font-mono); font-size:.68rem; color:var(--muted); margin-top:.5rem; }
 .chart-legend .dot{ width:9px; height:9px; border-radius:50%; background:var(--brass); display:inline-block; flex:none; }
@@ -161,7 +162,7 @@ p{ margin:0 0 .8rem; color:var(--ink); }
 }
 .chart-cols{ display:grid; grid-template-columns:1fr 1fr; gap:0 2.2rem; position:relative; }
 .chart-axis-wrap{ position:relative; }
-@media (max-width:820px){ .chart-cols{ grid-template-columns:1fr; } .bar-row{ grid-template-columns:120px 1fr 46px; } }
+@media (max-width:820px){ .chart-cols{ grid-template-columns:1fr; } .bar-row{ grid-template-columns:120px 1fr 46px; } .bar-row.count-row{ grid-template-columns:104px 1fr 88px; } }
 
 /* ---- Rank leaderboard ---- */
 .leaderboard{ display:flex; gap:1rem; flex-wrap:wrap; }
@@ -192,21 +193,13 @@ p{ margin:0 0 .8rem; color:var(--ink); }
 .rail button.on{ background:var(--accent, var(--brass)); transform:scale(1.6); }
 @media (max-width:720px){ .rail{ display:none; } }
 
-/* ---- Triangle diagram ---- */
-.tri-wrap{ display:flex; justify-content:center; }
-.tri-wrap svg text{ font-family:var(--font-mono); fill:var(--ink); }
-.tri-wrap svg .lab{ font-size:11px; fill:var(--muted); }
-.tri-wrap svg .r{ font-size:12px; font-weight:600; }
-.tri-wrap svg line{ stroke:var(--teal); }
-.tri-wrap svg circle{ fill:var(--surface); stroke:var(--teal); stroke-width:1.5; }
-
 footer.slide-foot{
   position:absolute; bottom:1.3rem; left:6vw; right:6vw; display:flex; justify-content:space-between;
   font-family:var(--font-mono); font-size:.66rem; color:var(--muted); letter-spacing:.04em;
 }
 </style>
 
-<div class="hud" id="hud"><span class="n">01</span><span>/ 25</span><span id="hud-title" style="margin-left:.4em;"></span></div>
+<div class="hud" id="hud"><span class="n">01</span><span>/ 26</span><span id="hud-title" style="margin-left:.4em;"></span></div>
 <nav class="rail" id="rail" aria-label="Slide navigation"></nav>
 
 <!-- 1 : INTRO (placeholder) -->
@@ -329,14 +322,32 @@ footer.slide-foot{
   <div class="slide-inner">
     <h1>Classification EDA</h1>
     <div class="sub">Target: <span class="mono target-name">Response</span> — accepted the latest campaign</div>
-    <div class="fill-slot">[ section intro — fill in ]</div>
+  </div>
+</section>
+
+<!-- 5 : CLASS DISTRIBUTION (classify) -->
+<section class="slide" id="s5b" data-track="classify" data-title="Class Distribution" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">06</span> Classification</div>
+    <h2 style="margin-bottom:.25rem;">Class Distribution — First Look</h2>
+    <p class="lede" style="margin-bottom:.7rem;">Before ranking features, check the target itself. <span class="mono">Response</span> is meaningfully imbalanced — the first thing that shapes every downstream choice: split strategy, class weighting, and which metrics can be trusted.</p>
+    <div class="stat-row" style="margin-bottom:1rem;">
+      <div class="stat"><div class="n">1,903</div><div class="l">did not respond · 85.1%</div></div>
+      <div class="stat"><div class="n">334</div><div class="l">responded · 14.9%</div></div>
+      <div class="stat"><div class="n">5.7 : 1</div><div class="l">majority-to-minority ratio</div></div>
+    </div>
+    <div class="barchart" style="max-width:640px;" id="chartResponse"></div>
+    <div class="callout callout--red" style="margin-top:1rem; max-width:640px;">
+      <span class="tag">Why this matters before feature ranking</span>
+      At 85/15, predicting "no" every time already scores 85.1% accuracy while learning nothing — accuracy alone can't be trusted as a metric here. Splits should be stratified on <span class="mono">Response</span>, and evaluation should lean on precision/recall/F1/ROC-AUC over raw accuracy.
+    </div>
   </div>
 </section>
 
 <!-- 4 : RELEVANCE EXPLANATION (classify) -->
 <section class="slide" id="s6" data-track="classify" data-title="Relevance Score — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">06</span> Classification</div>
+    <div class="eyebrow"><span class="num">07</span> Classification</div>
     <h2 style="margin-bottom:.25rem;">Relevance Score — How It's Computed</h2>
     <p class="lede" style="margin-bottom:.5rem;">Two methods, split by feature type — both scored against <span class="mono">Response</span> (0/1), both judged against the same 0.10 threshold so the results sit on one ranked chart.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
@@ -360,7 +371,7 @@ footer.slide-foot{
 <!-- 5 : RELEVANCE RESULT (classify) -->
 <section class="slide" id="s7" data-track="classify" data-title="Relevance Score — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">07</span> Classification</div>
+    <div class="eyebrow"><span class="num">08</span> Classification</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
       <div class="stat"><div class="n">19 / 25</div><div class="l">clear the 0.10 threshold</div></div>
@@ -379,7 +390,7 @@ footer.slide-foot{
 <!-- 6 : MULTICOLLINEARITY (classify) -->
 <section class="slide" id="s8" data-track="classify" data-title="Multicollinearity + Categorical Redundancy" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">08</span> Classification</div>
+    <div class="eyebrow"><span class="num">09</span> Classification</div>
     <h2>Multicollinearity + Categorical Redundancy</h2>
     <div class="grid2" style="margin-top:1rem;">
       <div>
@@ -407,7 +418,7 @@ footer.slide-foot{
 <!-- 7 : RF EXPLANATION (classify) -->
 <section class="slide" id="s9" data-track="classify" data-title="RF — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">09</span> Classification</div>
+    <div class="eyebrow"><span class="num">10</span> Classification</div>
     <h2>Model-Based Importance — Random Forest</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -425,7 +436,7 @@ footer.slide-foot{
 <!-- 8 : RF RESULT (classify) -->
 <section class="slide" id="s10" data-track="classify" data-title="RF — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">10</span> Classification</div>
+    <div class="eyebrow"><span class="num">11</span> Classification</div>
     <h2>RF Importance — Result</h2>
     <p class="chart-caption">Bar length = feature importance — share of total impurity reduction attributed to that feature across all 300 trees. Importances sum to 1.0 across all candidates, so bars are directly comparable to each other (not to the relevance chart's scale).</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -448,7 +459,7 @@ footer.slide-foot{
 <!-- 9 : MI EXPLANATION (classify) -->
 <section class="slide" id="s11" data-track="classify" data-title="MI — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">11</span> Classification</div>
+    <div class="eyebrow"><span class="num">12</span> Classification</div>
     <h2>Cross-Check — Mutual Information</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -467,7 +478,7 @@ footer.slide-foot{
 <!-- 10 : MI RESULT (classify) -->
 <section class="slide" id="s12" data-track="classify" data-title="MI — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">12</span> Classification</div>
+    <div class="eyebrow"><span class="num">13</span> Classification</div>
     <h2>Mutual Information — Result</h2>
     <p class="chart-caption">Bar length = MI score (nats) — how much knowing this feature reduces uncertainty about <span class="mono">Response</span>. No fixed upper bound, so compare rank and relative gaps across methods, not raw magnitude.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -492,7 +503,7 @@ footer.slide-foot{
 <!-- 11 : CLASSIFICATION SUMMARY -->
 <section class="slide" id="s13" data-track="classify" data-title="Classification Summary" style="--accent:var(--red); --accent-soft:var(--red-soft);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">13</span> Classification</div>
+    <div class="eyebrow"><span class="num">14</span> Classification</div>
     <h2 style="margin-bottom:.3rem;">Classification Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,237</div><div class="l">rows</div></div>
@@ -523,20 +534,25 @@ footer.slide-foot{
   <div class="slide-inner">
     <h1>Regression EDA</h1>
     <div class="sub">Target: <span class="mono target-name">Income</span> — yearly household income</div>
-    <div class="fill-slot">[ section intro — fill in ]</div>
   </div>
 </section>
 
-<!-- 13 : DATASET OVERVIEW (regression recap) -->
-<section class="slide" id="s15" data-track="regression" data-title="Dataset Overview — Regression" style="--accent:var(--teal);">
+<!-- 13 : INCOME DISTRIBUTION (regression) -->
+<section class="slide" id="s15b" data-track="regression" data-title="Income Distribution" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">15</span> Regression</div>
-    <h2>Dataset Overview — Recap</h2>
-    <p class="lede">Target: <span class="mono">Income</span> — yearly household income, a raw column, no engineering needed.</p>
-    <div class="stat-row" style="margin-top:1.2rem;">
-      <div class="stat"><div class="n">2,213</div><div class="l">rows (24 missing-Income rows dropped — imputing the target would be wrong)</div></div>
-      <div class="stat"><div class="n">8</div><div class="l">outliers above IQR bound $118,349</div></div>
-      <div class="stat"><div class="n">$666,666</div><div class="l">most extreme value — ~4× the next-highest</div></div>
+    <div class="eyebrow"><span class="num">16</span> Regression</div>
+    <h2 style="margin-bottom:.25rem;">Income Distribution — First Look</h2>
+    <p class="lede" style="margin-bottom:.7rem;">Target: <span class="mono">Income</span> — yearly household income, a raw column, no engineering needed. Check the target itself before ranking features: 24 of 2,237 rows have missing <span class="mono">Income</span> and are dropped rather than imputed (imputing the regression target itself would bias it), leaving <span class="mono">n=2,213</span>. What's left is right-skewed with a long tail.</p>
+    <div class="stat-row" style="margin-bottom:1rem;">
+      <div class="stat"><div class="n">$51,373</div><div class="l">median</div></div>
+      <div class="stat"><div class="n">$52,237</div><div class="l">mean — pulled above median by the tail</div></div>
+      <div class="stat"><div class="n">$1,730 – $666,666</div><div class="l">min – max range</div></div>
+    </div>
+    <p class="chart-caption">Row count per $20k income bin, n=2,213. The rightmost bin absorbs the 8 rows above the IQR outlier bound ($118,349).</p>
+    <div class="barchart" style="max-width:680px;" id="chartIncomeHist"></div>
+    <div class="callout callout--teal" style="margin-top:1rem; max-width:680px;">
+      <span class="tag">Mean vs. median gap confirms the skew</span>
+      A symmetric distribution has mean ≈ median; here the mean sits <span class="mono">$864</span> above the median, dragged up by the tail — most visibly by the <span class="mono">$666,666</span> outlier, ~4× the next-highest value ($162,397).
     </div>
   </div>
 </section>
@@ -544,7 +560,7 @@ footer.slide-foot{
 <!-- 14 : RELEVANCE EXPLANATION (regression) -->
 <section class="slide" id="s16" data-track="regression" data-title="Relevance Score — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">16</span> Regression</div>
+    <div class="eyebrow"><span class="num">17</span> Regression</div>
     <h2 style="margin-bottom:.25rem;">Relevance Score — How It's Computed</h2>
     <p class="lede" style="margin-bottom:.5rem;">Same split-by-feature-type logic as the classification track — but note: the two formulas below are <b>not</b> the same math, just parallel roles.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
@@ -568,7 +584,7 @@ footer.slide-foot{
 <!-- 15 : RELEVANCE RESULT (regression) -->
 <section class="slide" id="s17" data-track="regression" data-title="Relevance Score — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">17</span> Regression</div>
+    <div class="eyebrow"><span class="num">18</span> Regression</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
       <div class="stat"><div class="n">17 / 25</div><div class="l">clear the 0.10 threshold</div></div>
@@ -587,35 +603,26 @@ footer.slide-foot{
 <!-- 16 : MULTICOLLINEARITY (regression) -->
 <section class="slide" id="s18" data-track="regression" data-title="Multicollinearity + Categorical Redundancy" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">18</span> Regression</div>
-    <h2>Multicollinearity — Circularity Made Concrete</h2>
-    <div class="grid2" style="margin-top:.6rem; align-items:center;">
-      <div class="tri-wrap">
-        <svg viewBox="0 0 340 260" width="100%" style="max-width:360px;">
-          <line x1="170" y1="34" x2="60" y2="220"></line>
-          <line x1="170" y1="34" x2="280" y2="220"></line>
-          <line x1="60" y1="220" x2="280" y2="220"></line>
-          <text x="170" y="18" text-anchor="middle" class="lab">correlation with target / each other</text>
-          <text x="115" y="120" class="r" text-anchor="middle">0.589</text>
-          <text x="228" y="120" class="r" text-anchor="middle">0.584</text>
-          <text x="170" y="238" class="r" text-anchor="middle">0.734</text>
-          <circle cx="170" cy="34" r="30"></circle>
-          <text x="170" y="30" text-anchor="middle" font-size="10">Income</text>
-          <text x="170" y="42" text-anchor="middle" font-size="8" class="lab">target</text>
-          <circle cx="60" cy="220" r="42"></circle>
-          <text x="60" y="216" text-anchor="middle" font-size="9">NumCatalog</text>
-          <text x="60" y="228" text-anchor="middle" font-size="9">Purchases</text>
-          <circle cx="280" cy="220" r="42"></circle>
-          <text x="280" y="216" text-anchor="middle" font-size="9">MntMeat</text>
-          <text x="280" y="228" text-anchor="middle" font-size="9">Products</text>
-        </svg>
-      </div>
+    <div class="eyebrow"><span class="num">19</span> Regression</div>
+    <h2>Multicollinearity + Categorical Redundancy</h2>
+    <div class="grid2" style="margin-top:1rem;">
       <div>
-        <p style="font-size:.92rem;"><span class="mono">NumCatalogPurchases</span> — #1 bivariate driver of <span class="mono">Income</span> (0.589) — is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not three independent economic drivers; one signal, repeated across columns.</p>
-        <div class="card" style="margin-top:1rem;">
-          <h3>Categorical redundancy</h3>
-          <p style="font-size:.85rem; margin:0;">Cramér's V(<span class="mono">Education</span>, <span class="mono">Marital_Status</span>) = <b class="tab">0.043</b> — same as the classification track, still essentially independent.</p>
-        </div>
+        <h3 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:var(--font-mono);">Top correlated pairs (of 23×23)</h3>
+        <ul class="ledger-list" style="margin-top:.7rem;">
+          <li><span class="mark tab">0.724</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+          <li><span class="mark tab">0.642</span><span class="mono">MntWines</span> ↔ <span class="mono">NumStorePurchases</span></li>
+          <li><span class="mark tab">0.635</span><span class="mono">MntWines</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+          <li><span class="mark tab">0.589</span><span class="mono">Income</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+          <li><span class="mark tab">−0.553</span><span class="mono">Income</span> ↔ <span class="mono">NumWebVisitsMonth</span></li>
+        </ul>
+        <p style="margin-top:.9rem; font-size:.88rem;"><span class="mono">Income</span> — the regression target — sits inside the same "affluent high-spender" cluster as the <span class="mono">Mnt*</span> spend and purchase-channel columns: <span class="mono">NumCatalogPurchases</span> (0.589 with <span class="mono">Income</span>) is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not independent economic drivers — one signal, repeated across columns, with circularity risk baked in.</p>
+      </div>
+      <div class="card">
+        <h3>Categorical redundancy</h3>
+        <p style="font-size:.85rem;">Cramér's V(<span class="mono">Education</span>, <span class="mono">Marital_Status</span>)</p>
+        <div class="n" style="font-family:var(--font-display); font-weight:650; font-size:2.4rem;">0.043</div>
+        <div class="gauge"><div class="gauge-fill" style="width:4.3%;"></div></div>
+        <p style="font-size:.82rem; color:var(--muted); margin-top:.7rem;">Same as the classification track — essentially independent, both categorical features usable together.</p>
       </div>
     </div>
   </div>
@@ -624,7 +631,7 @@ footer.slide-foot{
 <!-- 17 : RF EXPLANATION (regression) -->
 <section class="slide" id="s19" data-track="regression" data-title="RF — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">19</span> Regression</div>
+    <div class="eyebrow"><span class="num">20</span> Regression</div>
     <h2>Model-Based Importance — Random Forest</h2>
     <div class="card" style="max-width:640px;">
       <p style="font-size:.95rem; margin:0;"><span class="mono">RandomForestRegressor(n_estimators=300, random_state=42)</span> fit on <span class="mono">Income</span>. Same feature-matrix and aggregation method as the classification track's RF pass.</p>
@@ -635,7 +642,7 @@ footer.slide-foot{
 <!-- 18 : RF RESULT (regression) -->
 <section class="slide" id="s20" data-track="regression" data-title="RF — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">20</span> Regression</div>
+    <div class="eyebrow"><span class="num">21</span> Regression</div>
     <h2>RF Importance — Result</h2>
     <p class="chart-caption">Bar length = feature importance — share of total impurity reduction attributed to that feature across all 300 trees. Importances sum to 1.0 across all candidates.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -658,7 +665,7 @@ footer.slide-foot{
 <!-- 19 : MI EXPLANATION (regression) -->
 <section class="slide" id="s21" data-track="regression" data-title="MI — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">21</span> Regression</div>
+    <div class="eyebrow"><span class="num">22</span> Regression</div>
     <h2>Cross-Check — Mutual Information</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -677,7 +684,7 @@ footer.slide-foot{
 <!-- 20 : MI RESULT (regression) -->
 <section class="slide" id="s22" data-track="regression" data-title="MI — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">22</span> Regression</div>
+    <div class="eyebrow"><span class="num">23</span> Regression</div>
     <h2>Mutual Information — Result</h2>
     <p class="chart-caption">Bar length = MI score (nats) — how much knowing this feature reduces uncertainty about <span class="mono">Income</span>. No fixed upper bound, so compare rank and relative gaps, not raw magnitude.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -700,7 +707,7 @@ footer.slide-foot{
 <!-- 21 : REGRESSION SUMMARY -->
 <section class="slide" id="s23" data-track="regression" data-title="Regression Summary" style="--accent:var(--teal); --accent-soft:var(--teal-soft);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">23</span> Regression</div>
+    <div class="eyebrow"><span class="num">24</span> Regression</div>
     <h2 style="margin-bottom:.3rem;">Regression Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,213</div><div class="l">rows</div></div>
@@ -733,7 +740,7 @@ footer.slide-foot{
 <!-- 22 : OVERALL RECAP (both tracks) -->
 <section class="slide" id="s24" data-track="neutral" data-title="Recap — Both Tracks">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">24</span> Recap</div>
+    <div class="eyebrow"><span class="num">25</span> Recap</div>
     <h2 style="margin-bottom:.3rem;">Recap — Both Tracks</h2>
     <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">One dataset, two supervised problems — same three-method process (bivariate → RF → MI), applied independently to each target. Only <b>2,240 rows</b> total — the smallest of the three datasets explored in this project.</p>
     <div class="grid2" style="margin-top:0;">
@@ -869,7 +876,41 @@ footer.slide-foot{
     el.appendChild(colA); el.appendChild(colB);
   }
 
+  // ---- count/histogram bar renderer (raw counts + share of total, not 0-1 scores) ----
+  function renderCountBars(container, data, axisMax, accentVar, total){
+    container.innerHTML = "";
+    data.forEach(function(d){
+      var row = document.createElement("div");
+      row.className = "bar-row count-row";
+      var name = document.createElement("div");
+      name.className = "bar-name"; name.textContent = d.n;
+      var track = document.createElement("div");
+      track.className = "bar-track";
+      var fill = document.createElement("div");
+      fill.className = "bar-fill";
+      fill.style.width = (d.v/axisMax*100) + "%";
+      fill.style.setProperty("--accent", accentVar);
+      track.appendChild(fill);
+      var val = document.createElement("div");
+      val.className = "bar-val tab";
+      val.textContent = d.v.toLocaleString() + " · " + (d.v/total*100).toFixed(1) + "%";
+      row.appendChild(name); row.appendChild(track); row.appendChild(val);
+      container.appendChild(row);
+    });
+  }
+
   var RED = "var(--red)", TEAL = "var(--teal)";
+
+  // Slide "Class Distribution" — Response balance (n=2,237)
+  renderCountBars(document.getElementById("chartResponse"), [
+    {n:"Response = 0", v:1903},{n:"Response = 1", v:334}
+  ], 1903, RED, 2237);
+
+  // Slide "Income Distribution" — $20k bins (n=2,213)
+  renderCountBars(document.getElementById("chartIncomeHist"), [
+    {n:"$0–20k", v:127},{n:"$20–40k", v:604},{n:"$40–60k", v:642},{n:"$60–80k", v:624},
+    {n:"$80–100k", v:203},{n:"$100–120k", v:5},{n:"$120k+", v:8}
+  ], 642, TEAL, 2213);
 
   // Slide 5 — classify relevance (25, axis 0.35, threshold 0.10)
   renderTwoCol("chart5", [
