@@ -571,10 +571,10 @@ footer.slide-foot{
     <div class="eyebrow"><span class="num">17</span> Regression</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
-      <div class="stat"><div class="n">16 / 24</div><div class="l">clear the 0.10 threshold</div></div>
+      <div class="stat"><div class="n">17 / 25</div><div class="l">clear the 0.10 threshold</div></div>
       <div class="stat"><div class="n">0.589</div><div class="l">top score — NumCatalogPurchases</div></div>
     </div>
-    <p class="chart-caption">Bar length = |score| — Pearson r for numeric features, correlation ratio η for categorical (marked <span class="mono">·cat</span>). Dashed line marks the 0.10 relevance threshold.</p>
+    <p class="chart-caption">Bar length = |score| — Pearson r for numeric features, correlation ratio η for categorical (marked <span class="mono">·cat</span>). Dashed line marks the 0.10 relevance threshold. 25 candidates, including <span class="mono">Response</span> (the other track's target) — scored like any other feature rather than excluded by convention; see the final Recap slide for how it fares under RF/MI.</p>
     <div class="chart-cols" id="chart15"></div>
     <div class="chart-legend"><span class="dot"></span> leakage-adjacent feature (<span class="mono">Mnt*</span> spend, circularity risk with <span class="mono">Income</span>)</div>
     <div class="callout callout--brass">
@@ -643,12 +643,12 @@ footer.slide-foot{
       <div>
         <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature</div>
         <div class="leaderboard" style="margin-top:.6rem;">
-          <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.444</div><div class="val">RF top feature</div></div>
-          <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.146</div><div class="val">runner-up (3× smaller)</div></div>
+          <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.446</div><div class="val">RF top feature</div></div>
+          <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.145</div><div class="val">runner-up (3× smaller)</div></div>
         </div>
         <div class="callout callout--teal">
           <span class="tag">Greedy-splitting artifact</span>
-          <span class="mono">MntWines</span> dominates despite <span class="mono">MntMeatProducts</span> scoring marginally higher bivariately (0.584 vs 0.578). <span class="mono">NumCatalogPurchases</span> — #1 bivariate (0.589) — collapses to 7th (0.027). Textbook multicollinearity effect, not evidence it's a weak predictor.
+          <span class="mono">MntWines</span> dominates despite <span class="mono">MntMeatProducts</span> scoring marginally higher bivariately (0.584 vs 0.578). <span class="mono">NumCatalogPurchases</span> — #1 bivariate (0.589) — collapses to 6th (0.030). Textbook multicollinearity effect, not evidence it's a weak predictor.
         </div>
       </div>
     </div>
@@ -685,12 +685,12 @@ footer.slide-foot{
       <div>
         <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature</div>
         <div class="leaderboard" style="margin-top:.6rem;">
-          <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.723</div><div class="val">edges out MntWines</div></div>
-          <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.679</div><div class="val">runner-up</div></div>
+          <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.719</div><div class="val">edges out MntWines</div></div>
+          <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.681</div><div class="val">runner-up</div></div>
         </div>
         <div class="callout callout--brass">
           <span class="tag">Matches bivariate, not RF</span>
-          MI's order confirms RF's 3× gap was a greedy-splitting artifact. <span class="mono">NumCatalogPurchases</span> (0.572) / <span class="mono">NumStorePurchases</span> (0.549) remain strong under MI despite RF demoting both.
+          MI's order confirms RF's 3× gap was a greedy-splitting artifact. <span class="mono">NumCatalogPurchases</span> (0.573) / <span class="mono">NumStorePurchases</span> (0.550) remain strong under MI despite RF demoting both.
         </div>
       </div>
     </div>
@@ -704,16 +704,16 @@ footer.slide-foot{
     <h2 style="margin-bottom:.3rem;">Regression Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,213</div><div class="l">rows</div></div>
-      <div class="stat"><div class="n">16 / 24</div><div class="l">clear threshold, several &gt; 0.5</div></div>
+      <div class="stat"><div class="n">17 / 25</div><div class="l">clear threshold, several &gt; 0.5</div></div>
     </div>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — consensus core (9)</h3>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .35rem;">Clear all three methods — bivariate ≥0.10, RF top-12, MI top-12 — but only 3 are leakage-free:</p>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — non-leakage set (5)</h3>
+        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .35rem;">3 clear all three methods outright; 2 more (<span class="mono">NumStorePurchases</span>, <span class="mono">Kidhome</span>) clear bivariate + MI strongly but miss RF's top-12 — the same greedy-splitting effect that demoted <span class="mono">NumCatalogPurchases</span> to 6th under RF, not evidence they're weak:</p>
         <div class="chips">
-          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span>
+          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">NumStorePurchases</span><span class="chip chip--chosen">Kidhome</span>
         </div>
-        <p style="font-size:.74rem; color:var(--muted); margin:.4rem 0 0;">The other 6 — every <span class="mono">Mnt*</span> spend column — are full consensus too, but circularity-flagged: spend scales with income almost by construction.</p>
+        <p style="font-size:.74rem; color:var(--muted); margin:.4rem 0 0;">5 of the 6 <span class="mono">Mnt*</span> spend columns are full 3-way consensus too, but circularity-flagged: spend scales with income almost by construction. <span class="mono">Response</span> (0.133 bivariate) was also tested as a candidate — RF/MI both demote it near-bottom, so it's excluded.</p>
       </div>
       <div>
         <div class="leaderboard">
@@ -735,7 +735,7 @@ footer.slide-foot{
   <div class="slide-inner">
     <div class="eyebrow"><span class="num">24</span> Recap</div>
     <h2 style="margin-bottom:.3rem;">Recap — Both Tracks</h2>
-    <p class="lede" style="font-size:.9rem; margin-bottom:.7rem;">One dataset, two supervised problems — same three-method process (bivariate → RF → MI), applied independently to each target.</p>
+    <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">One dataset, two supervised problems — same three-method process (bivariate → RF → MI), applied independently to each target. Only <b>2,240 rows</b> total — the smallest of the three datasets explored in this project.</p>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.7rem 1.1rem; --accent:var(--red); --accent-soft:var(--red-soft);">
         <h3 style="margin-bottom:.15rem;">Classification</h3>
@@ -750,16 +750,16 @@ footer.slide-foot{
       <div class="card" style="padding:.7rem 1.1rem; --accent:var(--teal); --accent-soft:var(--teal-soft);">
         <h3 style="margin-bottom:.15rem;">Regression</h3>
         <p style="font-size:.82rem; margin:0 0 .4rem;">Target: <span class="mono target-name" style="font-size:1.1rem;">Income</span> — yearly household income · 2,213 rows</p>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen features — consensus core (3 leakage-free):</p>
+        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen features — non-leakage set (5):</p>
         <div class="chips">
-          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span>
+          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">NumStorePurchases</span><span class="chip chip--chosen">Kidhome</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ all 6 <span class="mono">Mnt*</span> spend columns — also consensus, but circularity-flagged (spend scales with income).</p>
+        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ 5 of 6 <span class="mono">Mnt*</span> spend columns — also consensus, but circularity-flagged (spend scales with income).</p>
       </div>
     </div>
-    <div class="callout callout--brass" style="margin-top:.5rem;">
-      <span class="tag">The two tracks are linked</span>
-      Responders (<span class="mono">Response</span> = 1) earn <b>+18.5%</b> mean / <b>+27.8%</b> median more <span class="mono">Income</span> than non-responders — the targets aren't independent, even though each was analyzed on its own.
+    <div class="callout callout--brass" style="margin-top:.45rem;">
+      <span class="tag">Small-n caveat — and how we handled it</span>
+      With only ~2,200 rows, any single method's ranking is noisier than on a larger dataset — a method-specific quirk can look like real signal. That's exactly why "chosen features" above means <i>agreement across all three independent methods</i>, not one score: a ranking that survives three different statistical assumptions is far less likely to be a small-sample fluke than any one method's top pick alone.
     </div>
   </div>
 </section>
@@ -908,28 +908,29 @@ footer.slide-foot{
     {n:"NumCatalogPurchases", v:0.589},{n:"MntMeatProducts", v:0.584, leak:true},{n:"MntWines", v:0.578, leak:true},
     {n:"NumWebVisitsMonth", v:-0.553},{n:"NumStorePurchases", v:0.530},{n:"MntSweetProducts", v:0.441, leak:true},
     {n:"MntFishProducts", v:0.439, leak:true},{n:"MntFruits", v:0.430, leak:true},{n:"Kidhome", v:-0.428},
-    {n:"NumWebPurchases", v:0.388},{n:"AcceptedCmp5", v:0.335},{n:"MntGoldProds", v:0.325, leak:true}
+    {n:"NumWebPurchases", v:0.388},{n:"AcceptedCmp5", v:0.335},{n:"MntGoldProds", v:0.325, leak:true},
+    {n:"AcceptedCmp1", v:0.277}
   ].concat([
-    {n:"AcceptedCmp1", v:0.277},{n:"Education", v:0.218, cat:true},{n:"AcceptedCmp4", v:0.185},
-    {n:"Age", v:0.163},{n:"AcceptedCmp2", v:0.088},{n:"NumDealsPurchases", v:-0.083},
+    {n:"Education", v:0.218, cat:true},{n:"AcceptedCmp4", v:0.185},
+    {n:"Age", v:0.163},{n:"Response", v:0.133},{n:"AcceptedCmp2", v:0.088},{n:"NumDealsPurchases", v:-0.083},
     {n:"Marital_Status", v:0.046, cat:true},{n:"Complain", v:0.025},{n:"Teenhome", v:0.019},
     {n:"Customer_Tenure_Days", v:0.018},{n:"AcceptedCmp3", v:0.016},{n:"Recency", v:0.003}
-  ]), 0.6, TEAL, 0.10, 12);
+  ]), 0.6, TEAL, 0.10, 13);
 
-  // Slide 18 — regression RF top12 (axis 0.45)
+  // Slide 18 — regression RF top12 of 25, incl. Response (axis 0.45)
   renderBars(document.getElementById("chart18"), [
-    {n:"MntWines", v:0.444, leak:true},{n:"MntMeatProducts", v:0.146, leak:true},{n:"NumWebVisitsMonth", v:0.077},
-    {n:"MntFruits", v:0.075, leak:true},{n:"NumDealsPurchases", v:0.060},{n:"Recency", v:0.028},
-    {n:"NumCatalogPurchases", v:0.027},{n:"MntSweetProducts", v:0.025, leak:true},{n:"MntGoldProds", v:0.017, leak:true},
-    {n:"NumWebPurchases", v:0.015},{n:"Customer_Tenure_Days", v:0.014},{n:"MntFishProducts", v:0.013, leak:true}
+    {n:"MntWines", v:0.446, leak:true},{n:"MntMeatProducts", v:0.145, leak:true},{n:"NumWebVisitsMonth", v:0.079},
+    {n:"MntFruits", v:0.075, leak:true},{n:"NumDealsPurchases", v:0.059},{n:"NumCatalogPurchases", v:0.030},
+    {n:"MntSweetProducts", v:0.026, leak:true},{n:"Recency", v:0.024},{n:"MntGoldProds", v:0.018, leak:true},
+    {n:"Age", v:0.015},{n:"Customer_Tenure_Days", v:0.014},{n:"NumWebPurchases", v:0.014}
   ], 0.45, TEAL);
 
-  // Slide 20 — regression MI top12 (axis 0.75)
+  // Slide 20 — regression MI top12 of 25, incl. Response (axis 0.75)
   renderBars(document.getElementById("chart20"), [
-    {n:"MntMeatProducts", v:0.723, leak:true},{n:"MntWines", v:0.679, leak:true},{n:"NumCatalogPurchases", v:0.572},
-    {n:"NumStorePurchases", v:0.549},{n:"MntFruits", v:0.459, leak:true},{n:"MntSweetProducts", v:0.420, leak:true},
-    {n:"MntFishProducts", v:0.407, leak:true},{n:"NumWebVisitsMonth", v:0.397},{n:"NumWebPurchases", v:0.348},
-    {n:"MntGoldProds", v:0.269, leak:true},{n:"NumDealsPurchases", v:0.255},{n:"Kidhome", v:0.217}
+    {n:"MntMeatProducts", v:0.719, leak:true},{n:"MntWines", v:0.681, leak:true},{n:"NumCatalogPurchases", v:0.573},
+    {n:"NumStorePurchases", v:0.550},{n:"MntFruits", v:0.453, leak:true},{n:"MntSweetProducts", v:0.424, leak:true},
+    {n:"MntFishProducts", v:0.408, leak:true},{n:"NumWebVisitsMonth", v:0.399},{n:"NumWebPurchases", v:0.349},
+    {n:"MntGoldProds", v:0.270, leak:true},{n:"NumDealsPurchases", v:0.254},{n:"Kidhome", v:0.217}
   ], 0.75, TEAL);
 })();
 </script>

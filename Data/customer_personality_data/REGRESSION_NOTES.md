@@ -12,7 +12,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 
 **Purpose / Method.** Same `ID`/`Z_CostContact`/`Z_Revenue` drop, `Dt_Customer` → `Customer_Tenure_Days`, `Year_Birth` → `Age` (age-outlier drop), and `Marital_Status` collapse as `CLASSIFY_NOTES.md` (2,240 → 2,237 rows after the 3-row age-outlier drop) — see that file for the step-by-step. One extra, regression-specific step: **drop rows with missing `Income`**, since imputing the target itself would be the wrong move.
 
-**Result.** 24 of the 2,237 cleaned rows have missing `Income` → **2,213 rows** remain for this notebook. `Response` is still present here (unaffected by the `Income` drop) purely to support the `Income` vs. `Response` deep dive below — it is not a regression feature.
+**Result.** 24 of the 2,237 cleaned rows have missing `Income` → **2,213 rows** remain for this notebook. `Response` is unaffected by the `Income` drop — used both as a regression candidate below and in the "Income vs. Response" deep dive.
 
 ---
 
@@ -20,7 +20,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 
 **Purpose.** Same reasoning as `banking_dataset/REGRESSION_NOTES.md`'s `balance` section and `google_play_data/REGRESSION_NOTES.md`'s `Rating` section: rank all candidate features against `Income` first, so only threshold-clearing features get a detailed follow-up.
 
-**Method.** Pearson `|r|` for the 22 numeric candidates (`Income` obviously excluded from its own list; `AcceptedCmp1`-`5` included but flagged; `Response` deliberately excluded here and explored separately below, mirroring `google_play_data/regression.ipynb` keeping `hit` out of the main ranking), correlation ratio η for `Education`/`Marital_Status`. See `MATRIX_METHODS.md`.
+**Method.** Pearson `|r|` for 23 numeric candidates (`Income` obviously excluded from its own list; `AcceptedCmp1`-`5` included but flagged) plus `Response`, correlation ratio η for `Education`/`Marital_Status`. `Response` — the other track's target — is included as a candidate here rather than excluded by convention: score it like any other feature and let the ranking decide. See `MATRIX_METHODS.md`.
 
 **Result.** Full ranking (relevance score, descending; signed direction noted separately below the table):
 
@@ -42,6 +42,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 | Education | 0.218 | categorical |
 | AcceptedCmp4 | 0.185 | numeric |
 | Age | 0.163 | numeric |
+| Response | 0.133 | numeric |
 | AcceptedCmp2 | 0.088 | numeric |
 | NumDealsPurchases | 0.083 | numeric |
 | Marital_Status | 0.046 | categorical |
@@ -51,7 +52,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 | AcceptedCmp3 | 0.016 | numeric |
 | Recency | 0.003 | numeric |
 
-**This is by far the strongest bivariate signal set found across all three datasets explored for this project.** At threshold 0.1, **16 of 24** candidates clear it — more than double `google_play_data/Rating`'s 2-of-8 and well above `banking_dataset/balance`'s handful of borderline features. Several scores exceed 0.5, something neither prior regression track came close to.
+**This is by far the strongest bivariate signal set found across all three datasets explored for this project.** At threshold 0.1, **17 of 25** candidates clear it — more than double `google_play_data/Rating`'s 2-of-8 and well above `banking_dataset/balance`'s handful of borderline features. Several scores exceed 0.5, something neither prior regression track came close to. `Response` itself clears the threshold at 0.133 (identical to the point-biserial score `CLASSIFY_NOTES.md` reports for `Income` against `Response` — the same statistic, computed in the reverse direction) — but see the RF/MI results below for why it doesn't survive as a chosen feature once other candidates are modeled jointly.
 
 **Signed direction (the table reports `|r|`; two features are notably negative):** `NumWebVisitsMonth` is **-0.553** — customers who browse the site more actually earn *less* and spend *less*, the reverse of the naive "more engagement = more valuable customer" assumption; plausibly because affluent customers shop through catalog/store channels instead of browsing the web repeatedly. `Kidhome` is **-0.428** — households with young children at home earn less, on average, than childless households in this sample. `NumDealsPurchases` is also negative (-0.083, doesn't clear threshold) — a weak echo of the same pattern (deal-seeking correlates with lower income).
 
@@ -104,7 +105,7 @@ This is the **opposite pattern** from both prior regression tracks. `banking_dat
 
 ## Deep Dive — Income vs Response
 
-**Purpose.** `Response` is the other track's target, built from the same cleaned data — checking whether it relates to `Income` links the two tracks together and mirrors `google_play_data/REGRESSION_NOTES.md`'s "Rating vs. hit" deep dive (a numeric regression target against the classification target).
+**Purpose.** `Response` is scored as a regular candidate above; this section is a qualitative companion view (boxplot/violin/group stats) of that same relationship, and mirrors `google_play_data/REGRESSION_NOTES.md`'s "Rating vs. hit" deep dive (a numeric regression target against the classification target).
 
 **Method.** Boxplot and violin plot of `Income` split by `Response`, plus group medians/means/counts.
 
@@ -131,26 +132,28 @@ Responders earn meaningfully more — **+13,940 on the median (+27.8%), +9,385 o
 
 **Purpose.** Same rationale as `CLASSIFY_NOTES.md` — a model-based, interaction-aware complement to the bivariate relevance ranking above.
 
-**Method.** Same `build_feature_matrix` approach as `classify.ipynb` (no NaN-fill actually needed here — every column is complete once the 24 missing-`Income` rows are dropped), fit `RandomForestRegressor(n_estimators=300, random_state=42)` on `Income`, importances aggregated back to parent columns.
+**Method.** Same `build_feature_matrix` approach as `classify.ipynb` (no NaN-fill actually needed here — every column is complete once the 24 missing-`Income` rows are dropped), fit `RandomForestRegressor(n_estimators=300, random_state=42)` on `Income` with all 25 candidates (including `Response`), importances aggregated back to parent columns.
 
-**Result (top 12 of 24):**
+**Result (top 12 of 25):**
 
 | feature | importance |
 |---|---|
-| MntWines | 0.444 |
-| MntMeatProducts | 0.146 |
-| NumWebVisitsMonth | 0.077 |
+| MntWines | 0.446 |
+| MntMeatProducts | 0.145 |
+| NumWebVisitsMonth | 0.079 |
 | MntFruits | 0.075 |
-| NumDealsPurchases | 0.060 |
-| Recency | 0.028 |
-| NumCatalogPurchases | 0.027 |
-| MntSweetProducts | 0.025 |
-| MntGoldProds | 0.017 |
-| NumWebPurchases | 0.015 |
+| NumDealsPurchases | 0.059 |
+| NumCatalogPurchases | 0.030 |
+| MntSweetProducts | 0.026 |
+| Recency | 0.024 |
+| MntGoldProds | 0.018 |
+| Age | 0.015 |
 | Customer_Tenure_Days | 0.014 |
-| MntFishProducts | 0.013 |
+| NumWebPurchases | 0.014 |
 
-**RF concentrates even more sharply than the bivariate ranking suggested — but on a different feature than expected.** `MntWines` becomes the dominant RF feature at **0.444** (3x the runner-up), despite `MntMeatProducts` scoring marginally *higher* in the bivariate ranking (0.584 vs. `MntWines`'s 0.578) and in the MI cross-check below. `NumCatalogPurchases` — the #1 bivariate feature (0.589) — collapses to 7th in RF (0.027). The likely mechanism: `NumCatalogPurchases`, `MntMeatProducts`, and `MntWines` are all mutually correlated (0.57–0.73, see Multicollinearity above), so once RF's greedy tree-building process picks `MntWines` for early splits, the *marginal* information the other two add on top is much smaller than their standalone bivariate correlation implies — a textbook multicollinearity effect on RF importance, distinct from the leakage-driven RF reordering discussed in `CLASSIFY_NOTES.md`.
+**RF concentrates even more sharply than the bivariate ranking suggested — but on a different feature than expected.** `MntWines` becomes the dominant RF feature at **0.446** (3x the runner-up), despite `MntMeatProducts` scoring marginally *higher* in the bivariate ranking (0.584 vs. `MntWines`'s 0.578) and in the MI cross-check below. `NumCatalogPurchases` — the #1 bivariate feature (0.589) — collapses to 6th in RF (0.030). The likely mechanism: `NumCatalogPurchases`, `MntMeatProducts`, and `MntWines` are all mutually correlated (0.57–0.73, see Multicollinearity above), so once RF's greedy tree-building process picks `MntWines` for early splits, the *marginal* information the other two add on top is much smaller than their standalone bivariate correlation implies — a textbook multicollinearity effect on RF importance, distinct from the leakage-driven RF reordering discussed in `CLASSIFY_NOTES.md`. `MntFishProducts` (13th, 0.012) is squeezed just out of the top 12 by `Response`'s addition shifting the tail slightly — not a meaningful change in its own right.
+
+**`Response`, having cleared the bivariate threshold, all but disappears here: importance 0.0005 (22nd of 25).** Its 0.133 bivariate correlation with `Income` turns out to be almost entirely redundant with the spend/purchase-channel cluster already in the model — once those are available, `Response` adds essentially nothing further. This is the concrete evidence for why it isn't a chosen feature: not a low individual score, but a marginal contribution near zero once modeled jointly with everything else.
 
 ---
 
@@ -158,23 +161,25 @@ Responders earn meaningfully more — **+13,940 on the median (+27.8%), +9,385 o
 
 **Purpose.** A third, non-parametric check on whether the RF's specific choice of `MntWines` over `MntMeatProducts` reflects a real relationship or an RF-specific (greedy, order-dependent) artifact.
 
-**Method.** `sklearn.feature_selection.mutual_info_regression` — numeric columns with `discrete_features=False`, categorical columns (label-encoded) with `discrete_features=True`.
+**Method.** `sklearn.feature_selection.mutual_info_regression` — numeric columns (including `Response`) with `discrete_features=False`, categorical columns (label-encoded) with `discrete_features=True`.
 
-**Result (top 12 of 24):**
+**Result (top 12 of 25):**
 
 | feature | mutual_info | type |
 |---|---|---|
-| MntMeatProducts | 0.723 | numeric |
-| MntWines | 0.679 | numeric |
-| NumCatalogPurchases | 0.572 | numeric |
-| NumStorePurchases | 0.549 | numeric |
-| MntFruits | 0.459 | numeric |
-| MntSweetProducts | 0.420 | numeric |
-| MntFishProducts | 0.407 | numeric |
-| NumWebVisitsMonth | 0.397 | numeric |
-| NumWebPurchases | 0.348 | numeric |
-| MntGoldProds | 0.269 | numeric |
-| NumDealsPurchases | 0.255 | numeric |
+| MntMeatProducts | 0.719 | numeric |
+| MntWines | 0.681 | numeric |
+| NumCatalogPurchases | 0.573 | numeric |
+| NumStorePurchases | 0.550 | numeric |
+| MntFruits | 0.453 | numeric |
+| MntSweetProducts | 0.424 | numeric |
+| MntFishProducts | 0.408 | numeric |
+| NumWebVisitsMonth | 0.399 | numeric |
+| NumWebPurchases | 0.349 | numeric |
+| MntGoldProds | 0.270 | numeric |
+| NumDealsPurchases | 0.254 | numeric |
 | Kidhome | 0.217 | numeric |
 
-**MI agrees with the bivariate ranking's ordering, not RF's.** `MntMeatProducts` (0.723) edges out `MntWines` (0.679) here, matching their bivariate order (0.584 vs. 0.578) — MI, computed independently per feature with no greedy "already explained" bookkeeping, doesn't produce the same lopsided 3x gap RF found. `NumCatalogPurchases` and `NumStorePurchases` also remain strong under MI (0.572, 0.549) despite RF demoting both — confirming the RF picture above is a genuine multicollinearity/greedy-splitting artifact specific to the tree-building process, not evidence that `NumCatalogPurchases` is actually a weak predictor of `Income` on its own. **Overall MI magnitudes here (up to 0.72) are an order of magnitude larger than `CLASSIFY_NOTES.md`'s (max 0.043)** — while MI scales aren't strictly comparable across a continuous vs. binary target, this is consistent with the Discussion above: `Income` genuinely has a much stronger, more recoverable signal in this feature set than `Response` does.
+**MI agrees with the bivariate ranking's ordering, not RF's — and its top-12 membership/order is unchanged by adding `Response` to the candidate pool** (only third-decimal shifts, since one more column in the matrix barely perturbs the KNN-based estimator). `MntMeatProducts` (0.719) edges out `MntWines` (0.681) here, matching their bivariate order (0.584 vs. 0.578) — MI, computed independently per feature with no greedy "already explained" bookkeeping, doesn't produce the same lopsided 3x gap RF found. `NumCatalogPurchases` and `NumStorePurchases` also remain strong under MI (0.573, 0.550) despite RF demoting both — confirming the RF picture above is a genuine multicollinearity/greedy-splitting artifact specific to the tree-building process, not evidence that `NumCatalogPurchases` is actually a weak predictor of `Income` on its own. **Overall MI magnitudes here (up to 0.72) are an order of magnitude larger than `CLASSIFY_NOTES.md`'s (max 0.043)** — while MI scales aren't strictly comparable across a continuous vs. binary target, this is consistent with the Discussion above: `Income` genuinely has a much stronger, more recoverable signal in this feature set than `Response` does.
+
+**`Response` scores 0.038 here (21st of 25)** — same story as RF: a real bivariate correlation that turns out to carry almost no information about `Income` once the spend/purchase-channel features already explain the underlying "engaged, affluent customer" signal it's a weaker proxy for. Bivariate, RF, and MI together give `Response` a clean verdict: **1 of 3 methods clears threshold, and the two model-based methods that see the full feature set both rank it near the bottom** — it does not belong in the chosen-feature set, and this is now a checked result, not a convention.
