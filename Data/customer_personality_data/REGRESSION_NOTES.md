@@ -183,3 +183,58 @@ Responders earn meaningfully more — **+13,940 on the median (+27.8%), +9,385 o
 **MI agrees with the bivariate ranking's ordering, not RF's — and its top-12 membership/order is unchanged by adding `Response` to the candidate pool** (only third-decimal shifts, since one more column in the matrix barely perturbs the KNN-based estimator). `MntMeatProducts` (0.719) edges out `MntWines` (0.681) here, matching their bivariate order (0.584 vs. 0.578) — MI, computed independently per feature with no greedy "already explained" bookkeeping, doesn't produce the same lopsided 3x gap RF found. `NumCatalogPurchases` and `NumStorePurchases` also remain strong under MI (0.573, 0.550) despite RF demoting both — confirming the RF picture above is a genuine multicollinearity/greedy-splitting artifact specific to the tree-building process, not evidence that `NumCatalogPurchases` is actually a weak predictor of `Income` on its own. **Overall MI magnitudes here (up to 0.72) are an order of magnitude larger than `CLASSIFY_NOTES.md`'s (max 0.043)** — while MI scales aren't strictly comparable across a continuous vs. binary target, this is consistent with the Discussion above: `Income` genuinely has a much stronger, more recoverable signal in this feature set than `Response` does.
 
 **`Response` scores 0.038 here (21st of 25)** — same story as RF: a real bivariate correlation that turns out to carry almost no information about `Income` once the spend/purchase-channel features already explain the underlying "engaged, affluent customer" signal it's a weaker proxy for. Bivariate, RF, and MI together give `Response` a clean verdict: **1 of 3 methods clears threshold, and the two model-based methods that see the full feature set both rank it near the bottom** — it does not belong in the chosen-feature set, and this is now a checked result, not a convention.
+
+---
+
+## Feature Selection — Combining the Three Methods (Final Cut)
+
+**Purpose.** Same rationale as `CLASSIFY_NOTES.md`'s version of this section, duplicated so this notebook runs standalone. The three methods above measure different things — linear association (bivariate), tree-based interaction-aware importance (RF), and general statistical dependency (MI) — and each can be misled in its own way. This section states the actual rule used to collapse three rankings into one final feature-selection decision, and applies it to every one of the 25 candidates (24 original + `Response`).
+
+**Method — the cutting rule, not an average.** The three scores live on incompatible scales (signed −1..+1 for bivariate; unsigned 0..1 summing to 1 for RF; unsigned 0..∞ for MI), so they aren't blended into one composite number. Each method instead casts an independent pass/fail vote:
+
+- **Bivariate passes** if `|score| ≥ 0.10`.
+- **RF passes** if the feature lands in RF's top 12 of 25.
+- **MI passes** if the feature lands in MI's top 12 of 25.
+
+Tiered by vote count: **3/3** → chosen, no caveat (unless leakage-flagged); **2/3** → generally cut — promoted to chosen only when there's a specific, named, independently-confirmed reason (see `NumStorePurchases`/`Kidhome` below); **1/3 or 0/3** → cut.
+
+**Result — every candidate, all three votes:**
+
+| feature | bivariate | RF (top 12?) | MI (top 12?) | votes | leakage-adjacent? |
+|---|---|---|---|---|---|
+| NumCatalogPurchases | 0.589 ✓ | 0.030 ✓ (6th) | 0.573 ✓ (3rd) | **3/3** | — |
+| MntMeatProducts | 0.584 ✓ | 0.145 ✓ (2nd) | 0.719 ✓ (1st) | **3/3** | yes |
+| MntWines | 0.578 ✓ | 0.446 ✓ (1st) | 0.681 ✓ (2nd) | **3/3** | yes |
+| NumWebVisitsMonth | −0.553 ✓ | 0.079 ✓ (3rd) | 0.399 ✓ (8th) | **3/3** | — |
+| MntSweetProducts | 0.441 ✓ | 0.026 ✓ (7th) | 0.424 ✓ (6th) | **3/3** | yes |
+| MntFruits | 0.430 ✓ | 0.075 ✓ (4th) | 0.453 ✓ (5th) | **3/3** | yes |
+| NumWebPurchases | 0.388 ✓ | 0.014 ✓ (12th) | 0.349 ✓ (9th) | **3/3** | — |
+| MntGoldProds | 0.325 ✓ | 0.018 ✓ (9th) | 0.270 ✓ (10th) | **3/3** | yes |
+| NumStorePurchases | 0.530 ✓ | 0.008 ✗ (15th) | 0.550 ✓ (4th) | 2/3 | — |
+| MntFishProducts | 0.439 ✓ | 0.012 ✗ (13th) | 0.408 ✓ (7th) | 2/3 | yes |
+| Kidhome | −0.428 ✓ | 0.004 ✗ (19th) | 0.217 ✓ (12th) | 2/3 | — |
+| Age | 0.163 ✓ | 0.015 ✓ (10th) | 0.130 ✗ (14th) | 2/3 | — |
+| NumDealsPurchases | −0.083 ✗ | 0.059 ✓ (5th) | 0.254 ✓ (11th) | 2/3 | — |
+| AcceptedCmp5 | 0.335 ✓ | 0.009 ✗ (14th) | 0.121 ✗ (16th) | 1/3 | yes |
+| AcceptedCmp1 | 0.277 ✓ | 0.001 ✗ (21st) | 0.074 ✗ (19th) | 1/3 | yes |
+| Education (cat) | 0.218 ✓ | 0.004 ✗ (18th) | 0.128 ✗ (15th) | 1/3 | — |
+| AcceptedCmp4 | 0.185 ✓ | 0.0003 ✗ (23rd) | 0.037 ✗ (22nd) | 1/3 | yes |
+| Response | 0.133 ✓ | 0.0005 ✗ (22nd) | 0.038 ✗ (21st) | 1/3 | — |
+| Customer_Tenure_Days | 0.018 ✗ | 0.014 ✓ (11th) | 0.105 ✗ (17th) | 1/3 | — |
+| Recency | 0.003 ✗ | 0.024 ✓ (8th) | 0.100 ✗ (18th) | 1/3 | — |
+| AcceptedCmp2 | 0.088 ✗ | 0.0001 ✗ (24th) | 0.010 ✗ (24th) | 0/3 | yes |
+| Marital_Status (cat) | 0.046 ✗ | 0.007 ✗ (17th) | 0.073 ✗ (20th) | 0/3 | — |
+| Complain | 0.025 ✗ | 0.00007 ✗ (25th) | 0.004 ✗ (25th) | 0/3 | — |
+| Teenhome | 0.019 ✗ | 0.008 ✗ (16th) | 0.176 ✗ (13th) | 0/3 | — |
+| AcceptedCmp3 | 0.016 ✗ | 0.001 ✗ (20th) | 0.020 ✗ (23rd) | 0/3 | yes |
+
+**Final tally: 8 at 3/3, 5 at 2/3, 7 at 1/3, 5 at 0/3.**
+
+**The 3/3 tier splits into two groups:**
+- **3 non-leakage chosen features, no caveat:** `NumCatalogPurchases`, `NumWebVisitsMonth`, `NumWebPurchases`.
+- **5 leakage-adjacent features, also full consensus:** `MntMeatProducts`, `MntWines`, `MntSweetProducts`, `MntFruits`, `MntGoldProds` — 5 of the 6 `Mnt*` spend columns (the 6th, `MntFishProducts`, falls to 2/3 — see below). The circularity caveat from the Relevance section above still applies: spend scales with income almost by construction, a real correlation-direction ambiguity rather than dropping them outright.
+
+**Notable 2/3 cases:**
+- `NumStorePurchases`, `MntFishProducts`, and `Kidhome` all **fail only RF** despite clearing bivariate and MI comfortably — the same greedy-splitting/multicollinearity artifact already documented for `NumCatalogPurchases`'s own RF collapse (7th → now 6th with `Response` added): RF spends its early splits on the dominant `MntWines`/`MntMeatProducts` pair and has little marginal signal left to attribute elsewhere, not evidence these three are weak.
+- `Age` **fails only MI**, `NumDealsPurchases` **fails only bivariate** (−0.083, just short of threshold) yet clears both RF and MI — a case of real non-linear signal a purely linear correlation check misses.
+- `Response` sits at exactly 1/3 (bivariate only) — see the dedicated discussion above for why that's not enough to be chosen despite the real underlying relationship.

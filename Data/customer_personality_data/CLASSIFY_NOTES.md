@@ -169,3 +169,62 @@ At threshold 0.1, **19 of 25** candidates clear it — a far higher hit rate tha
 | MntFruits | 0.020 | numeric |
 
 **A genuine three-way disagreement, reported honestly rather than resolved into one story.** MI puts `AcceptedCmp5` back in 2nd place (0.042, close behind `MntMeatProducts`'s 0.043) — a real leakage signal MI still picks up strongly, unlike RF's 12th-place demotion of the same feature. `Recency`/`Customer_Tenure_Days` — RF's top two — rank only 7th/7th-adjacent here (0.025 and 0.032). `Marital_Status` (0.011) and `Education` (0.005), both comfortably above threshold bivariately, are near the bottom under MI. The honest summary: bivariate correlation, RF, and MI each tell a *different* story about how much weight the `AcceptedCmp*` leakage features deserve relative to `Recency`/`Customer_Tenure_Days`/spend — no single method should be taken as the final word, and a model built on this data should treat `AcceptedCmp1`-`5` as a deliberate inclusion/exclusion decision (does the deployment scenario have prior-campaign history for the customer, or not?) rather than trusting any one importance score to settle it.
+
+---
+
+## Feature Selection — Combining the Three Methods (Final Cut)
+
+**Purpose.** The three methods above measure genuinely different things — linear/monotonic association (bivariate), tree-based interaction-aware importance (RF), and general statistical dependency (MI) — and each can be misled in its own way (small-sample noise for all three; RF specifically via greedy splitting on correlated features, see the RF section above). This section states the actual rule used to collapse three separate rankings into one final feature-selection decision, and applies it to every one of the 25 candidates.
+
+**Method — the cutting rule, not an average.** The three scores live on incompatible scales: bivariate is signed, −1 to +1; RF importance is unsigned, 0 to 1, and sums to exactly 1 across all candidates; MI is unsigned, 0 to ∞ with no fixed ceiling. Averaging them would let whichever method happens to have the largest numeric range dominate a blended score for no principled reason. Instead, each method casts an independent pass/fail vote per feature:
+
+- **Bivariate passes** if `|score| ≥ 0.10`.
+- **RF passes** if the feature lands in RF's top 15 of 25.
+- **MI passes** if the feature lands in MI's top 15 of 25.
+
+Features are then tiered by vote count:
+
+- **3/3 (full consensus) → chosen feature, no caveat** (unless separately leakage-flagged — see below). A signal that survives three different statistical assumptions at once is very unlikely to be a fluke of one method or of this dataset's modest size (2,237 rows).
+- **2/3 (lower-confidence signal) → generally cut.** In practice, across both tracks' 2/3 tiers (13 features total), only 2 ever get promoted into a chosen-feature set (`NumStorePurchases`/`Kidhome` on the regression track — see `REGRESSION_NOTES.md`) — and only because there's a specific, named, independently-confirmed reason (RF's greedy-splitting blind spot on a feature correlated with something RF already picked). Without a reason that concrete, a 2/3 vote is treated as cut, not as a softer version of chosen.
+- **1/3 or 0/3 → cut.**
+
+**Result — every candidate, all three votes:**
+
+| feature | bivariate | RF (top 15?) | MI (top 15?) | votes | leakage-adjacent? |
+|---|---|---|---|---|---|
+| AcceptedCmp5 | 0.328 ✓ | 0.040 ✓ (12th) | 0.042 ✓ (2nd) | **3/3** | yes |
+| AcceptedCmp3 | 0.254 ✓ | 0.042 ✓ (9th) | 0.027 ✓ (9th) | **3/3** | yes |
+| MntWines | 0.247 ✓ | 0.070 ✓ (4th) | 0.040 ✓ (3rd) | **3/3** | — |
+| MntMeatProducts | 0.237 ✓ | 0.069 ✓ (5th) | 0.043 ✓ (1st) | **3/3** | — |
+| NumCatalogPurchases | 0.221 ✓ | 0.038 ✓ (15th) | 0.034 ✓ (6th) | **3/3** | — |
+| Recency | 0.199 ✓ | 0.088 ✓ (1st) | 0.025 ✓ (10th) | **3/3** | — |
+| Customer_Tenure_Days | 0.194 ✓ | 0.082 ✓ (2nd) | 0.032 ✓ (7th) | **3/3** | — |
+| MntGoldProds | 0.141 ✓ | 0.050 ✓ (6th) | 0.034 ✓ (5th) | **3/3** | — |
+| Income | 0.133 ✓ | 0.072 ✓ (3rd) | 0.037 ✓ (4th) | **3/3** | — |
+| MntFruits | 0.126 ✓ | 0.039 ✓ (13th) | 0.020 ✓ (15th) | **3/3** | — |
+| AcceptedCmp1 | 0.294 ✓ | 0.033 ✗ (17th) | 0.024 ✓ (11th) | 2/3 | yes |
+| AcceptedCmp2 | 0.169 ✓ | 0.008 ✗ (23rd) | 0.022 ✓ (13th) | 2/3 | yes |
+| Marital_Status (cat) | 0.152 ✓ | 0.046 ✓ (7th) | 0.011 ✗ (20th) | 2/3 | — |
+| NumWebPurchases | 0.148 ✓ | 0.030 ✗ (19th) | 0.032 ✓ (8th) | 2/3 | — |
+| MntSweetProducts | 0.117 ✓ | 0.042 ✓ (10th) | 0.017 ✗ (17th) | 2/3 | — |
+| MntFishProducts | 0.111 ✓ | 0.040 ✓ (11th) | 0.006 ✗ (21st) | 2/3 | — |
+| NumStorePurchases | 0.039 ✗ | 0.039 ✓ (14th) | 0.022 ✓ (14th) | 2/3 | — |
+| Age | 0.018 ✗ | 0.045 ✓ (8th) | 0.024 ✓ (12th) | 2/3 | — |
+| AcceptedCmp4 | 0.177 ✓ | 0.010 ✗ (22nd) | 0.015 ✗ (18th) | 1/3 | yes |
+| Teenhome | 0.155 ✓ | 0.012 ✗ (21st) | 0.017 ✗ (16th) | 1/3 | — |
+| Education (cat) | 0.102 ✓ | 0.031 ✗ (18th) | 0.005 ✗ (22nd) | 1/3 | — |
+| Kidhome | 0.080 ✗ | 0.007 ✗ (24th) | 0.000 ✗ (24th) | 0/3 | — |
+| NumWebVisitsMonth | 0.004 ✗ | 0.036 ✗ (16th) | 0.014 ✗ (19th) | 0/3 | — |
+| NumDealsPurchases | 0.002 ✗ | 0.028 ✗ (20th) | 0.003 ✗ (23rd) | 0/3 | — |
+| Complain | 0.0002 ✗ | 0.001 ✗ (25th) | 0.000 ✗ (25th) | 0/3 | — |
+
+**Final tally: 10 at 3/3, 8 at 2/3, 3 at 1/3, 4 at 0/3.**
+
+**The 3/3 tier splits into two groups:**
+- **8 non-leakage chosen features, no caveat:** `MntWines`, `MntMeatProducts`, `NumCatalogPurchases`, `Recency`, `Customer_Tenure_Days`, `MntGoldProds`, `Income`, `MntFruits`.
+- **2 leakage-adjacent features, also full consensus:** `AcceptedCmp5`, `AcceptedCmp3`. All three methods agree these are relevant — the leakage caveat from the Relevance section above still applies (include only if the deployment scenario genuinely has prior-campaign history for the customer at prediction time).
+
+**Notable 2/3 cases — cut, but for a specific, explainable reason rather than a blanket low score:**
+- `NumStorePurchases` and `Age` both **fail only the bivariate threshold** (0.039 and 0.018) yet clear RF and MI comfortably — a case of real non-linear/interaction signal that a purely linear correlation check misses entirely.
+- `MntSweetProducts` and `MntFishProducts` both **fail only MI** despite clearing bivariate and RF — MI's discrete-target estimator is noisier on binary targets than the continuous case (see the regression track's much larger MI magnitudes), so a near-miss here is less conclusive than an RF near-miss.
+- `AcceptedCmp1` and `AcceptedCmp2` **fail only RF** (both leakage-adjacent) — consistent with RF's broader pattern of demoting the `AcceptedCmp*` group relative to `Recency`/`Customer_Tenure_Days`, discussed in the RF section above.

@@ -121,6 +121,7 @@ p{ margin:0 0 .8rem; color:var(--ink); }
 }
 .chip-sm{ font-size:.64rem; padding:.2rem .5rem; }
 .chip--chosen{ background:var(--accent-soft, var(--surface)); border-color:var(--accent, var(--paper-line)); color:var(--accent, var(--ink)); font-weight:700; }
+.chip--secondary{ background:transparent; border:1px dashed var(--accent, var(--paper-line)); color:var(--accent, var(--ink)); font-weight:600; }
 
 .ledger-list{ list-style:none; margin:.6rem 0 0; padding:0; display:flex; flex-direction:column; gap:.55rem; }
 .ledger-list li{
@@ -175,6 +176,26 @@ p{ margin:0 0 .8rem; color:var(--ink); }
 .gauge{ height:10px; border-radius:5px; background:var(--surface); overflow:hidden; margin-top:.5rem; }
 .gauge-fill{ height:100%; background:var(--accent, var(--brass)); border-radius:5px; }
 
+/* ---- Crosstab ---- */
+.xtab{ width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:.72rem; }
+.xtab th, .xtab td{ padding:.3rem .45rem; text-align:right; border-bottom:1px solid var(--paper-line); white-space:nowrap; }
+.xtab thead th{ color:var(--muted); font-weight:600; border-bottom:1px solid var(--paper-line); }
+.xtab td:first-child, .xtab th:first-child{ text-align:left; color:var(--muted); font-weight:600; }
+.xtab tbody tr:last-child td{ font-weight:700; color:var(--accent, var(--ink)); border-top:1px solid var(--paper-line); }
+.xtab tfoot td{ font-weight:700; border-top:1px solid var(--paper-line); border-bottom:none; }
+
+/* ---- Cut table (feature-selection vote) ---- */
+.cuttab{ width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:.635rem; }
+.cuttab th, .cuttab td{ padding:.2rem .3rem; text-align:right; border-bottom:1px solid var(--paper-line); white-space:nowrap; }
+.cuttab thead th{ color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; font-size:.58rem; }
+.cuttab td:first-child, .cuttab th:first-child{ text-align:left; font-weight:600; }
+.cuttab td.leak{ color:var(--brass); }
+.cuttab td.yes{ color:var(--accent, var(--ink)); }
+.cuttab td.no{ color:var(--muted); }
+.cuttab td.votes{ font-weight:700; color:var(--muted); }
+.cuttab tr.v3 td.votes{ color:var(--accent, var(--ink)); }
+.cuttab tr.v3{ background:color-mix(in srgb, var(--accent, var(--brass)) 7%, transparent); }
+
 /* ---- Nav rail ---- */
 .hud{
   position:fixed; top:1.4rem; left:1.6rem; z-index:20; font-family:var(--font-mono);
@@ -199,7 +220,7 @@ footer.slide-foot{
 }
 </style>
 
-<div class="hud" id="hud"><span class="n">01</span><span>/ 26</span><span id="hud-title" style="margin-left:.4em;"></span></div>
+<div class="hud" id="hud"><span class="n">01</span><span>/ 33</span><span id="hud-title" style="margin-left:.4em;"></span></div>
 <nav class="rail" id="rail" aria-label="Slide navigation"></nav>
 
 <!-- 1 : INTRO (placeholder) -->
@@ -234,7 +255,7 @@ footer.slide-foot{
 </section>
 
 <!-- 3 : DATASET OVERVIEW — ALL COLUMNS -->
-<section class="slide" id="s3" data-track="neutral" data-title="Dataset Overview — Columns">
+<section class="slide" id="s3" data-track="neutral" data-title="Dataset Overview — Columns" style="--accent:var(--ink);">
   <div class="slide-inner">
     <div class="eyebrow"><span class="num">03</span> Foundation</div>
     <h2 style="margin-bottom:.2rem;">Every Column, Grouped &amp; Explained</h2>
@@ -247,8 +268,8 @@ footer.slide-foot{
           <li><span class="mark">Year_Birth</span> customer's birth year</li>
           <li><span class="mark">Education</span> education level: Graduation / PhD / Master / 2n Cycle / Basic</li>
           <li><span class="mark">Marital_Status</span> marital status: Single / Married / Together / Divorced / Widow</li>
-          <li><span class="mark">Income</span> yearly household income · <b>regression target</b></li>
-          <li><span class="mark">Kidhome / Teenhome</span> # of children / teenagers in the household</li>
+          <li><span class="mark" style="color:var(--teal);">Income</span> yearly household income</li>
+          <li><span class="mark">Kidhome / Teenhome</span>Number of children / teenagers in the household</li>
           <li><span class="mark">Dt_Customer</span> date the customer enrolled with the company</li>
           <li><span class="mark">Recency</span> days since the customer's last purchase</li>
           <li><span class="mark">Complain</span> 1 if the customer complained in the last 2 years, else 0</li>
@@ -272,8 +293,8 @@ footer.slide-foot{
           <h3 style="margin-bottom:.2rem; font-size:1rem;">Promotion</h3>
           <ul class="ledger-list col-list">
             <li><span class="mark">NumDealsPurchases</span> number of purchases made with a discount</li>
-            <li><span class="mark">AcceptedCmp1–5</span> 1 if the customer accepted the offer in that numbered prior campaign, else 0</li>
-            <li><span class="mark">Response</span> 1 if the customer accepted the offer in the most recent campaign, else 0 · <b>classification target</b></li>
+            <li><span class="mark">AcceptedCmp1-5</span> 1 if the customer accepted the offer in that numbered prior campaign, else 0</li>
+            <li><span class="mark" style="color:var(--red);">Response</span> 1 if the customer accepted the offer in the most recent campaign, else 0</li>
           </ul>
         </div>
       </div>
@@ -368,10 +389,33 @@ footer.slide-foot{
   </div>
 </section>
 
+<!-- 4b : WHAT IS LEAKAGE (classify) -->
+<section class="slide" id="s6b" data-track="classify" data-title="What Is Leakage?" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">08</span> Classification</div>
+    <h2 style="margin-bottom:.2rem;">What Is Leakage — And Why Flag It?</h2>
+    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Before the chart on the next slide shows some bars colored differently — what that color means, and which columns earned it here.</p>
+    <div class="grid2" style="margin-top:0; gap:1rem;">
+      <div class="card" style="padding:.75rem 1.1rem;">
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">What "leakage" means</h3>
+        <p style="font-size:.78rem; margin:0;">A feature that scores as highly predictive not because it reflects a genuine, independently-useful signal, but because it's entangled with the target — through timing, definition overlap, or a strong behavioral proxy that might not actually be available when you'd need to make the prediction for real.</p>
+      </div>
+      <div class="card" style="padding:.75rem 1.1rem;">
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Why <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> specifically</h3>
+        <p style="font-size:.78rem; margin:0;">Each flags whether the customer accepted one of the <i>five earlier</i> campaigns. A customer who already said yes once is a fundamentally more receptive, campaign-responsive person — the same kind of customer likely to say yes to <i>this</i> campaign (<span class="mono">Response</span>) too.</p>
+      </div>
+    </div>
+    <div class="callout callout--brass" style="margin-top:.55rem;">
+      <span class="tag">Not the same as true circularity</span>
+      This isn't a feature mathematically derived from <span class="mono">Response</span> (unlike, e.g., a target-encoded column would be) — it's a real, measurable behavioral correlation: Response rate given <i>any</i> prior campaign acceptance is <b>40.7%</b> (n=462) vs. <b>8.2%</b> given none (n=1,775), a 5× gap. Strong enough to flag and watch, not strong enough to call mechanical — "leakage-adjacent," not "leakage."
+    </div>
+  </div>
+</section>
+
 <!-- 5 : RELEVANCE RESULT (classify) -->
 <section class="slide" id="s7" data-track="classify" data-title="Relevance Score — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">08</span> Classification</div>
+    <div class="eyebrow"><span class="num">09</span> Classification</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
       <div class="stat"><div class="n">19 / 25</div><div class="l">clear the 0.10 threshold</div></div>
@@ -388,28 +432,61 @@ footer.slide-foot{
 </section>
 
 <!-- 6 : MULTICOLLINEARITY (classify) -->
-<section class="slide" id="s8" data-track="classify" data-title="Multicollinearity + Categorical Redundancy" style="--accent:var(--red);">
+<section class="slide" id="s8" data-track="classify" data-title="Multicollinearity" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">09</span> Classification</div>
-    <h2>Multicollinearity + Categorical Redundancy</h2>
-    <div class="grid2" style="margin-top:1rem;">
+    <div class="eyebrow"><span class="num">10</span> Classification</div>
+    <h2 style="margin-bottom:.2rem;">Multicollinearity</h2>
+    <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Redundancy <i>among</i> the 23 numeric candidates, independent of their relevance to <span class="mono">Response</span> — do any of them just repeat information another one already carries?</p>
+    <div class="grid2" style="grid-template-columns:1.05fr 1fr; gap:1.4rem;">
+      <ul class="ledger-list" style="margin-top:0;">
+        <li><span class="mark tab">0.724</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+        <li><span class="mark tab">0.642</span><span class="mono">MntWines</span> ↔ <span class="mono">NumStorePurchases</span></li>
+        <li><span class="mark tab">0.635</span><span class="mono">MntWines</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+        <li><span class="mark tab">0.594</span><span class="mono">MntFruits</span> ↔ <span class="mono">MntFishProducts</span></li>
+        <li><span class="mark tab">0.589</span><span class="mono">Income</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+        <li><span class="mark tab">0.584</span><span class="mono">Income</span> ↔ <span class="mono">MntMeatProducts</span></li>
+        <li><span class="mark tab">0.580</span><span class="mono">MntFishProducts</span> ↔ <span class="mono">MntSweetProducts</span></li>
+        <li><span class="mark tab">0.578</span><span class="mono">Income</span> ↔ <span class="mono">MntWines</span></li>
+        <li><span class="mark tab">0.568</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">MntFishProducts</span></li>
+        <li><span class="mark tab">−0.553</span><span class="mono">Income</span> ↔ <span class="mono">NumWebVisitsMonth</span></li>
+      </ul>
       <div>
-        <h3 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:var(--font-mono);">Top correlated pairs (of 23×23)</h3>
-        <ul class="ledger-list" style="margin-top:.7rem;">
-          <li><span class="mark tab">0.724</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
-          <li><span class="mark tab">0.642</span><span class="mono">MntWines</span> ↔ <span class="mono">NumStorePurchases</span></li>
-          <li><span class="mark tab">0.635</span><span class="mono">MntWines</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
-          <li><span class="mark tab">0.589</span><span class="mono">Income</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
-          <li><span class="mark tab">−0.553</span><span class="mono">Income</span> ↔ <span class="mono">NumWebVisitsMonth</span></li>
-        </ul>
-        <p style="margin-top:.9rem; font-size:.88rem;"><span class="mono">Income</span> + <span class="mono">Mnt*</span> spend + purchase-channel columns move together as one "affluent high-spender" cluster. <span class="mono">NumWebVisitsMonth</span> is the exception — negatively tied to <span class="mono">Income</span>.</p>
+        <p style="font-size:.85rem;">Top 10 of 253 possible pairs across a 23×23 matrix — the largest correlation matrix of any dataset explored in this project.</p>
+        <p style="font-size:.85rem; margin-top:.7rem;"><span class="mono">Income</span> + <span class="mono">Mnt*</span> spend + purchase-channel columns move together as one "affluent high-spender" cluster, not independent dimensions. <span class="mono">NumWebVisitsMonth</span> is the exception — negatively tied to <span class="mono">Income</span> (-0.553) and to spend (-0.539 with <span class="mono">MntMeatProducts</span>), plausibly because affluent customers buy through catalog/store channels instead of browsing the site.</p>
       </div>
-      <div class="card">
-        <h3>Categorical redundancy</h3>
+    </div>
+  </div>
+</section>
+
+<!-- 8b : CATEGORICAL REDUNDANCY (classify) -->
+<section class="slide" id="s8b" data-track="classify" data-title="Categorical Redundancy" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">11</span> Classification</div>
+    <h2 style="margin-bottom:.2rem;">Categorical Redundancy</h2>
+    <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Same overlap check as Multicollinearity, but for the two categorical columns — <span class="mono">Education</span> and <span class="mono">Marital_Status</span> are the only two treated as categorical in this analysis, so there's exactly one pair to check.</p>
+    <div class="grid2" style="grid-template-columns:0.85fr 1.15fr; gap:1.4rem;">
+      <div class="card" style="padding:1rem 1.2rem;">
         <p style="font-size:.85rem;">Cramér's V(<span class="mono">Education</span>, <span class="mono">Marital_Status</span>)</p>
-        <div class="n" style="font-family:var(--font-display); font-weight:650; font-size:2.4rem;">0.043</div>
+        <div class="n" style="font-family:var(--font-display); font-weight:650; font-size:2.6rem;">0.043</div>
         <div class="gauge"><div class="gauge-fill" style="width:4.3%;"></div></div>
-        <p style="font-size:.82rem; color:var(--muted); margin-top:.7rem;">Essentially independent — both categorical features usable together.</p>
+        <p style="font-size:.8rem; color:var(--muted); margin-top:.7rem;">Essentially independent — both usable together without redundancy concerns.</p>
+      </div>
+      <div>
+        <p style="font-size:.76rem; color:var(--muted); margin-bottom:.4rem;">Row counts behind that number (n = 2,237):</p>
+        <div style="overflow-x:auto;">
+          <table class="xtab">
+            <thead><tr><th></th><th>Single</th><th>Married</th><th>Together</th><th>Divorced</th><th>Widow</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><td>Basic</td><td>18</td><td>20</td><td>14</td><td>1</td><td>1</td><td>54</td></tr>
+              <tr><td>2n Cycle</td><td>36</td><td>81</td><td>57</td><td>22</td><td>5</td><td>201</td></tr>
+              <tr><td>Graduation</td><td>254</td><td>433</td><td>286</td><td>119</td><td>35</td><td>1,127</td></tr>
+              <tr><td>Master</td><td>77</td><td>138</td><td>106</td><td>37</td><td>12</td><td>370</td></tr>
+              <tr><td>PhD</td><td>101</td><td>192</td><td>116</td><td>52</td><td>24</td><td>485</td></tr>
+              <tr><td>Total</td><td>486</td><td>864</td><td>579</td><td>231</td><td>77</td><td>2,237</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:.78rem; color:var(--muted); margin-top:.6rem;">Each marital status shows up in roughly the same proportion inside every education level — no row or column deviates from the overall split. That visual evenness is what a low Cramér's V looks like in the raw counts.</p>
       </div>
     </div>
   </div>
@@ -418,7 +495,7 @@ footer.slide-foot{
 <!-- 7 : RF EXPLANATION (classify) -->
 <section class="slide" id="s9" data-track="classify" data-title="RF — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">10</span> Classification</div>
+    <div class="eyebrow"><span class="num">12</span> Classification</div>
     <h2>Model-Based Importance — Random Forest</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -436,7 +513,7 @@ footer.slide-foot{
 <!-- 8 : RF RESULT (classify) -->
 <section class="slide" id="s10" data-track="classify" data-title="RF — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">11</span> Classification</div>
+    <div class="eyebrow"><span class="num">13</span> Classification</div>
     <h2>RF Importance — Result</h2>
     <p class="chart-caption">Bar length = feature importance — share of total impurity reduction attributed to that feature across all 300 trees. Importances sum to 1.0 across all candidates, so bars are directly comparable to each other (not to the relevance chart's scale).</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -459,7 +536,7 @@ footer.slide-foot{
 <!-- 9 : MI EXPLANATION (classify) -->
 <section class="slide" id="s11" data-track="classify" data-title="MI — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">12</span> Classification</div>
+    <div class="eyebrow"><span class="num">14</span> Classification</div>
     <h2>Cross-Check — Mutual Information</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -478,7 +555,7 @@ footer.slide-foot{
 <!-- 10 : MI RESULT (classify) -->
 <section class="slide" id="s12" data-track="classify" data-title="MI — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">13</span> Classification</div>
+    <div class="eyebrow"><span class="num">15</span> Classification</div>
     <h2>Mutual Information — Result</h2>
     <p class="chart-caption">Bar length = MI score (nats) — how much knowing this feature reduces uncertainty about <span class="mono">Response</span>. No fixed upper bound, so compare rank and relative gaps across methods, not raw magnitude.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -500,10 +577,96 @@ footer.slide-foot{
   </div>
 </section>
 
+<!-- 10b : FEATURE SELECTION — THE CUTTING RULE (shared) -->
+<section class="slide" id="s12c" data-track="neutral" data-title="Feature Selection — The Cutting Rule">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">16</span> Foundation</div>
+    <h2 style="margin-bottom:.2rem;">Feature Selection — The Cutting Rule</h2>
+    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Three methods, three different scales — how bivariate relevance, RF importance, and MI collapse into one keep/cut decision. Same rule, applied independently on both tracks.</p>
+    <div class="card" style="padding:.7rem 1.1rem; margin-bottom:.6rem;">
+      <h3 style="font-size:.88rem; margin-bottom:.2rem;">Not an average</h3>
+      <p style="font-size:.78rem; margin:0;">The three scores live on incompatible scales: bivariate is signed, −1 to +1; RF importance is unsigned, 0 to 1, and sums to exactly 1 across all candidates; MI is unsigned, 0 to ∞ with no fixed ceiling. Averaging them would let whichever method has the largest numeric range dominate a blended score, for no principled reason.</p>
+    </div>
+    <div class="grid2" style="margin-top:0; gap:1rem;">
+      <div class="card" style="padding:.7rem 1.1rem;">
+        <h3 style="font-size:.88rem;">The vote — one pass/fail per method</h3>
+        <ul class="ledger-list" style="margin-top:.5rem;">
+          <li><span class="mark">Bivariate</span> passes if |score| ≥ 0.10</li>
+          <li><span class="mark">RF</span> passes if the feature lands in RF's top-N</li>
+          <li><span class="mark">MI</span> passes if the feature lands in MI's top-N</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:.7rem 1.1rem;">
+        <h3 style="font-size:.88rem;">Tiered by vote count</h3>
+        <ul class="ledger-list" style="margin-top:.5rem;">
+          <li><span class="mark">3/3</span> full consensus → chosen, no caveat (unless leakage-flagged)</li>
+          <li><span class="mark">2/3</span> lower-confidence signal → generally cut, kept only with a specific named reason</li>
+          <li><span class="mark">≤1/3</span> → cut</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout--brass" style="margin-top:.5rem;">
+      <span class="tag">Why this beats trusting one method</span>
+      A signal that survives three different statistical assumptions at once is unlikely to be a fluke of any one method, or of this dataset's modest size (~2,200 rows per track).
+    </div>
+  </div>
+</section>
+
+<!-- 10c : FEATURE SELECTION — CLASSIFICATION CUT -->
+<section class="slide" id="s12d" data-track="classify" data-title="Feature Selection — Classification Cut" style="--accent:var(--red);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">17</span> Classification</div>
+    <h2 style="margin-bottom:.2rem;">Feature Selection — The Cut</h2>
+    <div class="stat-row" style="margin:.5rem 0 .55rem;">
+      <div class="stat"><div class="n">10</div><div class="l">at 3/3 — chosen</div></div>
+      <div class="stat"><div class="n">8</div><div class="l">at 2/3 — lower score</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">at ≤1/3 — cut</div></div>
+    </div>
+    <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature (color on name)</div>
+    <div class="grid2" style="margin-top:.4rem; gap:1.2rem;">
+      <table class="cuttab">
+        <thead><tr><th>Feature</th><th>Biv</th><th>RF</th><th>MI</th><th>Votes</th></tr></thead>
+        <tbody>
+          <tr class="v3"><td class="leak">AcceptedCmp5</td><td class="yes">0.328</td><td class="yes">0.040</td><td class="yes">0.042</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td class="leak">AcceptedCmp3</td><td class="yes">0.254</td><td class="yes">0.042</td><td class="yes">0.027</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>MntWines</td><td class="yes">0.247</td><td class="yes">0.070</td><td class="yes">0.040</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>MntMeatProducts</td><td class="yes">0.237</td><td class="yes">0.069</td><td class="yes">0.043</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>NumCatalogPurchases</td><td class="yes">0.221</td><td class="yes">0.038</td><td class="yes">0.034</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>Recency</td><td class="yes">0.199</td><td class="yes">0.088</td><td class="yes">0.025</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>Customer_Tenure_Days</td><td class="yes">0.194</td><td class="yes">0.082</td><td class="yes">0.032</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>MntGoldProds</td><td class="yes">0.141</td><td class="yes">0.050</td><td class="yes">0.034</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>Income</td><td class="yes">0.133</td><td class="yes">0.072</td><td class="yes">0.037</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>MntFruits</td><td class="yes">0.126</td><td class="yes">0.039</td><td class="yes">0.020</td><td class="votes">3/3</td></tr>
+          <tr><td class="leak">AcceptedCmp1</td><td class="yes">0.294</td><td class="no">0.033</td><td class="yes">0.024</td><td class="votes">2/3</td></tr>
+          <tr><td class="leak">AcceptedCmp2</td><td class="yes">0.169</td><td class="no">0.008</td><td class="yes">0.022</td><td class="votes">2/3</td></tr>
+          <tr><td>Marital_Status ·cat</td><td class="yes">0.152</td><td class="yes">0.046</td><td class="no">0.011</td><td class="votes">2/3</td></tr>
+        </tbody>
+      </table>
+      <table class="cuttab">
+        <thead><tr><th>Feature</th><th>Biv</th><th>RF</th><th>MI</th><th>Votes</th></tr></thead>
+        <tbody>
+          <tr><td>NumWebPurchases</td><td class="yes">0.148</td><td class="no">0.030</td><td class="yes">0.032</td><td class="votes">2/3</td></tr>
+          <tr><td>MntSweetProducts</td><td class="yes">0.117</td><td class="yes">0.042</td><td class="no">0.017</td><td class="votes">2/3</td></tr>
+          <tr><td>MntFishProducts</td><td class="yes">0.111</td><td class="yes">0.040</td><td class="no">0.006</td><td class="votes">2/3</td></tr>
+          <tr><td>NumStorePurchases</td><td class="no">0.039</td><td class="yes">0.039</td><td class="yes">0.022</td><td class="votes">2/3</td></tr>
+          <tr><td>Age</td><td class="no">0.018</td><td class="yes">0.045</td><td class="yes">0.024</td><td class="votes">2/3</td></tr>
+          <tr><td class="leak">AcceptedCmp4</td><td class="yes">0.177</td><td class="no">0.010</td><td class="no">0.015</td><td class="votes">1/3</td></tr>
+          <tr><td>Teenhome</td><td class="yes">0.155</td><td class="no">0.012</td><td class="no">0.017</td><td class="votes">1/3</td></tr>
+          <tr><td>Education ·cat</td><td class="yes">0.102</td><td class="no">0.031</td><td class="no">0.005</td><td class="votes">1/3</td></tr>
+          <tr><td>Kidhome</td><td class="no">0.080</td><td class="no">0.007</td><td class="no">0.000</td><td class="votes">0/3</td></tr>
+          <tr><td>NumWebVisitsMonth</td><td class="no">0.004</td><td class="no">0.036</td><td class="no">0.014</td><td class="votes">0/3</td></tr>
+          <tr><td>NumDealsPurchases</td><td class="no">0.002</td><td class="no">0.028</td><td class="no">0.003</td><td class="votes">0/3</td></tr>
+          <tr><td>Complain</td><td class="no">0.0002</td><td class="no">0.001</td><td class="no">0.000</td><td class="votes">0/3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- 11 : CLASSIFICATION SUMMARY -->
 <section class="slide" id="s13" data-track="classify" data-title="Classification Summary" style="--accent:var(--red); --accent-soft:var(--red-soft);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">14</span> Classification</div>
+    <div class="eyebrow"><span class="num">18</span> Classification</div>
     <h2 style="margin-bottom:.3rem;">Classification Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,237</div><div class="l">rows</div></div>
@@ -521,10 +684,21 @@ footer.slide-foot{
         </div>
       </div>
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Also consensus, but leakage-adjacent (2)</h3>
-        <p style="font-size:.76rem; margin:0 0 .3rem;"><span class="mono">AcceptedCmp3</span> / <span class="mono">AcceptedCmp5</span> clear all three methods too, same as the core above — but they're the leakage-flagged features from earlier.</p>
-        <p style="font-size:.74rem; color:var(--muted); margin:0;">Whether to include is a deployment-scenario call — does the model genuinely have prior-campaign history at prediction time? — not something an importance score alone settles.</p>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Leakage-adjacent — chosen anyway (4)</h3>
+        <p style="font-size:.72rem; color:var(--muted); margin:0 0 .2rem;">Primary — full 3-way consensus (2):</p>
+        <div class="chips">
+          <span class="chip chip--chosen">AcceptedCmp3</span><span class="chip chip--chosen">AcceptedCmp5</span>
+        </div>
+        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 .2rem;">Secondary — 2/3, same confirmed RF-demotes-<span class="mono">AcceptedCmp*</span> pattern that drops <span class="mono">AcceptedCmp5</span> to 12th under RF (2):</p>
+        <div class="chips">
+          <span class="chip chip--secondary">AcceptedCmp1</span><span class="chip chip--secondary">AcceptedCmp2</span>
+        </div>
+        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">Whether to include any of these four is a deployment-scenario call — does the model genuinely have prior-campaign history at prediction time?</p>
       </div>
+    </div>
+    <div class="callout callout--brass" style="margin-top:.5rem;">
+      <span class="tag">6 more sit at 2/3 — lower score, generally cut</span>
+      <span class="mono">NumStorePurchases</span> / <span class="mono">Age</span> clear RF + MI but miss the bivariate threshold entirely — real non-linear signal a linear check alone misses, but not enough to override on their own. The other 4 (<span class="mono">Marital_Status</span>, <span class="mono">NumWebPurchases</span>, <span class="mono">MntSweetProducts</span>, <span class="mono">MntFishProducts</span>) each miss just one vote — full breakdown on the previous slide.
     </div>
   </div>
 </section>
@@ -540,7 +714,7 @@ footer.slide-foot{
 <!-- 13 : INCOME DISTRIBUTION (regression) -->
 <section class="slide" id="s15b" data-track="regression" data-title="Income Distribution" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">16</span> Regression</div>
+    <div class="eyebrow"><span class="num">20</span> Regression</div>
     <h2 style="margin-bottom:.25rem;">Income Distribution — First Look</h2>
     <p class="lede" style="margin-bottom:.7rem;">Target: <span class="mono">Income</span> — yearly household income, a raw column, no engineering needed. Check the target itself before ranking features: 24 of 2,237 rows have missing <span class="mono">Income</span> and are dropped rather than imputed (imputing the regression target itself would bias it), leaving <span class="mono">n=2,213</span>. What's left is right-skewed with a long tail.</p>
     <div class="stat-row" style="margin-bottom:1rem;">
@@ -560,7 +734,7 @@ footer.slide-foot{
 <!-- 14 : RELEVANCE EXPLANATION (regression) -->
 <section class="slide" id="s16" data-track="regression" data-title="Relevance Score — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">17</span> Regression</div>
+    <div class="eyebrow"><span class="num">21</span> Regression</div>
     <h2 style="margin-bottom:.25rem;">Relevance Score — How It's Computed</h2>
     <p class="lede" style="margin-bottom:.5rem;">Same split-by-feature-type logic as the classification track — but note: the two formulas below are <b>not</b> the same math, just parallel roles.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
@@ -581,10 +755,33 @@ footer.slide-foot{
   </div>
 </section>
 
+<!-- 14b : WHAT IS LEAKAGE (regression) -->
+<section class="slide" id="s16b" data-track="regression" data-title="What Is Leakage?" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">22</span> Regression</div>
+    <h2 style="margin-bottom:.2rem;">What Is Leakage — This Track's Flavor</h2>
+    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Same concept as the classification track (see earlier slide) — a feature entangled with the target rather than genuinely independent — but a different mechanism drives it here.</p>
+    <div class="grid2" style="margin-top:0; gap:1rem;">
+      <div class="card" style="padding:.75rem 1.1rem;">
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Classify's flavor: behavioral proxy</h3>
+        <p style="font-size:.78rem; margin:0;"><span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> leaked through <i>past behavior</i> predicting <i>future behavior</i> — a customer's history of saying yes.</p>
+      </div>
+      <div class="card" style="padding:.75rem 1.1rem;">
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Regression's flavor: circularity risk</h3>
+        <p style="font-size:.78rem; margin:0;">The <span class="mono">Mnt*</span> spend columns correlate with <span class="mono">Income</span> because both plausibly reflect the <i>same</i> underlying economic capacity — not one causing the other, but both downstream of "how much money this household has."</p>
+      </div>
+    </div>
+    <div class="callout callout--brass" style="margin-top:.55rem;">
+      <span class="tag">Real ambiguity, not mechanical circularity</span>
+      Higher income gives more disposable spend — but spend is also just a behavioral variable, not literally derived from <span class="mono">Income</span> the way a mechanically-circular feature would be. Included as candidates and flagged, not excluded outright.
+    </div>
+  </div>
+</section>
+
 <!-- 15 : RELEVANCE RESULT (regression) -->
 <section class="slide" id="s17" data-track="regression" data-title="Relevance Score — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">18</span> Regression</div>
+    <div class="eyebrow"><span class="num">23</span> Regression</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
       <div class="stat"><div class="n">17 / 25</div><div class="l">clear the 0.10 threshold</div></div>
@@ -601,28 +798,61 @@ footer.slide-foot{
 </section>
 
 <!-- 16 : MULTICOLLINEARITY (regression) -->
-<section class="slide" id="s18" data-track="regression" data-title="Multicollinearity + Categorical Redundancy" style="--accent:var(--teal);">
+<section class="slide" id="s18" data-track="regression" data-title="Multicollinearity" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">19</span> Regression</div>
-    <h2>Multicollinearity + Categorical Redundancy</h2>
-    <div class="grid2" style="margin-top:1rem;">
+    <div class="eyebrow"><span class="num">24</span> Regression</div>
+    <h2 style="margin-bottom:.2rem;">Multicollinearity</h2>
+    <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Redundancy <i>among</i> features, independent of relevance to <span class="mono">Income</span> — here <span class="mono">Income</span> itself joins the matrix as its 23rd member, since it's the target rather than a candidate on this track.</p>
+    <div class="grid2" style="grid-template-columns:1.05fr 1fr; gap:1.4rem;">
+      <ul class="ledger-list" style="margin-top:0;">
+        <li><span class="mark tab">0.734</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+        <li><span class="mark tab">0.640</span><span class="mono">MntWines</span> ↔ <span class="mono">NumStorePurchases</span></li>
+        <li><span class="mark tab">0.634</span><span class="mono">MntWines</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
+        <li><span class="mark tab">0.593</span><span class="mono">MntFruits</span> ↔ <span class="mono">MntFishProducts</span></li>
+        <li><span class="mark tab">0.589</span><span class="mono">NumCatalogPurchases</span> ↔ <span class="mono">Income</span></li>
+        <li><span class="mark tab">0.584</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">Income</span></li>
+        <li><span class="mark tab">0.584</span><span class="mono">MntFishProducts</span> ↔ <span class="mono">MntSweetProducts</span></li>
+        <li><span class="mark tab">0.578</span><span class="mono">MntWines</span> ↔ <span class="mono">Income</span></li>
+        <li><span class="mark tab">0.554</span><span class="mono">MntWines</span> ↔ <span class="mono">NumWebPurchases</span></li>
+        <li><span class="mark tab">−0.553</span><span class="mono">NumWebVisitsMonth</span> ↔ <span class="mono">Income</span></li>
+      </ul>
       <div>
-        <h3 style="font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:var(--font-mono);">Top correlated pairs (of 23×23)</h3>
-        <ul class="ledger-list" style="margin-top:.7rem;">
-          <li><span class="mark tab">0.724</span><span class="mono">MntMeatProducts</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
-          <li><span class="mark tab">0.642</span><span class="mono">MntWines</span> ↔ <span class="mono">NumStorePurchases</span></li>
-          <li><span class="mark tab">0.635</span><span class="mono">MntWines</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
-          <li><span class="mark tab">0.589</span><span class="mono">Income</span> ↔ <span class="mono">NumCatalogPurchases</span></li>
-          <li><span class="mark tab">−0.553</span><span class="mono">Income</span> ↔ <span class="mono">NumWebVisitsMonth</span></li>
-        </ul>
-        <p style="margin-top:.9rem; font-size:.88rem;"><span class="mono">Income</span> — the regression target — sits inside the same "affluent high-spender" cluster as the <span class="mono">Mnt*</span> spend and purchase-channel columns: <span class="mono">NumCatalogPurchases</span> (0.589 with <span class="mono">Income</span>) is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not independent economic drivers — one signal, repeated across columns, with circularity risk baked in.</p>
+        <p style="font-size:.85rem;">Top 10 of 253 possible pairs — nearly identical to the classification track's matrix (expected, near-same rows), but with <span class="mono">Income</span> now an explicit member instead of an excluded target.</p>
+        <p style="font-size:.85rem; margin-top:.7rem;">The circularity risk made concrete: <span class="mono">NumCatalogPurchases</span> (0.589 with <span class="mono">Income</span>) is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not three independent economic drivers of <span class="mono">Income</span> — one signal, repeated across columns.</p>
       </div>
-      <div class="card">
-        <h3>Categorical redundancy</h3>
+    </div>
+  </div>
+</section>
+
+<!-- 19b : CATEGORICAL REDUNDANCY (regression) -->
+<section class="slide" id="s18b" data-track="regression" data-title="Categorical Redundancy" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">25</span> Regression</div>
+    <h2 style="margin-bottom:.2rem;">Categorical Redundancy</h2>
+    <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Same overlap check as the classification track, re-run on this track's 2,213-row subset — only one categorical pair exists (<span class="mono">Education</span>, <span class="mono">Marital_Status</span>), so only one score to check.</p>
+    <div class="grid2" style="grid-template-columns:0.85fr 1.15fr; gap:1.4rem;">
+      <div class="card" style="padding:1rem 1.2rem;">
         <p style="font-size:.85rem;">Cramér's V(<span class="mono">Education</span>, <span class="mono">Marital_Status</span>)</p>
-        <div class="n" style="font-family:var(--font-display); font-weight:650; font-size:2.4rem;">0.043</div>
+        <div class="n" style="font-family:var(--font-display); font-weight:650; font-size:2.6rem;">0.043</div>
         <div class="gauge"><div class="gauge-fill" style="width:4.3%;"></div></div>
-        <p style="font-size:.82rem; color:var(--muted); margin-top:.7rem;">Same as the classification track — essentially independent, both categorical features usable together.</p>
+        <p style="font-size:.8rem; color:var(--muted); margin-top:.7rem;">Same as classify — essentially independent, both usable together.</p>
+      </div>
+      <div>
+        <p style="font-size:.76rem; color:var(--muted); margin-bottom:.4rem;">Row counts behind that number (n = 2,213 — the 24 missing-Income rows are gone):</p>
+        <div style="overflow-x:auto;">
+          <table class="xtab">
+            <thead><tr><th></th><th>Single</th><th>Married</th><th>Together</th><th>Divorced</th><th>Widow</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><td>Basic</td><td>18</td><td>20</td><td>14</td><td>1</td><td>1</td><td>54</td></tr>
+              <tr><td>2n Cycle</td><td>35</td><td>80</td><td>56</td><td>22</td><td>5</td><td>198</td></tr>
+              <tr><td>Graduation</td><td>248</td><td>429</td><td>285</td><td>119</td><td>35</td><td>1,116</td></tr>
+              <tr><td>Master</td><td>77</td><td>138</td><td>102</td><td>37</td><td>11</td><td>365</td></tr>
+              <tr><td>PhD</td><td>99</td><td>190</td><td>115</td><td>52</td><td>24</td><td>480</td></tr>
+              <tr><td>Total</td><td>477</td><td>857</td><td>572</td><td>231</td><td>76</td><td>2,213</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:.78rem; color:var(--muted); margin-top:.6rem;">Nearly identical proportions to the classify track's table (only the 24 missing-<span class="mono">Income</span> rows differ) — dropping them didn't skew the <span class="mono">Education</span>/<span class="mono">Marital_Status</span> relationship.</p>
       </div>
     </div>
   </div>
@@ -631,7 +861,7 @@ footer.slide-foot{
 <!-- 17 : RF EXPLANATION (regression) -->
 <section class="slide" id="s19" data-track="regression" data-title="RF — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">20</span> Regression</div>
+    <div class="eyebrow"><span class="num">26</span> Regression</div>
     <h2>Model-Based Importance — Random Forest</h2>
     <div class="card" style="max-width:640px;">
       <p style="font-size:.95rem; margin:0;"><span class="mono">RandomForestRegressor(n_estimators=300, random_state=42)</span> fit on <span class="mono">Income</span>. Same feature-matrix and aggregation method as the classification track's RF pass.</p>
@@ -642,7 +872,7 @@ footer.slide-foot{
 <!-- 18 : RF RESULT (regression) -->
 <section class="slide" id="s20" data-track="regression" data-title="RF — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">21</span> Regression</div>
+    <div class="eyebrow"><span class="num">27</span> Regression</div>
     <h2>RF Importance — Result</h2>
     <p class="chart-caption">Bar length = feature importance — share of total impurity reduction attributed to that feature across all 300 trees. Importances sum to 1.0 across all candidates.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -665,7 +895,7 @@ footer.slide-foot{
 <!-- 19 : MI EXPLANATION (regression) -->
 <section class="slide" id="s21" data-track="regression" data-title="MI — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">22</span> Regression</div>
+    <div class="eyebrow"><span class="num">28</span> Regression</div>
     <h2>Cross-Check — Mutual Information</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -684,7 +914,7 @@ footer.slide-foot{
 <!-- 20 : MI RESULT (regression) -->
 <section class="slide" id="s22" data-track="regression" data-title="MI — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">23</span> Regression</div>
+    <div class="eyebrow"><span class="num">29</span> Regression</div>
     <h2>Mutual Information — Result</h2>
     <p class="chart-caption">Bar length = MI score (nats) — how much knowing this feature reduces uncertainty about <span class="mono">Income</span>. No fixed upper bound, so compare rank and relative gaps, not raw magnitude.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -704,10 +934,62 @@ footer.slide-foot{
   </div>
 </section>
 
+<!-- 20b : FEATURE SELECTION — REGRESSION CUT -->
+<section class="slide" id="s22c" data-track="regression" data-title="Feature Selection — Regression Cut" style="--accent:var(--teal);">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">30</span> Regression</div>
+    <h2 style="margin-bottom:.2rem;">Feature Selection — The Cut</h2>
+    <p class="lede" style="font-size:.8rem; margin-bottom:.5rem;">Same rule as the classification track — see earlier slide — applied here to all 25 candidates, <span class="mono">Response</span> included.</p>
+    <div class="stat-row" style="margin:0 0 .55rem;">
+      <div class="stat"><div class="n">8</div><div class="l">at 3/3 — chosen</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">at 2/3 — lower score</div></div>
+      <div class="stat"><div class="n">12</div><div class="l">at ≤1/3 — cut</div></div>
+    </div>
+    <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature (color on name)</div>
+    <div class="grid2" style="margin-top:.4rem; gap:1.2rem;">
+      <table class="cuttab">
+        <thead><tr><th>Feature</th><th>Biv</th><th>RF</th><th>MI</th><th>Votes</th></tr></thead>
+        <tbody>
+          <tr class="v3"><td>NumCatalogPurchases</td><td class="yes">0.589</td><td class="yes">0.030</td><td class="yes">0.573</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td class="leak">MntMeatProducts</td><td class="yes">0.584</td><td class="yes">0.145</td><td class="yes">0.719</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td class="leak">MntWines</td><td class="yes">0.578</td><td class="yes">0.446</td><td class="yes">0.681</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>NumWebVisitsMonth</td><td class="yes">−0.553</td><td class="yes">0.079</td><td class="yes">0.399</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td class="leak">MntSweetProducts</td><td class="yes">0.441</td><td class="yes">0.026</td><td class="yes">0.424</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td class="leak">MntFruits</td><td class="yes">0.430</td><td class="yes">0.075</td><td class="yes">0.453</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td>NumWebPurchases</td><td class="yes">0.388</td><td class="yes">0.014</td><td class="yes">0.349</td><td class="votes">3/3</td></tr>
+          <tr class="v3"><td class="leak">MntGoldProds</td><td class="yes">0.325</td><td class="yes">0.018</td><td class="yes">0.270</td><td class="votes">3/3</td></tr>
+          <tr><td>NumStorePurchases</td><td class="yes">0.530</td><td class="no">0.008</td><td class="yes">0.550</td><td class="votes">2/3</td></tr>
+          <tr><td class="leak">MntFishProducts</td><td class="yes">0.439</td><td class="no">0.012</td><td class="yes">0.408</td><td class="votes">2/3</td></tr>
+          <tr><td>Kidhome</td><td class="yes">−0.428</td><td class="no">0.004</td><td class="yes">0.217</td><td class="votes">2/3</td></tr>
+          <tr><td>Age</td><td class="yes">0.163</td><td class="yes">0.015</td><td class="no">0.130</td><td class="votes">2/3</td></tr>
+          <tr><td>NumDealsPurchases</td><td class="no">−0.083</td><td class="yes">0.059</td><td class="yes">0.254</td><td class="votes">2/3</td></tr>
+        </tbody>
+      </table>
+      <table class="cuttab">
+        <thead><tr><th>Feature</th><th>Biv</th><th>RF</th><th>MI</th><th>Votes</th></tr></thead>
+        <tbody>
+          <tr><td class="leak">AcceptedCmp5</td><td class="yes">0.335</td><td class="no">0.009</td><td class="no">0.121</td><td class="votes">1/3</td></tr>
+          <tr><td class="leak">AcceptedCmp1</td><td class="yes">0.277</td><td class="no">0.001</td><td class="no">0.074</td><td class="votes">1/3</td></tr>
+          <tr><td>Education ·cat</td><td class="yes">0.218</td><td class="no">0.004</td><td class="no">0.128</td><td class="votes">1/3</td></tr>
+          <tr><td class="leak">AcceptedCmp4</td><td class="yes">0.185</td><td class="no">0.0003</td><td class="no">0.037</td><td class="votes">1/3</td></tr>
+          <tr><td>Response</td><td class="yes">0.133</td><td class="no">0.0005</td><td class="no">0.038</td><td class="votes">1/3</td></tr>
+          <tr><td>Customer_Tenure_Days</td><td class="no">0.018</td><td class="yes">0.014</td><td class="no">0.105</td><td class="votes">1/3</td></tr>
+          <tr><td>Recency</td><td class="no">0.003</td><td class="yes">0.024</td><td class="no">0.100</td><td class="votes">1/3</td></tr>
+          <tr><td class="leak">AcceptedCmp2</td><td class="no">0.088</td><td class="no">0.0001</td><td class="no">0.010</td><td class="votes">0/3</td></tr>
+          <tr><td>Marital_Status ·cat</td><td class="no">0.046</td><td class="no">0.007</td><td class="no">0.073</td><td class="votes">0/3</td></tr>
+          <tr><td>Complain</td><td class="no">0.025</td><td class="no">0.00007</td><td class="no">0.004</td><td class="votes">0/3</td></tr>
+          <tr><td>Teenhome</td><td class="no">0.019</td><td class="no">0.008</td><td class="no">0.176</td><td class="votes">0/3</td></tr>
+          <tr><td class="leak">AcceptedCmp3</td><td class="no">0.016</td><td class="no">0.001</td><td class="no">0.020</td><td class="votes">0/3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- 21 : REGRESSION SUMMARY -->
 <section class="slide" id="s23" data-track="regression" data-title="Regression Summary" style="--accent:var(--teal); --accent-soft:var(--teal-soft);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">24</span> Regression</div>
+    <div class="eyebrow"><span class="num">31</span> Regression</div>
     <h2 style="margin-bottom:.3rem;">Regression Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,213</div><div class="l">rows</div></div>
@@ -715,12 +997,16 @@ footer.slide-foot{
     </div>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — non-leakage set (5)</h3>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .35rem;">3 clear all three methods outright; 2 more (<span class="mono">NumStorePurchases</span>, <span class="mono">Kidhome</span>) clear bivariate + MI strongly but miss RF's top-12 — the same greedy-splitting effect that demoted <span class="mono">NumCatalogPurchases</span> to 6th under RF, not evidence they're weak:</p>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — non-leakage (6)</h3>
+        <p style="font-size:.72rem; color:var(--muted); margin:0 0 .2rem;">Primary — full 3-way consensus (3):</p>
         <div class="chips">
-          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">NumStorePurchases</span><span class="chip chip--chosen">Kidhome</span>
+          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span>
         </div>
-        <p style="font-size:.74rem; color:var(--muted); margin:.4rem 0 0;">5 of the 6 <span class="mono">Mnt*</span> spend columns are full 3-way consensus too, but circularity-flagged: spend scales with income almost by construction. <span class="mono">Response</span> (0.133 bivariate) was also tested as a candidate — RF/MI both demote it near-bottom, so it's excluded.</p>
+        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 .2rem;">Secondary — 2/3, but same confirmed RF greedy-splitting miss that demoted <span class="mono">NumCatalogPurchases</span> to 6th (3):</p>
+        <div class="chips">
+          <span class="chip chip--secondary">NumStorePurchases</span><span class="chip chip--secondary">Kidhome</span><span class="chip chip--secondary">MntFishProducts ·leak</span>
+        </div>
+        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">5 of 6 <span class="mono">Mnt*</span> columns hit full consensus too, circularity-flagged. Cut: <span class="mono">Age</span>/<span class="mono">NumDealsPurchases</span> (different failure modes, no established override) and <span class="mono">Response</span> (0.133 bivariate, but RF/MI both demote it near-bottom).</p>
       </div>
       <div>
         <div class="leaderboard">
@@ -740,7 +1026,7 @@ footer.slide-foot{
 <!-- 22 : OVERALL RECAP (both tracks) -->
 <section class="slide" id="s24" data-track="neutral" data-title="Recap — Both Tracks">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">25</span> Recap</div>
+    <div class="eyebrow"><span class="num">32</span> Recap</div>
     <h2 style="margin-bottom:.3rem;">Recap — Both Tracks</h2>
     <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">One dataset, two supervised problems — same three-method process (bivariate → RF → MI), applied independently to each target. Only <b>2,240 rows</b> total — the smallest of the three datasets explored in this project.</p>
     <div class="grid2" style="margin-top:0;">
