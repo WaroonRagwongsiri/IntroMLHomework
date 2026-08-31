@@ -215,7 +215,7 @@ footer.slide-foot{
 }
 </style>
 
-<div class="hud" id="hud"><span class="n">01</span><span>/ 31</span><span id="hud-title" style="margin-left:.4em;"></span></div>
+<div class="hud" id="hud"><span class="n">01</span><span>/ 32</span><span id="hud-title" style="margin-left:.4em;"></span></div>
 <nav class="rail" id="rail" aria-label="Slide navigation"></nav>
 
 <!-- 1 : INTRO (placeholder) -->
@@ -227,10 +227,33 @@ footer.slide-foot{
   </div>
 </section>
 
+<!-- 1b : WHY THIS ANALYSIS -->
+<section class="slide" id="s1b" data-track="neutral" data-title="Why This Analysis?">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="num">02</span> Foundation</div>
+    <h2 style="margin-bottom:.2rem;">Why This Analysis?</h2>
+    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Two supervised targets, two different business decisions — both solved from data the company already collects.</p>
+    <div class="grid2" style="margin-top:0; gap:1rem;">
+      <div class="card" style="padding:.75rem 1.1rem;">
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;"><span class="mono">Response</span> — who to target</h3>
+        <p style="font-size:.78rem; margin:0;">Only <b>14.9%</b> of customers respond to a campaign — most marketing spend reaches people who were never going to say yes. Predicting <span class="mono">Response</span> lets the company rank customers by likelihood to respond and concentrate spend where it actually converts, instead of mailing everyone equally.</p>
+      </div>
+      <div class="card" style="padding:.75rem 1.1rem;">
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;"><span class="mono">Income</span> — how much they're worth</h3>
+        <p style="font-size:.78rem; margin:0;"><span class="mono">Income</span> is sensitive and often missing (1.1% here, far more in the wild) — customers rarely volunteer it. But spend and purchase-channel behavior the company already tracks predicts it well enough to estimate income tier without ever asking directly.</p>
+      </div>
+    </div>
+    <div class="callout callout--brass" style="margin-top:.55rem;">
+      <span class="tag">The pitch</span>
+      One customer database, two decisions solved — <b>who to target</b> and <b>how much they're worth</b> — without collecting a single new data point.
+    </div>
+  </div>
+</section>
+
 <!-- 2 : DATASET OVERVIEW -->
 <section class="slide" id="s2" data-track="neutral" data-title="Dataset Overview">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">02</span> Foundation</div>
+    <div class="eyebrow"><span class="num">03</span> Foundation</div>
     <h2>Dataset Overview</h2>
     <p class="lede" style="margin-top:.4rem;">Retail / direct-marketing customer records — demographics, purchase history and spend by category, and campaign-response flags for one company's customer base. Kaggle's own framing is a <b>clustering / segmentation</b> exercise ("analyze a company's ideal customers"); this project repurposes the same raw file for supervised <b>classification</b> and <b>regression</b> instead.</p>
     <div class="stat-row" style="margin-top:1rem;">
@@ -252,7 +275,7 @@ footer.slide-foot{
 <!-- 3 : DATASET OVERVIEW — ALL COLUMNS -->
 <section class="slide" id="s3" data-track="neutral" data-title="Dataset Overview — Columns" style="--accent:var(--ink);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">03</span> Foundation</div>
+    <div class="eyebrow"><span class="num">04</span> Foundation</div>
     <h2 style="margin-bottom:.2rem;">Every Column, Grouped &amp; Explained</h2>
     <p class="lede" style="margin-bottom:.25rem;">29 raw columns, grouped exactly as the dataset's own documentation groups them — People, Products, Promotion, Place — plus two dropped outright.</p>
     <div class="grid2" style="margin-top:.35rem; grid-template-columns:1.15fr 1fr;">
@@ -304,7 +327,7 @@ footer.slide-foot{
 <!-- 4 : DATA CLEANING -->
 <section class="slide" id="s4" data-track="neutral" data-title="Data Cleaning">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">04</span> Foundation</div>
+    <div class="eyebrow"><span class="num">05</span> Foundation</div>
     <h2 style="margin-bottom:.4rem;">Cleaning Applied</h2>
     <p class="lede" style="margin-bottom:1rem;">Five changes, applied to both tracks before any analysis — none of them touch <span class="mono">Response</span> or <span class="mono">Income</span> directly.</p>
     <ul class="ledger-list">
@@ -344,7 +367,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 5 : CLASS DISTRIBUTION (classify) -->
 <section class="slide" id="s5b" data-track="classify" data-title="Class Distribution" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">06</span> Classification</div>
+    <div class="eyebrow"><span class="num">07</span> Classification</div>
     <h2 style="margin-bottom:.25rem;">Class Distribution — First Look</h2>
     <p class="lede" style="margin-bottom:.7rem;">Before ranking features, check the target itself. <span class="mono">Response</span> is meaningfully imbalanced — the first thing that shapes every downstream choice: split strategy, class weighting, and which metrics can be trusted.</p>
     <div class="stat-row" style="margin-bottom:1rem;">
@@ -363,7 +386,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 4 : RELEVANCE EXPLANATION (classify) -->
 <section class="slide" id="s6" data-track="classify" data-title="Relevance Score — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">07</span> Classification</div>
+    <div class="eyebrow"><span class="num">08</span> Classification</div>
     <h2 style="margin-bottom:.25rem;">Relevance Score — How It's Computed</h2>
     <p class="lede" style="margin-bottom:.5rem;">Two methods, split by feature type — both scored against <span class="mono">Response</span> (0/1), both judged against the same 0.10 threshold so the results sit on one ranked chart.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
@@ -387,7 +410,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 5 : RELEVANCE RESULT (classify) -->
 <section class="slide" id="s7" data-track="classify" data-title="Relevance Score — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">08</span> Classification</div>
+    <div class="eyebrow"><span class="num">09</span> Classification</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
       <div class="stat"><div class="n">19 / 25</div><div class="l">clear the 0.10 threshold</div></div>
@@ -405,7 +428,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 6 : MULTICOLLINEARITY (classify) -->
 <section class="slide" id="s8" data-track="classify" data-title="Multicollinearity" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">09</span> Classification</div>
+    <div class="eyebrow"><span class="num">10</span> Classification</div>
     <h2 style="margin-bottom:.2rem;">Multicollinearity</h2>
     <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Redundancy <i>among</i> the 23 numeric candidates, independent of their relevance to <span class="mono">Response</span> — do any of them just repeat information another one already carries?</p>
     <div class="grid2" style="grid-template-columns:1.05fr 1fr; gap:1.4rem;">
@@ -432,7 +455,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 8b : CATEGORICAL REDUNDANCY (classify) -->
 <section class="slide" id="s8b" data-track="classify" data-title="Categorical Redundancy" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">10</span> Classification</div>
+    <div class="eyebrow"><span class="num">11</span> Classification</div>
     <h2 style="margin-bottom:.2rem;">Categorical Redundancy</h2>
     <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Same overlap check as Multicollinearity, but for the two categorical columns — <span class="mono">Education</span> and <span class="mono">Marital_Status</span> are the only two treated as categorical in this analysis, so there's exactly one pair to check.</p>
     <div class="grid2" style="grid-template-columns:0.85fr 1.15fr; gap:1.4rem;">
@@ -466,7 +489,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 7 : RF EXPLANATION (classify) -->
 <section class="slide" id="s9" data-track="classify" data-title="RF — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">11</span> Classification</div>
+    <div class="eyebrow"><span class="num">12</span> Classification</div>
     <h2>Model-Based Importance — Random Forest</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -484,7 +507,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 8 : RF RESULT (classify) -->
 <section class="slide" id="s10" data-track="classify" data-title="RF — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">12</span> Classification</div>
+    <div class="eyebrow"><span class="num">13</span> Classification</div>
     <h2>RF Importance — Result</h2>
     <p class="chart-caption">Bar length = feature importance — share of total impurity reduction attributed to that feature across all 300 trees. Importances sum to 1.0 across all candidates, so bars are directly comparable to each other (not to the relevance chart's scale).</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -506,7 +529,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 9 : MI EXPLANATION (classify) -->
 <section class="slide" id="s11" data-track="classify" data-title="MI — Explanation" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">13</span> Classification</div>
+    <div class="eyebrow"><span class="num">14</span> Classification</div>
     <h2>Cross-Check — Mutual Information</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -525,7 +548,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 10 : MI RESULT (classify) -->
 <section class="slide" id="s12" data-track="classify" data-title="MI — Result" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">14</span> Classification</div>
+    <div class="eyebrow"><span class="num">15</span> Classification</div>
     <h2>Mutual Information — Result</h2>
     <p class="chart-caption">Bar length = MI score (nats) — how much knowing this feature reduces uncertainty about <span class="mono">Response</span>. No fixed upper bound, so compare rank and relative gaps across methods, not raw magnitude.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -549,7 +572,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 10b : FEATURE SELECTION — THE CUTTING RULE (shared) -->
 <section class="slide" id="s12c" data-track="neutral" data-title="Feature Selection — The Cutting Rule">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">15</span> Foundation</div>
+    <div class="eyebrow"><span class="num">16</span> Foundation</div>
     <h2 style="margin-bottom:.2rem;">Feature Selection — The Cutting Rule</h2>
     <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Three methods, three different scales — how bivariate relevance, RF importance, and MI collapse into one keep/cut decision. Same rule, applied independently on both tracks.</p>
     <div class="card" style="padding:.7rem 1.1rem; margin-bottom:.6rem;">
@@ -585,7 +608,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 10c : FEATURE SELECTION — CLASSIFICATION CUT -->
 <section class="slide" id="s12d" data-track="classify" data-title="Feature Selection — Classification Cut" style="--accent:var(--red);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">16</span> Classification</div>
+    <div class="eyebrow"><span class="num">17</span> Classification</div>
     <h2 style="margin-bottom:.2rem;">Feature Selection — The Cut</h2>
     <div class="stat-row" style="margin:.5rem 0 .55rem;">
       <div class="stat"><div class="n">10</div><div class="l">at 3/3 — chosen</div></div>
@@ -635,7 +658,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 11 : CLASSIFICATION SUMMARY -->
 <section class="slide" id="s13" data-track="classify" data-title="Classification Summary" style="--accent:var(--red); --accent-soft:var(--red-soft);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">17</span> Classification</div>
+    <div class="eyebrow"><span class="num">18</span> Classification</div>
     <h2 style="margin-bottom:.3rem;">Classification Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,237</div><div class="l">rows</div></div>
@@ -673,7 +696,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 13 : INCOME DISTRIBUTION (regression) -->
 <section class="slide" id="s15b" data-track="regression" data-title="Income Distribution" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">19</span> Regression</div>
+    <div class="eyebrow"><span class="num">20</span> Regression</div>
     <h2 style="margin-bottom:.25rem;">Income Distribution — First Look</h2>
     <p class="lede" style="margin-bottom:.7rem;">Target: <span class="mono">Income</span> — yearly household income, a raw column, no engineering needed. Check the target itself before ranking features: 24 of 2,237 rows have missing <span class="mono">Income</span> and are dropped rather than imputed (imputing the regression target itself would bias it), leaving <span class="mono">n=2,213</span>. What's left is right-skewed with a long tail.</p>
     <div class="stat-row" style="margin-bottom:1rem;">
@@ -693,7 +716,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 14 : RELEVANCE EXPLANATION (regression) -->
 <section class="slide" id="s16" data-track="regression" data-title="Relevance Score — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">20</span> Regression</div>
+    <div class="eyebrow"><span class="num">21</span> Regression</div>
     <h2 style="margin-bottom:.25rem;">Relevance Score — How It's Computed</h2>
     <p class="lede" style="margin-bottom:.5rem;">Same split-by-feature-type logic as the classification track — but note: the two formulas below are <b>not</b> the same math, just parallel roles.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
@@ -717,7 +740,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 15 : RELEVANCE RESULT (regression) -->
 <section class="slide" id="s17" data-track="regression" data-title="Relevance Score — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">21</span> Regression</div>
+    <div class="eyebrow"><span class="num">22</span> Regression</div>
     <h2>Relevance Score — Result</h2>
     <div class="stat-row" style="margin:.6rem 0 1rem;">
       <div class="stat"><div class="n">17 / 25</div><div class="l">clear the 0.10 threshold</div></div>
@@ -735,7 +758,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 16 : MULTICOLLINEARITY (regression) -->
 <section class="slide" id="s18" data-track="regression" data-title="Multicollinearity" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">22</span> Regression</div>
+    <div class="eyebrow"><span class="num">23</span> Regression</div>
     <h2 style="margin-bottom:.2rem;">Multicollinearity</h2>
     <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Redundancy <i>among</i> features, independent of relevance to <span class="mono">Income</span> — here <span class="mono">Income</span> itself joins the matrix as its 23rd member, since it's the target rather than a candidate on this track.</p>
     <div class="grid2" style="grid-template-columns:1.05fr 1fr; gap:1.4rem;">
@@ -762,7 +785,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 19b : CATEGORICAL REDUNDANCY (regression) -->
 <section class="slide" id="s18b" data-track="regression" data-title="Categorical Redundancy" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">23</span> Regression</div>
+    <div class="eyebrow"><span class="num">24</span> Regression</div>
     <h2 style="margin-bottom:.2rem;">Categorical Redundancy</h2>
     <p class="lede" style="font-size:.88rem; margin-bottom:.7rem;">Same overlap check as the classification track, re-run on this track's 2,213-row subset — only one categorical pair exists (<span class="mono">Education</span>, <span class="mono">Marital_Status</span>), so only one score to check.</p>
     <div class="grid2" style="grid-template-columns:0.85fr 1.15fr; gap:1.4rem;">
@@ -796,7 +819,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 17 : RF EXPLANATION (regression) -->
 <section class="slide" id="s19" data-track="regression" data-title="RF — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">24</span> Regression</div>
+    <div class="eyebrow"><span class="num">25</span> Regression</div>
     <h2>Model-Based Importance — Random Forest</h2>
     <div class="card" style="max-width:640px;">
       <p style="font-size:.95rem; margin:0;"><span class="mono">RandomForestRegressor(n_estimators=300, random_state=42)</span> fit on <span class="mono">Income</span>. Same feature-matrix and aggregation method as the classification track's RF pass.</p>
@@ -807,7 +830,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 18 : RF RESULT (regression) -->
 <section class="slide" id="s20" data-track="regression" data-title="RF — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">25</span> Regression</div>
+    <div class="eyebrow"><span class="num">26</span> Regression</div>
     <h2>RF Importance — Result</h2>
     <p class="chart-caption">Bar length = feature importance — share of total impurity reduction attributed to that feature across all 300 trees. Importances sum to 1.0 across all candidates.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -829,7 +852,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 19 : MI EXPLANATION (regression) -->
 <section class="slide" id="s21" data-track="regression" data-title="MI — Explanation" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">26</span> Regression</div>
+    <div class="eyebrow"><span class="num">27</span> Regression</div>
     <h2>Cross-Check — Mutual Information</h2>
     <div class="grid2" style="margin-top:1.2rem;">
       <div class="card">
@@ -848,7 +871,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 20 : MI RESULT (regression) -->
 <section class="slide" id="s22" data-track="regression" data-title="MI — Result" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">27</span> Regression</div>
+    <div class="eyebrow"><span class="num">28</span> Regression</div>
     <h2>Mutual Information — Result</h2>
     <p class="chart-caption">Bar length = MI score (nats) — how much knowing this feature reduces uncertainty about <span class="mono">Income</span>. No fixed upper bound, so compare rank and relative gaps, not raw magnitude.</p>
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
@@ -870,7 +893,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 20b : FEATURE SELECTION — REGRESSION CUT -->
 <section class="slide" id="s22c" data-track="regression" data-title="Feature Selection — Regression Cut" style="--accent:var(--teal);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">28</span> Regression</div>
+    <div class="eyebrow"><span class="num">29</span> Regression</div>
     <h2 style="margin-bottom:.2rem;">Feature Selection — The Cut</h2>
     <p class="lede" style="font-size:.8rem; margin-bottom:.5rem;">Same rule as the classification track — see earlier slide — applied here to all 25 candidates, <span class="mono">Response</span> included.</p>
     <div class="stat-row" style="margin:0 0 .55rem;">
@@ -921,7 +944,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 21 : REGRESSION SUMMARY -->
 <section class="slide" id="s23" data-track="regression" data-title="Regression Summary" style="--accent:var(--teal); --accent-soft:var(--teal-soft);">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">29</span> Regression</div>
+    <div class="eyebrow"><span class="num">30</span> Regression</div>
     <h2 style="margin-bottom:.3rem;">Regression Summary</h2>
     <div class="stat-row" style="margin:.7rem 0;">
       <div class="stat"><div class="n">2,213</div><div class="l">rows</div></div>
@@ -955,7 +978,7 @@ Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>
 <!-- 22 : OVERALL RECAP (both tracks) -->
 <section class="slide" id="s24" data-track="neutral" data-title="Recap — Both Tracks">
   <div class="slide-inner">
-    <div class="eyebrow"><span class="num">30</span> Recap</div>
+    <div class="eyebrow"><span class="num">31</span> Recap</div>
     <h2 style="margin-bottom:.3rem;">Recap — Both Tracks</h2>
     <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">One dataset, two supervised problems — same three-method process (bivariate → RF → MI), applied independently to each target. Only <b>2,240 rows</b> total — the smallest of the three datasets explored in this project.</p>
     <div class="grid2" style="margin-top:0;">
