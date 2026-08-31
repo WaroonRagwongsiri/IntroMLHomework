@@ -389,25 +389,25 @@ footer.slide-foot{
   </div>
 </section>
 
-<!-- 4b : WHAT IS LEAKAGE (classify) -->
-<section class="slide" id="s6b" data-track="classify" data-title="What Is Leakage?" style="--accent:var(--red);">
+<!-- 4b : NOT ACTUALLY LEAKAGE (classify) -->
+<section class="slide" id="s6b" data-track="classify" data-title="Not Actually Leakage — Here's Why" style="--accent:var(--red);">
   <div class="slide-inner">
     <div class="eyebrow"><span class="num">08</span> Classification</div>
-    <h2 style="margin-bottom:.2rem;">What Is Leakage — And Why Flag It?</h2>
-    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Before the chart on the next slide shows some bars colored differently — what that color means, and which columns earned it here.</p>
+    <h2 style="margin-bottom:.2rem;">Not Actually Leakage — Here's Why</h2>
+    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Before the chart on the next slide shows some bars colored differently — what that color means, and why it isn't the "L word" it might look like.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
       <div class="card" style="padding:.75rem 1.1rem;">
-        <h3 style="font-size:.88rem; margin-bottom:.2rem;">What "leakage" means</h3>
-        <p style="font-size:.78rem; margin:0;">A feature that scores as highly predictive not because it reflects a genuine, independently-useful signal, but because it's entangled with the target — through timing, definition overlap, or a strong behavioral proxy that might not actually be available when you'd need to make the prediction for real.</p>
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">What leakage actually means</h3>
+        <p style="font-size:.78rem; margin:0;">A feature that would <i>not actually be available at prediction time</i> — information from the future, or a feature mathematically/causally derived from the target itself (e.g. a target-encoded column, or using tomorrow's known outcome to predict today).</p>
       </div>
       <div class="card" style="padding:.75rem 1.1rem;">
-        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Why <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> specifically</h3>
-        <p style="font-size:.78rem; margin:0;">Each flags whether the customer accepted one of the <i>five earlier</i> campaigns. A customer who already said yes once is a fundamentally more receptive, campaign-responsive person — the same kind of customer likely to say yes to <i>this</i> campaign (<span class="mono">Response</span>) too.</p>
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Why <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> don't qualify</h3>
+        <p style="font-size:.78rem; margin:0;">Each flags whether the customer accepted one of the <i>five earlier</i> campaigns — <span class="mono">Response</span>'s campaign always comes after them. In the deployment scenario this model is for (deciding whether to send an <i>existing</i> customer the newest campaign), that history is always available before the prediction is needed. Legitimate, temporally-valid historical-behavior signal.</p>
       </div>
     </div>
     <div class="callout callout--brass" style="margin-top:.55rem;">
-      <span class="tag">Not the same as true circularity</span>
-      This isn't a feature mathematically derived from <span class="mono">Response</span> (unlike, e.g., a target-encoded column would be) — it's a real, measurable behavioral correlation: Response rate given <i>any</i> prior campaign acceptance is <b>40.7%</b> (n=462) vs. <b>8.2%</b> given none (n=1,775), a 5× gap. Strong enough to flag and watch, not strong enough to call mechanical — "leakage-adjacent," not "leakage."
+      <span class="tag">Strong historical predictor, not leakage</span>
+      A customer who already said yes once is a genuinely more receptive, campaign-responsive person — a real behavioral trait, not a target-derived artifact: Response rate given <i>any</i> prior campaign acceptance is <b>40.7%</b> (n=462) vs. <b>8.2%</b> given none (n=1,775), a 5× gap. The one caveat worth keeping: a brand-new prospect with no campaign history wouldn't have this feature populated — a <b>feature-availability / cold-start</b> issue, not leakage.
     </div>
   </div>
 </section>
@@ -423,10 +423,10 @@ footer.slide-foot{
     </div>
     <p class="chart-caption">Bar length = |score| — point-biserial correlation for numeric features, Cramér's V for categorical (marked <span class="mono">·cat</span>). Dashed line marks the 0.10 relevance threshold.</p>
     <div class="chart-cols" id="chart5"></div>
-    <div class="chart-legend"><span class="dot"></span> leakage-adjacent feature (<span class="mono">AcceptedCmp1</span>–<span class="mono">5</span>)</div>
+    <div class="chart-legend"><span class="dot"></span> strong historical predictor (<span class="mono">AcceptedCmp1</span>–<span class="mono">5</span>)</div>
     <div class="callout callout--brass">
-      <span class="tag">Leakage note</span>
-      <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> dominate the top of the ranking. Response rate given <i>any</i> prior campaign acceptance is <b>40.7%</b> (n=462) vs. <b>8.2%</b> given none (n=1,775) — a 5× gap. Flagged as leakage-adjacent, not dropped.
+      <span class="tag">Prior-campaign signal, not leakage</span>
+      <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> dominate the top of the ranking. Response rate given <i>any</i> prior campaign acceptance is <b>40.7%</b> (n=462) vs. <b>8.2%</b> given none (n=1,775) — a 5× gap. Flagged for visibility because it dominates the ranking, not because it's leakage.
     </div>
   </div>
 </section>
@@ -519,7 +519,7 @@ footer.slide-foot{
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
       <div class="barchart" id="chart8"></div>
       <div>
-        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature</div>
+        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> strong historical predictor</div>
         <div class="leaderboard" style="margin-top:.6rem;">
           <div class="rank-tile"><div class="method">Bivariate</div><div class="pos">#1</div><div class="val tab">0.328</div></div>
           <div class="rank-tile"><div class="method">Random Forest</div><div class="pos">#12</div><div class="val tab">0.040</div></div>
@@ -561,7 +561,7 @@ footer.slide-foot{
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
       <div class="barchart" id="chart10"></div>
       <div>
-        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature</div>
+        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> strong historical predictor</div>
         <h3 style="font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-family:var(--font-mono); margin-top:.6rem;"><span class="mono">AcceptedCmp5</span> across methods</h3>
         <div class="leaderboard" style="margin-top:.6rem;">
           <div class="rank-tile"><div class="method">Bivariate</div><div class="pos">#1</div><div class="val tab">0.328</div></div>
@@ -570,7 +570,7 @@ footer.slide-foot{
         </div>
         <div class="callout callout--brass">
           <span class="tag">Genuine 3-way disagreement</span>
-          MI puts the leakage-adjacent feature back near the top, contradicting RF's demotion but partly matching the bivariate ranking. No single method is the final word — <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> inclusion is a deployment-scenario decision.
+          MI puts this strong historical predictor back near the top, contradicting RF's demotion but partly matching the bivariate ranking. No single method is the final word — <span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> inclusion is a straightforward keep given they're not leakage, just worth watching for cold-start availability.
         </div>
       </div>
     </div>
@@ -599,7 +599,7 @@ footer.slide-foot{
       <div class="card" style="padding:.7rem 1.1rem;">
         <h3 style="font-size:.88rem;">Tiered by vote count</h3>
         <ul class="ledger-list" style="margin-top:.5rem;">
-          <li><span class="mark">3/3</span> full consensus → chosen, no caveat (unless leakage-flagged)</li>
+          <li><span class="mark">3/3</span> full consensus → chosen, no caveat (unless separately flagged for availability/multicollinearity)</li>
           <li><span class="mark">2/3</span> lower-confidence signal → generally cut, kept only with a specific named reason</li>
           <li><span class="mark">≤1/3</span> → cut</li>
         </ul>
@@ -622,7 +622,7 @@ footer.slide-foot{
       <div class="stat"><div class="n">8</div><div class="l">at 2/3 — lower score</div></div>
       <div class="stat"><div class="n">7</div><div class="l">at ≤1/3 — cut</div></div>
     </div>
-    <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature (color on name)</div>
+    <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> strong historical predictor (color on name)</div>
     <div class="grid2" style="margin-top:.4rem; gap:1.2rem;">
       <table class="cuttab">
         <thead><tr><th>Feature</th><th>Biv</th><th>RF</th><th>MI</th><th>Votes</th></tr></thead>
@@ -673,7 +673,7 @@ footer.slide-foot{
       <div class="stat"><div class="n">14.9% / 85.1%</div><div class="l">Response class balance</div></div>
       <div class="stat"><div class="n">19 / 25</div><div class="l">clear relevance threshold</div></div>
     </div>
-    <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">Strongest bivariate signal of any dataset explored — but bivariate, RF, and MI genuinely disagree on how much weight leakage-adjacent features deserve. Feature selection below is the honest synthesis, not a single method's word.</p>
+    <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">Strongest bivariate signal of any dataset explored — but bivariate, RF, and MI genuinely disagree on how much weight the prior-campaign features deserve. Feature selection below is the honest synthesis, not a single method's word.</p>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.65rem 1.1rem;">
         <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — consensus core (8)</h3>
@@ -684,7 +684,7 @@ footer.slide-foot{
         </div>
       </div>
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Leakage-adjacent — chosen anyway (4)</h3>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Strong historical predictors — chosen anyway (4)</h3>
         <p style="font-size:.72rem; color:var(--muted); margin:0 0 .2rem;">Primary — full 3-way consensus (2):</p>
         <div class="chips">
           <span class="chip chip--chosen">AcceptedCmp3</span><span class="chip chip--chosen">AcceptedCmp5</span>
@@ -693,7 +693,7 @@ footer.slide-foot{
         <div class="chips">
           <span class="chip chip--secondary">AcceptedCmp1</span><span class="chip chip--secondary">AcceptedCmp2</span>
         </div>
-        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">Whether to include any of these four is a deployment-scenario call — does the model genuinely have prior-campaign history at prediction time?</p>
+        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">Not leakage — a legitimate behavioral trait. The only real caveat: a brand-new prospect with no campaign history wouldn't have this feature populated, a cold-start/feature-availability issue to check for at deployment, not a reason to distrust the signal.</p>
       </div>
     </div>
     <div class="callout callout--brass" style="margin-top:.5rem;">
@@ -755,25 +755,25 @@ footer.slide-foot{
   </div>
 </section>
 
-<!-- 14b : WHAT IS LEAKAGE (regression) -->
-<section class="slide" id="s16b" data-track="regression" data-title="What Is Leakage?" style="--accent:var(--teal);">
+<!-- 14b : NOT ACTUALLY LEAKAGE (regression) -->
+<section class="slide" id="s16b" data-track="regression" data-title="Not Actually Leakage — Here's Why" style="--accent:var(--teal);">
   <div class="slide-inner">
     <div class="eyebrow"><span class="num">22</span> Regression</div>
-    <h2 style="margin-bottom:.2rem;">What Is Leakage — This Track's Flavor</h2>
-    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Same concept as the classification track (see earlier slide) — a feature entangled with the target rather than genuinely independent — but a different mechanism drives it here.</p>
+    <h2 style="margin-bottom:.2rem;">Not Actually Leakage — This Track's Flavor</h2>
+    <p class="lede" style="font-size:.86rem; margin-bottom:.6rem;">Same definition as the classification track (see earlier slide) — a feature that wouldn't actually be available at prediction time, or one mathematically/causally derived from the target. Neither flagged group here meets it either, for a different reason than the classify track.</p>
     <div class="grid2" style="margin-top:0; gap:1rem;">
       <div class="card" style="padding:.75rem 1.1rem;">
-        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Classify's flavor: behavioral proxy</h3>
-        <p style="font-size:.78rem; margin:0;"><span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> leaked through <i>past behavior</i> predicting <i>future behavior</i> — a customer's history of saying yes.</p>
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Classify's flavor: cold-start, not leakage</h3>
+        <p style="font-size:.78rem; margin:0;"><span class="mono">AcceptedCmp1</span>–<span class="mono">5</span> are past behavior predicting future behavior — always available before prediction time for an existing customer. Not leakage; see the classify-track slide.</p>
       </div>
       <div class="card" style="padding:.75rem 1.1rem;">
-        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Regression's flavor: circularity risk</h3>
-        <p style="font-size:.78rem; margin:0;">The <span class="mono">Mnt*</span> spend columns correlate with <span class="mono">Income</span> because both plausibly reflect the <i>same</i> underlying economic capacity — not one causing the other, but both downstream of "how much money this household has."</p>
+        <h3 style="font-size:.88rem; margin-bottom:.2rem;">Regression's flavor: multicollinearity, not leakage</h3>
+        <p style="font-size:.78rem; margin:0;">The <span class="mono">Mnt*</span> spend columns are a separately-observed variable about the same customer, co-occurring with <span class="mono">Income</span> — not computed from it, not causally downstream of it in a way the model exploits unfairly. Both plausibly reflect the same underlying economic capacity, which makes this a <b>correlated / non-independent signal</b> concern, already covered on the Multicollinearity slides.</p>
       </div>
     </div>
     <div class="callout callout--brass" style="margin-top:.55rem;">
-      <span class="tag">Real ambiguity, not mechanical circularity</span>
-      Higher income gives more disposable spend — but spend is also just a behavioral variable, not literally derived from <span class="mono">Income</span> the way a mechanically-circular feature would be. Included as candidates and flagged, not excluded outright.
+      <span class="tag">No future info, not derived from Income</span>
+      Higher income gives more disposable spend — but spend is a separately-measured behavioral variable, not a mathematical function of <span class="mono">Income</span>, and it isn't drawn from any future period relative to <span class="mono">Income</span>. That rules out both canonical failure modes of leakage. Included as candidates, and the entanglement with <span class="mono">Income</span> is handled as multicollinearity, not flagged as leakage.
     </div>
   </div>
 </section>
@@ -789,7 +789,7 @@ footer.slide-foot{
     </div>
     <p class="chart-caption">Bar length = |score| — Pearson r for numeric features, correlation ratio η for categorical (marked <span class="mono">·cat</span>). Dashed line marks the 0.10 relevance threshold. 25 candidates, including <span class="mono">Response</span> (the other track's target) — scored like any other feature rather than excluded by convention; see the final Recap slide for how it fares under RF/MI.</p>
     <div class="chart-cols" id="chart15"></div>
-    <div class="chart-legend"><span class="dot"></span> leakage-adjacent feature (<span class="mono">Mnt*</span> spend, circularity risk with <span class="mono">Income</span>)</div>
+    <div class="chart-legend"><span class="dot"></span> correlated / non-independent signal (<span class="mono">Mnt*</span> spend, multicollinear with <span class="mono">Income</span>)</div>
     <div class="callout callout--brass">
       <span class="tag">Education outlier</span>
       η(<span class="mono">Education</span>) = 0.218 — <span class="mono">Basic</span> group mean income ≈ $20,306, roughly <b>2.5×</b> lower than every other level ($47.6k–$56.1k band).
@@ -818,7 +818,7 @@ footer.slide-foot{
       </ul>
       <div>
         <p style="font-size:.85rem;">Top 10 of 253 possible pairs — nearly identical to the classification track's matrix (expected, near-same rows), but with <span class="mono">Income</span> now an explicit member instead of an excluded target.</p>
-        <p style="font-size:.85rem; margin-top:.7rem;">The circularity risk made concrete: <span class="mono">NumCatalogPurchases</span> (0.589 with <span class="mono">Income</span>) is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not three independent economic drivers of <span class="mono">Income</span> — one signal, repeated across columns.</p>
+        <p style="font-size:.85rem; margin-top:.7rem;">The multicollinearity made concrete: <span class="mono">NumCatalogPurchases</span> (0.589 with <span class="mono">Income</span>) is itself 0.734-correlated with <span class="mono">MntMeatProducts</span> (0.584 with <span class="mono">Income</span>). Not three independent economic drivers of <span class="mono">Income</span> — one signal, repeated across columns.</p>
       </div>
     </div>
   </div>
@@ -878,7 +878,7 @@ footer.slide-foot{
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
       <div class="barchart" id="chart18"></div>
       <div>
-        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature</div>
+        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> correlated / non-independent signal (Mnt* spend)</div>
         <div class="leaderboard" style="margin-top:.6rem;">
           <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.446</div><div class="val">RF top feature</div></div>
           <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.145</div><div class="val">runner-up (3× smaller)</div></div>
@@ -920,7 +920,7 @@ footer.slide-foot{
     <div class="grid2" style="margin-top:.6rem; align-items:start;">
       <div class="barchart" id="chart20"></div>
       <div>
-        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature</div>
+        <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> correlated / non-independent signal (Mnt* spend)</div>
         <div class="leaderboard" style="margin-top:.6rem;">
           <div class="rank-tile"><div class="method">MntMeatProducts</div><div class="pos">0.719</div><div class="val">edges out MntWines</div></div>
           <div class="rank-tile"><div class="method">MntWines</div><div class="pos">0.681</div><div class="val">runner-up</div></div>
@@ -945,7 +945,7 @@ footer.slide-foot{
       <div class="stat"><div class="n">5</div><div class="l">at 2/3 — lower score</div></div>
       <div class="stat"><div class="n">12</div><div class="l">at ≤1/3 — cut</div></div>
     </div>
-    <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> leakage-adjacent feature (color on name)</div>
+    <div class="chart-legend" style="margin-top:0;"><span class="dot"></span> correlated / non-independent signal (color on name)</div>
     <div class="grid2" style="margin-top:.4rem; gap:1.2rem;">
       <table class="cuttab">
         <thead><tr><th>Feature</th><th>Biv</th><th>RF</th><th>MI</th><th>Votes</th></tr></thead>
@@ -997,16 +997,16 @@ footer.slide-foot{
     </div>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — non-leakage (6)</h3>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose (6)</h3>
         <p style="font-size:.72rem; color:var(--muted); margin:0 0 .2rem;">Primary — full 3-way consensus (3):</p>
         <div class="chips">
           <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 .2rem;">Secondary — 2/3, but same confirmed RF greedy-splitting miss that demoted <span class="mono">NumCatalogPurchases</span> to 6th (3):</p>
+        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 .2rem;">Secondary — 2/3, but same confirmed RF greedy-splitting miss that demoted <span class="mono">NumCatalogPurchases</span> to 6th (3, one of them — <span class="mono">MntFishProducts</span> — also carrying the correlated-signal flag):</p>
         <div class="chips">
           <span class="chip chip--secondary">NumStorePurchases</span><span class="chip chip--secondary">Kidhome</span><span class="chip chip--secondary">MntFishProducts</span>
         </div>
-        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">5 of 6 <span class="mono">Mnt*</span> columns hit full consensus too, circularity-flagged. Cut: <span class="mono">Age</span>/<span class="mono">NumDealsPurchases</span> (different failure modes, no established override) and <span class="mono">Response</span> (0.133 bivariate, but RF/MI both demote it near-bottom).</p>
+        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">5 of 6 <span class="mono">Mnt*</span> columns hit full consensus too — correlated/non-independent signal with <span class="mono">Income</span>, not leakage. Cut: <span class="mono">Age</span>/<span class="mono">NumDealsPurchases</span> (different failure modes, no established override) and <span class="mono">Response</span> (0.133 bivariate, but RF/MI both demote it near-bottom).</p>
       </div>
       <div>
         <div class="leaderboard">
@@ -1038,16 +1038,16 @@ footer.slide-foot{
           <span class="chip chip--chosen">Recency</span><span class="chip chip--chosen">Customer_Tenure_Days</span><span class="chip chip--chosen">Income</span><span class="chip chip--chosen">MntWines</span>
           <span class="chip chip--chosen">MntMeatProducts</span><span class="chip chip--chosen">MntGoldProds</span><span class="chip chip--chosen">MntFruits</span><span class="chip chip--chosen">NumCatalogPurchases</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ <span class="mono">AcceptedCmp3</span>/<span class="mono">AcceptedCmp5</span> — also consensus, but leakage-adjacent (deployment call).</p>
+        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ <span class="mono">AcceptedCmp3</span>/<span class="mono">AcceptedCmp5</span> — also consensus, strong historical predictors, not leakage (cold-start caveat at deployment).</p>
       </div>
       <div class="card" style="padding:.7rem 1.1rem; --accent:var(--teal); --accent-soft:var(--teal-soft);">
         <h3 style="margin-bottom:.15rem;">Regression</h3>
         <p style="font-size:.82rem; margin:0 0 .4rem;">Target: <span class="mono target-name" style="font-size:1.1rem;">Income</span> — yearly household income · 2,213 rows</p>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen features — non-leakage set (5):</p>
+        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen features (6):</p>
         <div class="chips">
-          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">NumStorePurchases</span><span class="chip chip--chosen">Kidhome</span>
+          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">NumStorePurchases</span><span class="chip chip--chosen">Kidhome</span><span class="chip chip--chosen">MntFishProducts</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ 5 of 6 <span class="mono">Mnt*</span> spend columns — also consensus, but circularity-flagged (spend scales with income).</p>
+        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ 5 of 6 <span class="mono">Mnt*</span> spend columns — also consensus, correlated/non-independent signal (spend scales with income), not leakage.</p>
       </div>
     </div>
     <div class="callout callout--brass" style="margin-top:.45rem;">
@@ -1124,7 +1124,7 @@ footer.slide-foot{
       var row = document.createElement("div");
       row.className = "bar-row" + (threshold && Math.abs(d.v) < threshold ? " dim" : "");
       var name = document.createElement("div");
-      name.className = "bar-name" + (d.leak ? " leak" : ""); name.textContent = d.n + (d.cat ? "" : "");
+      name.className = "bar-name" + (d.leak ? " leak" : ""); name.textContent = d.n + (d.cat ? " ·cat" : "");
       var track = document.createElement("div");
       track.className = "bar-track";
       var fill = document.createElement("div");

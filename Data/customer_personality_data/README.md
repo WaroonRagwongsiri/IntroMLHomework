@@ -33,7 +33,7 @@ Grouped per the dataset's own documented structure (People / Products / Promotio
 
 **Promotion**
 16. `NumDealsPurchases`: number of purchases made with a discount (numeric)
-17–21. `AcceptedCmp1`–`AcceptedCmp5`: 1 if the customer accepted the offer in that numbered prior campaign, else 0 (binary; genuinely leakage-adjacent for `Response`, kept and flagged explicitly rather than dropped — see `CLASSIFY_NOTES.md`)
+17–21. `AcceptedCmp1`–`AcceptedCmp5`: 1 if the customer accepted the offer in that numbered prior campaign, else 0 (binary; a strong historical-behavior predictor of `Response`, not leakage — kept and flagged explicitly for its cold-start/deployment caveat rather than dropped — see `CLASSIFY_NOTES.md`)
 22. `Response`: 1 if the customer accepted the offer in the **most recent** campaign, else 0 (binary — **chosen classification target**, a raw column, not engineered)
 
 **Place**
@@ -55,7 +55,7 @@ Only `Income` has missing values: **24 of 2,240 rows (1.1%)**. Every other colum
 - **`Marital_Status` joke/near-empty categories** — `Absurd` (2 rows), `YOLO` (2 rows), and the genuine-but-tiny `Alone` (3 rows) all folded into `Single`.
 - **`Income` missing (24 rows)** — kept (masked) in `classify.ipynb` since `Response` doesn't depend on it; dropped in `regression.ipynb` since it's the target itself.
 - **Multicollinearity, not a data-quality defect but worth flagging here:** `Income`, the six `Mnt*` spend columns, and the purchase-channel counts (especially `NumCatalogPurchases`) are heavily inter-correlated (several pairs above r=0.55, one at r=0.73) — they largely describe one underlying "affluent, high-spending, catalog/store-shopping customer" profile rather than independent dimensions. See `CLASSIFY_NOTES.md`/`REGRESSION_NOTES.md`'s Multicollinearity sections.
-- **Leakage-adjacent features, not dropped but flagged:** `AcceptedCmp1`–`5` for the `Response` classification target (customers who accepted an earlier campaign are ~5x more likely to accept the current one: 40.7% vs. 8.2%), and the `Mnt*` spend columns for the `Income` regression target (a real correlation-direction ambiguity, not the mechanical circularity found in `google_play_data`'s `Installs_num`/`hit` pair). Both are included as candidates and discussed explicitly, not silently excluded — see each notebook's relevance-ranking notes.
+- **Flagged, not dropped, but not leakage either:** `AcceptedCmp1`–`5` for the `Response` classification target (customers who accepted an earlier campaign are ~5x more likely to accept the current one: 40.7% vs. 8.2%) is a strong historical-behavior predictor — the history is always available before `Response`'s campaign, so this is a feature-availability/cold-start note, not leakage. The `Mnt*` spend columns for the `Income` regression target correlate strongly with `Income` (a real multicollinearity concern), but are a separately-observed variable, not derived from or dependent on `Income` — not leakage either. Both are included as candidates and discussed explicitly, not silently excluded — see each notebook's relevance-ranking notes.
 
 ### Citation
 > Please cite the original Kaggle dataset if used for further analysis:

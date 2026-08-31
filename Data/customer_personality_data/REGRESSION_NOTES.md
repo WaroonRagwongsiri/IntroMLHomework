@@ -56,7 +56,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 
 **Signed direction (the table reports `|r|`; two features are notably negative):** `NumWebVisitsMonth` is **-0.553** — customers who browse the site more actually earn *less* and spend *less*, the reverse of the naive "more engagement = more valuable customer" assumption; plausibly because affluent customers shop through catalog/store channels instead of browsing the web repeatedly. `Kidhome` is **-0.428** — households with young children at home earn less, on average, than childless households in this sample. `NumDealsPurchases` is also negative (-0.083, doesn't clear threshold) — a weak echo of the same pattern (deal-seeking correlates with lower income).
 
-**Caveat on `AcceptedCmp1`/`4`/`5`.** Same leakage-adjacent logic as `CLASSIFY_NOTES.md`: these are behavioral flags, not literally derived from `Income`, but plausibly confounded with it (higher-income customers may be targeted differently or respond differently to campaigns). Included, not excluded, but not treated as a "clean" economic driver of `Income` the way spend/purchase-channel columns are.
+**Caveat on `AcceptedCmp1`/`4`/`5`.** Not leakage, same conclusion as `CLASSIFY_NOTES.md`: these are behavioral flags, not literally derived from `Income`, but plausibly confounded with it (higher-income customers may be targeted differently or respond differently to campaigns). Included, not excluded, but not treated as a "clean" economic driver of `Income` the way spend/purchase-channel columns are.
 
 **`Education` group means** (η = 0.218, the stronger of the two categorical scores):
 
@@ -99,7 +99,7 @@ This is the **opposite pattern** from both prior regression tracks. `banking_dat
 | MntWines vs. NumWebPurchases | 0.554 |
 | NumWebVisitsMonth vs. Income | -0.553 |
 
-**Implication.** The same "affluent, high-spend, catalog/store-shopping" cluster identified in `CLASSIFY_NOTES.md` is, unsurprisingly, also the cluster most correlated with `Income` itself — this is exactly the circularity risk flagged in the Regression EDA section above, made concrete: `NumCatalogPurchases` (0.589 with `Income`) is itself 0.734-correlated with `MntMeatProducts` (0.584 with `Income`) and 0.634 with `MntWines` (0.578 with `Income`). A model using several of these features together would be leaning heavily on one underlying signal repeated across multiple columns, not three independent economic drivers — worth accounting for in feature selection (e.g. via regularization or picking one representative feature per cluster) rather than feeding all of them in raw.
+**Implication.** The same "affluent, high-spend, catalog/store-shopping" cluster identified in `CLASSIFY_NOTES.md` is, unsurprisingly, also the cluster most correlated with `Income` itself — this is exactly the multicollinearity concern flagged in the Regression EDA section above, made concrete: `NumCatalogPurchases` (0.589 with `Income`) is itself 0.734-correlated with `MntMeatProducts` (0.584 with `Income`) and 0.634 with `MntWines` (0.578 with `Income`). A model using several of these features together would be leaning heavily on one underlying signal repeated across multiple columns, not three independent economic drivers — worth accounting for in feature selection (e.g. via regularization or picking one representative feature per cluster) rather than feeding all of them in raw.
 
 ---
 
@@ -151,7 +151,7 @@ Responders earn meaningfully more — **+13,940 on the median (+27.8%), +9,385 o
 | Customer_Tenure_Days | 0.014 |
 | NumWebPurchases | 0.014 |
 
-**RF concentrates even more sharply than the bivariate ranking suggested — but on a different feature than expected.** `MntWines` becomes the dominant RF feature at **0.446** (3x the runner-up), despite `MntMeatProducts` scoring marginally *higher* in the bivariate ranking (0.584 vs. `MntWines`'s 0.578) and in the MI cross-check below. `NumCatalogPurchases` — the #1 bivariate feature (0.589) — collapses to 6th in RF (0.030). The likely mechanism: `NumCatalogPurchases`, `MntMeatProducts`, and `MntWines` are all mutually correlated (0.57–0.73, see Multicollinearity above), so once RF's greedy tree-building process picks `MntWines` for early splits, the *marginal* information the other two add on top is much smaller than their standalone bivariate correlation implies — a textbook multicollinearity effect on RF importance, distinct from the leakage-driven RF reordering discussed in `CLASSIFY_NOTES.md`. `MntFishProducts` (13th, 0.012) is squeezed just out of the top 12 by `Response`'s addition shifting the tail slightly — not a meaningful change in its own right.
+**RF concentrates even more sharply than the bivariate ranking suggested — but on a different feature than expected.** `MntWines` becomes the dominant RF feature at **0.446** (3x the runner-up), despite `MntMeatProducts` scoring marginally *higher* in the bivariate ranking (0.584 vs. `MntWines`'s 0.578) and in the MI cross-check below. `NumCatalogPurchases` — the #1 bivariate feature (0.589) — collapses to 6th in RF (0.030). The likely mechanism: `NumCatalogPurchases`, `MntMeatProducts`, and `MntWines` are all mutually correlated (0.57–0.73, see Multicollinearity above), so once RF's greedy tree-building process picks `MntWines` for early splits, the *marginal* information the other two add on top is much smaller than their standalone bivariate correlation implies — a textbook multicollinearity effect on RF importance, the same kind of RF-demotes-a-strong-predictor pattern discussed for `AcceptedCmp*` in `CLASSIFY_NOTES.md` (neither case is leakage). `MntFishProducts` (13th, 0.012) is squeezed just out of the top 12 by `Response`'s addition shifting the tail slightly — not a meaningful change in its own right.
 
 **`Response`, having cleared the bivariate threshold, all but disappears here: importance 0.0005 (22nd of 25).** Its 0.133 bivariate correlation with `Income` turns out to be almost entirely redundant with the spend/purchase-channel cluster already in the model — once those are available, `Response` adds essentially nothing further. This is the concrete evidence for why it isn't a chosen feature: not a low individual score, but a marginal contribution near zero once modeled jointly with everything else.
 
@@ -196,43 +196,43 @@ Responders earn meaningfully more — **+13,940 on the median (+27.8%), +9,385 o
 - **RF passes** if the feature lands in RF's top 12 of 25.
 - **MI passes** if the feature lands in MI's top 12 of 25.
 
-Tiered by vote count: **3/3** → chosen, no caveat (unless leakage-flagged); **2/3** → generally cut — promoted to chosen only when there's a specific, named, independently-confirmed reason (see `NumStorePurchases`/`Kidhome` below); **1/3 or 0/3** → cut.
+Tiered by vote count: **3/3** → chosen, no caveat (unless separately flagged for correlated/historical signal — see below); **2/3** → generally cut — promoted to chosen only when there's a specific, named, independently-confirmed reason (see `NumStorePurchases`/`Kidhome` below); **1/3 or 0/3** → cut.
 
 **Result — every candidate, all three votes:**
 
-| feature | bivariate | RF (top 12?) | MI (top 12?) | votes | leakage-adjacent? |
+| feature | bivariate | RF (top 12?) | MI (top 12?) | votes | flagged? |
 |---|---|---|---|---|---|
 | NumCatalogPurchases | 0.589 ✓ | 0.030 ✓ (6th) | 0.573 ✓ (3rd) | **3/3** | — |
-| MntMeatProducts | 0.584 ✓ | 0.145 ✓ (2nd) | 0.719 ✓ (1st) | **3/3** | yes |
-| MntWines | 0.578 ✓ | 0.446 ✓ (1st) | 0.681 ✓ (2nd) | **3/3** | yes |
+| MntMeatProducts | 0.584 ✓ | 0.145 ✓ (2nd) | 0.719 ✓ (1st) | **3/3** | correlated w/ Income |
+| MntWines | 0.578 ✓ | 0.446 ✓ (1st) | 0.681 ✓ (2nd) | **3/3** | correlated w/ Income |
 | NumWebVisitsMonth | −0.553 ✓ | 0.079 ✓ (3rd) | 0.399 ✓ (8th) | **3/3** | — |
-| MntSweetProducts | 0.441 ✓ | 0.026 ✓ (7th) | 0.424 ✓ (6th) | **3/3** | yes |
-| MntFruits | 0.430 ✓ | 0.075 ✓ (4th) | 0.453 ✓ (5th) | **3/3** | yes |
+| MntSweetProducts | 0.441 ✓ | 0.026 ✓ (7th) | 0.424 ✓ (6th) | **3/3** | correlated w/ Income |
+| MntFruits | 0.430 ✓ | 0.075 ✓ (4th) | 0.453 ✓ (5th) | **3/3** | correlated w/ Income |
 | NumWebPurchases | 0.388 ✓ | 0.014 ✓ (12th) | 0.349 ✓ (9th) | **3/3** | — |
-| MntGoldProds | 0.325 ✓ | 0.018 ✓ (9th) | 0.270 ✓ (10th) | **3/3** | yes |
+| MntGoldProds | 0.325 ✓ | 0.018 ✓ (9th) | 0.270 ✓ (10th) | **3/3** | correlated w/ Income |
 | NumStorePurchases | 0.530 ✓ | 0.008 ✗ (15th) | 0.550 ✓ (4th) | 2/3 | — |
-| MntFishProducts | 0.439 ✓ | 0.012 ✗ (13th) | 0.408 ✓ (7th) | 2/3 | yes |
+| MntFishProducts | 0.439 ✓ | 0.012 ✗ (13th) | 0.408 ✓ (7th) | 2/3 | correlated w/ Income |
 | Kidhome | −0.428 ✓ | 0.004 ✗ (19th) | 0.217 ✓ (12th) | 2/3 | — |
 | Age | 0.163 ✓ | 0.015 ✓ (10th) | 0.130 ✗ (14th) | 2/3 | — |
 | NumDealsPurchases | −0.083 ✗ | 0.059 ✓ (5th) | 0.254 ✓ (11th) | 2/3 | — |
-| AcceptedCmp5 | 0.335 ✓ | 0.009 ✗ (14th) | 0.121 ✗ (16th) | 1/3 | yes |
-| AcceptedCmp1 | 0.277 ✓ | 0.001 ✗ (21st) | 0.074 ✗ (19th) | 1/3 | yes |
+| AcceptedCmp5 | 0.335 ✓ | 0.009 ✗ (14th) | 0.121 ✗ (16th) | 1/3 | prior-campaign history |
+| AcceptedCmp1 | 0.277 ✓ | 0.001 ✗ (21st) | 0.074 ✗ (19th) | 1/3 | prior-campaign history |
 | Education (cat) | 0.218 ✓ | 0.004 ✗ (18th) | 0.128 ✗ (15th) | 1/3 | — |
-| AcceptedCmp4 | 0.185 ✓ | 0.0003 ✗ (23rd) | 0.037 ✗ (22nd) | 1/3 | yes |
+| AcceptedCmp4 | 0.185 ✓ | 0.0003 ✗ (23rd) | 0.037 ✗ (22nd) | 1/3 | prior-campaign history |
 | Response | 0.133 ✓ | 0.0005 ✗ (22nd) | 0.038 ✗ (21st) | 1/3 | — |
 | Customer_Tenure_Days | 0.018 ✗ | 0.014 ✓ (11th) | 0.105 ✗ (17th) | 1/3 | — |
 | Recency | 0.003 ✗ | 0.024 ✓ (8th) | 0.100 ✗ (18th) | 1/3 | — |
-| AcceptedCmp2 | 0.088 ✗ | 0.0001 ✗ (24th) | 0.010 ✗ (24th) | 0/3 | yes |
+| AcceptedCmp2 | 0.088 ✗ | 0.0001 ✗ (24th) | 0.010 ✗ (24th) | 0/3 | prior-campaign history |
 | Marital_Status (cat) | 0.046 ✗ | 0.007 ✗ (17th) | 0.073 ✗ (20th) | 0/3 | — |
 | Complain | 0.025 ✗ | 0.00007 ✗ (25th) | 0.004 ✗ (25th) | 0/3 | — |
 | Teenhome | 0.019 ✗ | 0.008 ✗ (16th) | 0.176 ✗ (13th) | 0/3 | — |
-| AcceptedCmp3 | 0.016 ✗ | 0.001 ✗ (20th) | 0.020 ✗ (23rd) | 0/3 | yes |
+| AcceptedCmp3 | 0.016 ✗ | 0.001 ✗ (20th) | 0.020 ✗ (23rd) | 0/3 | prior-campaign history |
 
-**Final tally: 8 at 3/3, 5 at 2/3, 7 at 1/3, 5 at 0/3.**
+**Final tally: 8 at 3/3, 5 at 2/3, 7 at 1/3, 5 at 0/3.** ("Flagged" here means not leakage — either correlated/non-independent with `Income` (`Mnt*`) or a prior-campaign-history feature (`AcceptedCmp*`); see the "Not Actually Leakage" discussion above.)
 
 **The 3/3 tier splits into two groups:**
-- **3 non-leakage chosen features, no caveat:** `NumCatalogPurchases`, `NumWebVisitsMonth`, `NumWebPurchases`.
-- **5 leakage-adjacent features, also full consensus:** `MntMeatProducts`, `MntWines`, `MntSweetProducts`, `MntFruits`, `MntGoldProds` — 5 of the 6 `Mnt*` spend columns (the 6th, `MntFishProducts`, falls to 2/3 — see below). The circularity caveat from the Relevance section above still applies: spend scales with income almost by construction, a real correlation-direction ambiguity rather than dropping them outright.
+- **3 chosen features, no caveat:** `NumCatalogPurchases`, `NumWebVisitsMonth`, `NumWebPurchases`.
+- **5 correlated-signal features, also full consensus:** `MntMeatProducts`, `MntWines`, `MntSweetProducts`, `MntFruits`, `MntGoldProds` — 5 of the 6 `Mnt*` spend columns (the 6th, `MntFishProducts`, falls to 2/3 — see below). Not leakage: the multicollinearity caveat from the Relevance section above still applies — spend scales with income almost by construction, a real correlation-direction ambiguity, but not a future-info or target-derived problem.
 
 **Notable 2/3 cases:**
 - `NumStorePurchases`, `MntFishProducts`, and `Kidhome` all **fail only RF** despite clearing bivariate and MI comfortably — the same greedy-splitting/multicollinearity artifact already documented for `NumCatalogPurchases`'s own RF collapse (7th → now 6th with `Response` added): RF spends its early splits on the dominant `MntWines`/`MntMeatProducts` pair and has little marginal signal left to attribute elsewhere, not evidence these three are weak.
