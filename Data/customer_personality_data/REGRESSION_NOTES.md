@@ -12,7 +12,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 
 **Purpose / Method.** Same `ID`/`Z_CostContact`/`Z_Revenue` drop, `Dt_Customer` → `Customer_Tenure_Days`, `Year_Birth` → `Age` (age-outlier drop), and `Marital_Status` collapse as `CLASSIFY_NOTES.md` (2,240 → 2,237 rows after the 3-row age-outlier drop) — see that file for the step-by-step. One extra, regression-specific step: **drop rows with missing `Income`**, since imputing the target itself would be the wrong move.
 
-**Result.** 24 of the 2,237 cleaned rows have missing `Income` → **2,213 rows** remain for this notebook. `Response` is unaffected by the `Income` drop — used both as a regression candidate below and in the "Income vs. Response" deep dive.
+**Result.** 24 of the 2,237 cleaned rows have missing `Income` → **2,213 rows x 28 columns** remain for this notebook (same 28-column shape as `CLASSIFY_NOTES.md`, just 24 fewer rows). Of those 28: 1 is the target (`Income`), 2 are raw columns kept but not used directly (`Year_Birth`, `Dt_Customer` — superseded by the derived `Age`/`Customer_Tenure_Days`), leaving **25 candidate features** for the relevance ranking below — this time including `Response` as a regular candidate. `Response` is unaffected by the `Income` drop — used both as a regression candidate below and in the "Income vs. Response" deep dive.
 
 ---
 
@@ -196,7 +196,7 @@ Responders earn meaningfully more — **+13,940 on the median (+27.8%), +9,385 o
 - **RF passes** if the feature lands in RF's top 12 of 25.
 - **MI passes** if the feature lands in MI's top 12 of 25.
 
-Tiered by vote count: **3/3** → chosen, no caveat (unless separately flagged for correlated/historical signal — see below); **2/3** → generally cut — promoted to chosen only when there's a specific, named, independently-confirmed reason (see `NumStorePurchases`/`Kidhome` below); **1/3 or 0/3** → cut.
+Tiered by vote count: **3/3** → chosen, no caveat (unless separately flagged for correlated/historical signal — see below); **2/3** → generally cut — promoted to chosen only when there's a specific, named, independently-confirmed reason (see `NumStorePurchases`/`Kidhome`/`MntFishProducts` below); **1/3 or 0/3** → cut.
 
 **Result — every candidate, all three votes:**
 

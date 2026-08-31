@@ -21,7 +21,7 @@ This is a **backup dataset** (see `README.md`), scoped lighter than `banking_dat
 6. **`Education`** needed no cleaning: `Graduation` 1,127, `PhD` 485, `Master` 370, `2n Cycle` 201, `Basic` 54 — five clean categories, no missing values.
 7. **`Income` missing (24 rows) is deliberately kept, not dropped, in this notebook** — `Response` does not depend on `Income`, so imputing or dropping is unnecessary here; the relevance ranking below masks to non-missing rows for `Income` only (see `MATRIX_METHODS.md`). Contrast with `regression.ipynb`, where these 24 rows are dropped because `Income` is the target itself.
 
-**Result.** Final cleaned shape: **2,237 rows x 28 columns**. `Response` class balance: **14.9% positive / 85.1% negative** — meaningfully imbalanced, comparable in spirit to `banking_dataset`'s `y` (11.7%/88.3%) but a bit gentler, in the same range as `google_play_data`'s `hit` was gentler still (39.1%/60.9%).
+**Result.** Final cleaned shape: **2,237 rows x 28 columns**. Of those 28: 1 is the target (`Response`), 2 are raw columns kept but not used directly (`Year_Birth`, `Dt_Customer` — superseded by the derived `Age`/`Customer_Tenure_Days`), leaving **25 candidate features** for the relevance ranking below. `Response` class balance: **14.9% positive / 85.1% negative** — meaningfully imbalanced, comparable in spirit to `banking_dataset`'s `y` (11.7%/88.3%) but a bit gentler, in the same range as `google_play_data`'s `hit` was gentler still (39.1%/60.9%).
 
 ---
 
@@ -185,7 +185,7 @@ At threshold 0.1, **19 of 25** candidates clear it — a far higher hit rate tha
 Features are then tiered by vote count:
 
 - **3/3 (full consensus) → chosen feature, no caveat** (unless separately flagged for a deployment-availability caveat — see below). A signal that survives three different statistical assumptions at once is very unlikely to be a fluke of one method or of this dataset's modest size (2,237 rows).
-- **2/3 (lower-confidence signal) → generally cut.** In practice, across both tracks' 2/3 tiers (13 features total), only 2 ever get promoted into a chosen-feature set (`NumStorePurchases`/`Kidhome` on the regression track — see `REGRESSION_NOTES.md`) — and only because there's a specific, named, independently-confirmed reason (RF's greedy-splitting blind spot on a feature correlated with something RF already picked). Without a reason that concrete, a 2/3 vote is treated as cut, not as a softer version of chosen.
+- **2/3 (lower-confidence signal) → generally cut.** In practice, across both tracks' 2/3 tiers (13 features total), only 3 ever get promoted into a chosen-feature set (`NumStorePurchases`/`Kidhome`/`MntFishProducts` on the regression track — see `REGRESSION_NOTES.md`) — and only because there's a specific, named, independently-confirmed reason (RF's greedy-splitting blind spot on a feature correlated with something RF already picked, with the correlation itself pointed to in the Multicollinearity section). Without a reason that concrete — a named already-selected feature and a correlation number tying it to the demoted one — a 2/3 vote is treated as cut, not as a softer version of chosen. The classify track's `AcceptedCmp1`/`AcceptedCmp2` fail this bar: "RF tends to demote the whole `AcceptedCmp*` family" is a real pattern but not a feature-specific substitution claim, so both stay cut (see "Notable 2/3 cases" below).
 - **1/3 or 0/3 → cut.**
 
 **Result — every candidate, all three votes:**

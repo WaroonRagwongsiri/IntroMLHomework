@@ -328,7 +328,7 @@ footer.slide-foot{
     </ul>
     <div class="callout callout--brass" style="margin-top:1.2rem;">
       <span class="tag">Result</span>
-      Final cleaned shape: <b class="mono">2,237 rows × 28 cols</b> — down from 2,240 × 29. Of those 28, <span class="mono">Dt_Customer</span>/<span class="mono">Year_Birth</span> stay in raw form but aren't used directly — each track's candidate list uses the derived <span class="mono">Customer_Tenure_Days</span>/<span class="mono">Age</span> instead. Minus each track's own target (<span class="mono">Response</span> or <span class="mono">Income</span>) → <b>25 candidates per track</b>.
+Clean DataFrame: <b class="mono">2,237 rows × 28 cols</b>. At the end, only <b>25 features</b> get used — 3 columns are cut: <span class="mono">Year_Birth</span> (replaced by derived <span class="mono">Age</span>), <span class="mono">Dt_Customer</span> (replaced by derived <span class="mono">Customer_Tenure_Days</span>), and each track's own target (<span class="mono">Response</span> or <span class="mono">Income</span>).
     </div>
   </div>
 </section>
@@ -564,12 +564,13 @@ footer.slide-foot{
           <li><span class="mark">RF</span> passes if the feature lands in RF's top-N</li>
           <li><span class="mark">MI</span> passes if the feature lands in MI's top-N</li>
         </ul>
+        <p style="font-size:.72rem; color:var(--muted); margin:.5rem 0 0;">N = <b>top 15 of 25</b> on classification, <b>top 12 of 25</b> on regression — chosen per track, not a shared constant.</p>
       </div>
       <div class="card" style="padding:.7rem 1.1rem;">
         <h3 style="font-size:.88rem;">Tiered by vote count</h3>
         <ul class="ledger-list" style="margin-top:.5rem;">
           <li><span class="mark">3/3</span> full consensus → chosen, no caveat (unless separately flagged for availability/multicollinearity)</li>
-          <li><span class="mark">2/3</span> lower-confidence signal → generally cut, kept only with a specific named reason</li>
+          <li><span class="mark">2/3</span> lower-confidence signal → generally cut, kept only with a specific, named, feature-to-feature reason (not just "this family tends to get demoted")</li>
           <li><span class="mark">≤1/3</span> → cut</li>
         </ul>
       </div>
@@ -641,32 +642,22 @@ footer.slide-foot{
       <div class="stat"><div class="n">14.9% / 85.1%</div><div class="l">Response class balance</div></div>
       <div class="stat"><div class="n">19 / 25</div><div class="l">clear relevance threshold</div></div>
     </div>
-    <p class="lede" style="font-size:.9rem; margin-bottom:.6rem;">Strongest bivariate signal of any dataset explored — but bivariate, RF, and MI genuinely disagree on how much weight the prior-campaign features deserve. Feature selection below is the honest synthesis, not a single method's word.</p>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose — consensus core (8)</h3>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .35rem;">Clear all three methods — bivariate ≥0.10, RF top-15, MI top-15. Safe to include in any model.</p>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">3/3 — chosen (10)</h3>
         <div class="chips">
-          <span class="chip chip--chosen">Recency</span><span class="chip chip--chosen">Customer_Tenure_Days</span><span class="chip chip--chosen">Income</span><span class="chip chip--chosen">MntWines</span>
-          <span class="chip chip--chosen">MntMeatProducts</span><span class="chip chip--chosen">MntGoldProds</span><span class="chip chip--chosen">MntFruits</span><span class="chip chip--chosen">NumCatalogPurchases</span>
+          <span class="chip chip--chosen">AcceptedCmp5</span><span class="chip chip--chosen">AcceptedCmp3</span><span class="chip chip--chosen">MntWines</span><span class="chip chip--chosen">MntMeatProducts</span>
+          <span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">Recency</span><span class="chip chip--chosen">Customer_Tenure_Days</span><span class="chip chip--chosen">MntGoldProds</span>
+          <span class="chip chip--chosen">Income</span><span class="chip chip--chosen">MntFruits</span>
         </div>
       </div>
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Also chosen — prior-campaign features (4)</h3>
-        <p style="font-size:.72rem; color:var(--muted); margin:0 0 .2rem;">Primary — full 3-way consensus (2):</p>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">2/3 — cut (8)</h3>
         <div class="chips">
-          <span class="chip chip--chosen">AcceptedCmp3</span><span class="chip chip--chosen">AcceptedCmp5</span>
+          <span class="chip chip--secondary">AcceptedCmp1</span><span class="chip chip--secondary">AcceptedCmp2</span><span class="chip chip--secondary">Marital_Status</span><span class="chip chip--secondary">NumWebPurchases</span>
+          <span class="chip chip--secondary">MntSweetProducts</span><span class="chip chip--secondary">MntFishProducts</span><span class="chip chip--secondary">NumStorePurchases</span><span class="chip chip--secondary">Age</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 .2rem;">Secondary — 2/3, same confirmed RF-demotes-<span class="mono">AcceptedCmp*</span> pattern that drops <span class="mono">AcceptedCmp5</span> to 12th under RF (2):</p>
-        <div class="chips">
-          <span class="chip chip--secondary">AcceptedCmp1</span><span class="chip chip--secondary">AcceptedCmp2</span>
-        </div>
-        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">One deployment caveat: a brand-new prospect with no campaign history won't have this feature populated.</p>
       </div>
-    </div>
-    <div class="callout callout--brass" style="margin-top:.5rem;">
-      <span class="tag">6 more sit at 2/3 — lower score, generally cut</span>
-      <span class="mono">NumStorePurchases</span> / <span class="mono">Age</span> clear RF + MI but miss the bivariate threshold entirely — real non-linear signal a linear check alone misses, but not enough to override on their own. The other 4 (<span class="mono">Marital_Status</span>, <span class="mono">NumWebPurchases</span>, <span class="mono">MntSweetProducts</span>, <span class="mono">MntFishProducts</span>) each miss just one vote — full breakdown on the previous slide.
     </div>
   </div>
 </section>
@@ -938,28 +929,25 @@ footer.slide-foot{
     </div>
     <div class="grid2" style="margin-top:0;">
       <div class="card" style="padding:.65rem 1.1rem;">
-        <h3 style="font-size:.85rem; margin-bottom:.25rem;">Which features did we choose (6)</h3>
-        <p style="font-size:.72rem; color:var(--muted); margin:0 0 .2rem;">Primary — full 3-way consensus (3):</p>
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">3/3 — chosen (8)</h3>
         <div class="chips">
-          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span>
+          <span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">MntMeatProducts</span><span class="chip chip--chosen">MntWines</span><span class="chip chip--chosen">NumWebVisitsMonth</span>
+          <span class="chip chip--chosen">MntSweetProducts</span><span class="chip chip--chosen">MntFruits</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">MntGoldProds</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 .2rem;">Secondary — 2/3, same confirmed RF greedy-splitting miss that demoted <span class="mono">NumCatalogPurchases</span> to 6th (3):</p>
-        <div class="chips">
-          <span class="chip chip--secondary">NumStorePurchases</span><span class="chip chip--secondary">Kidhome</span><span class="chip chip--secondary">MntFishProducts</span>
-        </div>
-        <p style="font-size:.7rem; color:var(--muted); margin:.35rem 0 0;">5 of 6 <span class="mono">Mnt*</span> columns hit full consensus too (see the Multicollinearity slide for how they relate to <span class="mono">Income</span>). Cut: <span class="mono">Age</span>/<span class="mono">NumDealsPurchases</span> (different failure modes, no established override) and <span class="mono">Response</span> (0.133 bivariate, but RF/MI both demote it near-bottom).</p>
       </div>
-      <div>
-        <div class="leaderboard">
-          <div class="rank-tile"><div class="method">Non-responders (n=1,880)</div><div class="pos tab">$50,824</div><div class="val">mean · median $50,150</div></div>
-          <div class="rank-tile"><div class="method">Responders (n=333)</div><div class="pos tab">$60,210</div><div class="val">mean · median $64,090</div></div>
+      <div class="card" style="padding:.65rem 1.1rem;">
+        <h3 style="font-size:.85rem; margin-bottom:.25rem;">2/3 — cut (5)</h3>
+        <div class="chips">
+          <span class="chip chip--secondary">NumStorePurchases</span><span class="chip chip--secondary">MntFishProducts</span><span class="chip chip--secondary">Kidhome</span><span class="chip chip--secondary">Age</span><span class="chip chip--secondary">NumDealsPurchases</span>
         </div>
-        <p style="font-size:.78rem; color:var(--muted); margin-top:.5rem;">Responders earn <b>+18.5%</b> mean / <b>+27.8%</b> median more — the two tracks' targets are meaningfully linked.</p>
       </div>
     </div>
-    <div class="callout callout--teal" style="margin-top:.5rem;">
-      <span class="tag">Opposite pattern from the other two datasets</span>
-      <span class="mono">banking_dataset</span>'s <span class="mono">balance</span> and <span class="mono">google_play_data</span>'s <span class="mono">Rating</span> both showed "no dominant predictor" (every |r| &lt; ~0.2). <span class="mono">Income</span> is naturally continuous and economically grounded — spend scales with income across every category and channel.
+    <div style="margin-top:.6rem;">
+      <div class="leaderboard">
+        <div class="rank-tile"><div class="method">Non-responders (n=1,880)</div><div class="pos tab">$50,824</div><div class="val">mean · median $50,150</div></div>
+        <div class="rank-tile"><div class="method">Responders (n=333)</div><div class="pos tab">$60,210</div><div class="val">mean · median $64,090</div></div>
+      </div>
+      <p style="font-size:.78rem; color:var(--muted); margin-top:.5rem;">Responders earn <b>+18.5%</b> mean / <b>+27.8%</b> median more — the two tracks' targets are meaningfully linked.</p>
     </div>
   </div>
 </section>
@@ -974,21 +962,21 @@ footer.slide-foot{
       <div class="card" style="padding:.7rem 1.1rem; --accent:var(--red); --accent-soft:var(--red-soft);">
         <h3 style="margin-bottom:.15rem;">Classification</h3>
         <p style="font-size:.82rem; margin:0 0 .4rem;">Target: <span class="mono target-name" style="font-size:1.1rem;">Response</span> — accepted the latest campaign · 14.9% / 85.1% class balance</p>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen features — consensus core (8):</p>
+        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen — 3/3 (10):</p>
         <div class="chips">
-          <span class="chip chip--chosen">Recency</span><span class="chip chip--chosen">Customer_Tenure_Days</span><span class="chip chip--chosen">Income</span><span class="chip chip--chosen">MntWines</span>
-          <span class="chip chip--chosen">MntMeatProducts</span><span class="chip chip--chosen">MntGoldProds</span><span class="chip chip--chosen">MntFruits</span><span class="chip chip--chosen">NumCatalogPurchases</span>
+          <span class="chip chip--chosen">AcceptedCmp5</span><span class="chip chip--chosen">AcceptedCmp3</span><span class="chip chip--chosen">MntWines</span><span class="chip chip--chosen">MntMeatProducts</span>
+          <span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">Recency</span><span class="chip chip--chosen">Customer_Tenure_Days</span><span class="chip chip--chosen">MntGoldProds</span>
+          <span class="chip chip--chosen">Income</span><span class="chip chip--chosen">MntFruits</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ <span class="mono">AcceptedCmp3</span>/<span class="mono">AcceptedCmp5</span> — also consensus (cold-start caveat at deployment).</p>
       </div>
       <div class="card" style="padding:.7rem 1.1rem; --accent:var(--teal); --accent-soft:var(--teal-soft);">
         <h3 style="margin-bottom:.15rem;">Regression</h3>
         <p style="font-size:.82rem; margin:0 0 .4rem;">Target: <span class="mono target-name" style="font-size:1.1rem;">Income</span> — yearly household income · 2,213 rows</p>
-        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen features (6):</p>
+        <p style="font-size:.74rem; color:var(--muted); margin:0 0 .3rem;">Chosen — 3/3 (8):</p>
         <div class="chips">
-          <span class="chip chip--chosen">NumWebVisitsMonth</span><span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">NumStorePurchases</span><span class="chip chip--chosen">Kidhome</span><span class="chip chip--chosen">MntFishProducts</span>
+          <span class="chip chip--chosen">NumCatalogPurchases</span><span class="chip chip--chosen">MntMeatProducts</span><span class="chip chip--chosen">MntWines</span><span class="chip chip--chosen">NumWebVisitsMonth</span>
+          <span class="chip chip--chosen">MntSweetProducts</span><span class="chip chip--chosen">MntFruits</span><span class="chip chip--chosen">NumWebPurchases</span><span class="chip chip--chosen">MntGoldProds</span>
         </div>
-        <p style="font-size:.72rem; color:var(--muted); margin:.35rem 0 0;">+ 5 of 6 <span class="mono">Mnt*</span> spend columns — also consensus (multicollinear with <span class="mono">Income</span>, see the Multicollinearity slide).</p>
       </div>
     </div>
     <div class="callout callout--brass" style="margin-top:.45rem;">
