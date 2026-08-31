@@ -333,7 +333,7 @@ footer.slide-foot{
     </ul>
     <div class="callout callout--brass" style="margin-top:1.2rem;">
       <span class="tag">Result</span>
-      Final cleaned shape: <b class="mono">2,237 rows × 28 cols</b> — down from 2,240 × 29.
+      Final cleaned shape: <b class="mono">2,237 rows × 28 cols</b> — down from 2,240 × 29. Of those 28, <span class="mono">Dt_Customer</span>/<span class="mono">Year_Birth</span> stay in raw form but aren't used directly — each track's candidate list uses the derived <span class="mono">Customer_Tenure_Days</span>/<span class="mono">Age</span> instead. Minus each track's own target (<span class="mono">Response</span> or <span class="mono">Income</span>) → <b>25 candidates per track</b>.
     </div>
   </div>
 </section>
@@ -385,7 +385,7 @@ footer.slide-foot{
         <p class="formula-key">χ² = chi-square statistic on the contingency table · n = rows · k, r = table columns / rows</p>
       </div>
     </div>
-    <div class="callout callout--red" style="margin-top:.55rem;"><span class="tag">Threshold</span> |score| ≥ 0.10 to be considered relevant.</div>
+    <div class="callout callout--red" style="margin-top:.5rem;"><span class="tag">Threshold</span> |score| ≥ 0.10 to be considered relevant.</div>
   </div>
 </section>
 
@@ -740,7 +740,7 @@ footer.slide-foot{
     <div class="grid2" style="margin-top:0; gap:1rem;">
       <div class="card" style="padding:.85rem 1.1rem;">
         <h3 style="margin-bottom:.2rem;">Pearson |r|</h3>
-        <p style="font-size:.8rem; margin:0 0 .3rem;">For the 22 <b>numeric</b> candidates vs. <span class="mono">Income</span>. <b>Why:</b> both sides are continuous, so the direct covariance-based linear-association measure applies — no special case needed.</p>
+        <p style="font-size:.8rem; margin:0 0 .3rem;">For the 23 <b>numeric</b> candidates vs. <span class="mono">Income</span>. <b>Why:</b> both sides are continuous, so the direct covariance-based linear-association measure applies — no special case needed.</p>
         <div class="formula">r&nbsp; = &nbsp;Σ(x_i−x̄)(y_i−ȳ) / √( Σ(x_i−x̄)² · Σ(y_i−ȳ)² )</div>
         <p class="formula-key">x̄, ȳ = feature / <span class="mono">Income</span> means · x_i, y_i = per-row values · reported as |r|</p>
       </div>
@@ -751,7 +751,7 @@ footer.slide-foot{
         <p class="formula-key">g = a category group · n_g, ȳ_g = that group's size / mean <span class="mono">Income</span> · ȳ = overall mean</p>
       </div>
     </div>
-    <div class="callout callout--teal" style="margin-top:.55rem;"><span class="tag">Not the same formula</span> Pearson <i>r</i> and correlation ratio η play parallel roles (categorical analogue) but compute different things — η is a variance-explained ratio (0 to 1, unsigned), while r is a signed linear-slope measure (−1 to +1). Same threshold, different math.</div>
+    <div class="callout callout--teal" style="margin-top:.5rem;"><span class="tag">Not the same formula</span> Pearson <i>r</i> and correlation ratio η play parallel roles (categorical analogue) but compute different things — η is a variance-explained ratio (0 to 1, unsigned), while r is a signed linear-slope measure (−1 to +1). Same threshold, different math.</div>
   </div>
 </section>
 
