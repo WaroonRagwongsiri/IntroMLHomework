@@ -639,7 +639,7 @@ footer.slide-foot{
           <tr class="v3"><td>MntFruits</td><td class="yes">0.126</td><td class="yes">0.039</td><td class="yes">0.020</td><td class="votes">3/3</td></tr>
           <tr><td class="leak">AcceptedCmp1</td><td class="yes">0.294</td><td class="no">0.033</td><td class="yes">0.024</td><td class="votes">2/3</td></tr>
           <tr><td class="leak">AcceptedCmp2</td><td class="yes">0.169</td><td class="no">0.008</td><td class="yes">0.022</td><td class="votes">2/3</td></tr>
-          <tr><td>Marital_Status ·cat</td><td class="yes">0.152</td><td class="yes">0.046</td><td class="no">0.011</td><td class="votes">2/3</td></tr>
+          <tr><td>Marital_Status</td><td class="yes">0.152</td><td class="yes">0.046</td><td class="no">0.011</td><td class="votes">2/3</td></tr>
         </tbody>
       </table>
       <table class="cuttab">
@@ -652,7 +652,7 @@ footer.slide-foot{
           <tr><td>Age</td><td class="no">0.018</td><td class="yes">0.045</td><td class="yes">0.024</td><td class="votes">2/3</td></tr>
           <tr><td class="leak">AcceptedCmp4</td><td class="yes">0.177</td><td class="no">0.010</td><td class="no">0.015</td><td class="votes">1/3</td></tr>
           <tr><td>Teenhome</td><td class="yes">0.155</td><td class="no">0.012</td><td class="no">0.017</td><td class="votes">1/3</td></tr>
-          <tr><td>Education ·cat</td><td class="yes">0.102</td><td class="no">0.031</td><td class="no">0.005</td><td class="votes">1/3</td></tr>
+          <tr><td>Education</td><td class="yes">0.102</td><td class="no">0.031</td><td class="no">0.005</td><td class="votes">1/3</td></tr>
           <tr><td>Kidhome</td><td class="no">0.080</td><td class="no">0.007</td><td class="no">0.000</td><td class="votes">0/3</td></tr>
           <tr><td>NumWebVisitsMonth</td><td class="no">0.004</td><td class="no">0.036</td><td class="no">0.014</td><td class="votes">0/3</td></tr>
           <tr><td>NumDealsPurchases</td><td class="no">0.002</td><td class="no">0.028</td><td class="no">0.003</td><td class="votes">0/3</td></tr>
@@ -970,13 +970,13 @@ footer.slide-foot{
         <tbody>
           <tr><td class="leak">AcceptedCmp5</td><td class="yes">0.335</td><td class="no">0.009</td><td class="no">0.121</td><td class="votes">1/3</td></tr>
           <tr><td class="leak">AcceptedCmp1</td><td class="yes">0.277</td><td class="no">0.001</td><td class="no">0.074</td><td class="votes">1/3</td></tr>
-          <tr><td>Education ·cat</td><td class="yes">0.218</td><td class="no">0.004</td><td class="no">0.128</td><td class="votes">1/3</td></tr>
+          <tr><td>Education</td><td class="yes">0.218</td><td class="no">0.004</td><td class="no">0.128</td><td class="votes">1/3</td></tr>
           <tr><td class="leak">AcceptedCmp4</td><td class="yes">0.185</td><td class="no">0.0003</td><td class="no">0.037</td><td class="votes">1/3</td></tr>
           <tr><td>Response</td><td class="yes">0.133</td><td class="no">0.0005</td><td class="no">0.038</td><td class="votes">1/3</td></tr>
           <tr><td>Customer_Tenure_Days</td><td class="no">0.018</td><td class="yes">0.014</td><td class="no">0.105</td><td class="votes">1/3</td></tr>
           <tr><td>Recency</td><td class="no">0.003</td><td class="yes">0.024</td><td class="no">0.100</td><td class="votes">1/3</td></tr>
           <tr><td class="leak">AcceptedCmp2</td><td class="no">0.088</td><td class="no">0.0001</td><td class="no">0.010</td><td class="votes">0/3</td></tr>
-          <tr><td>Marital_Status ·cat</td><td class="no">0.046</td><td class="no">0.007</td><td class="no">0.073</td><td class="votes">0/3</td></tr>
+          <tr><td>Marital_Status</td><td class="no">0.046</td><td class="no">0.007</td><td class="no">0.073</td><td class="votes">0/3</td></tr>
           <tr><td>Complain</td><td class="no">0.025</td><td class="no">0.00007</td><td class="no">0.004</td><td class="votes">0/3</td></tr>
           <tr><td>Teenhome</td><td class="no">0.019</td><td class="no">0.008</td><td class="no">0.176</td><td class="votes">0/3</td></tr>
           <tr><td class="leak">AcceptedCmp3</td><td class="no">0.016</td><td class="no">0.001</td><td class="no">0.020</td><td class="votes">0/3</td></tr>
@@ -1124,7 +1124,7 @@ footer.slide-foot{
       var row = document.createElement("div");
       row.className = "bar-row" + (threshold && Math.abs(d.v) < threshold ? " dim" : "");
       var name = document.createElement("div");
-      name.className = "bar-name" + (d.leak ? " leak" : ""); name.textContent = d.n + (d.cat ? " ·cat" : "");
+      name.className = "bar-name" + (d.leak ? " leak" : ""); name.textContent = d.n + (d.cat ? "" : "");
       var track = document.createElement("div");
       track.className = "bar-track";
       var fill = document.createElement("div");
