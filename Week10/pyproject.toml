@@ -1,0 +1,22 @@
+[project]
+name = "week10"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=7.3.0",
+    "kagglehub>=1.0.2",
+    "matplotlib>=3.11.2",
+    "numpy>=2.4.6",
+    "pandas>=3.0.6",
+    "scikit-learn>=1.9.1",
+    "torch>=2.14.0",
+    "torchvision>=0.29.0",
+]
+
+[dependency-groups]
+dev = [
+    "nbconvert>=7.17.1",
+    "nbformat>=5.11.1",
+]
