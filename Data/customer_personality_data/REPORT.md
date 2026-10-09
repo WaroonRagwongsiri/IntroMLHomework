@@ -246,6 +246,62 @@ weight decay added to every gradient like torch Adam.
   tolerances unchanged and still passing).
 - Next candidate (not run): LightGBM ceiling (Option D) and/or 3/3-only ablation (Option B).
 
+## 3rd Version (3/3-only ablation)
+
+Single-variable test of the 2/3 tier: identical v2 deeper arch, training, splits, and seed — only features
+shrink to 3/3 consensus (clf 10 cols → 10 dims, one-hot block deleted, params ≈ 5,185; reg 8 cols → 8 dims,
+params ≈ 5,057). Dropped: clf AcceptedCmp1/2, Marital_Status, NumWebPurchases, MntSweet/FishProducts,
+NumStorePurchases, Age; reg NumStorePurchases, MntFishProducts, Kidhome, Age, NumDealsPurchases.
+New files (`*_v3.ipynb`, `weights_v3/`); v2 frozen.
+
+### Classification — Response (10 dims, all numeric)
+
+- **Results — loss + scores** (n_test=448):
+
+  | Metric | PyTorch v3 | Scratch v3 | absΔ | Tol | Verdict |
+  |---|---|---|---|---|---|
+  | test BCE | 0.4589 | 0.4255 | 0.0334 | < 0.05 | PASS |
+  | accuracy | 0.7388 | 0.7768 | 0.0380 | — | — |
+  | precision | 0.3377 | 0.3759 | 0.0382 | — | — |
+  | recall | 0.7761 | 0.7463 | 0.0298 | — | — |
+  | **F1** | **0.4706** | **0.5000** | **0.0294** | < 0.05 | PASS |
+  | ROC-AUC | 0.8466 | 0.8515 | 0.0049 | — | — |
+
+  Curves: torch train 0.711→0.421 / val 0.704→0.459, val-F1 0.410→0.471;
+  scratch train 0.690→0.384 / val 0.667→0.425, val-F1 0.425→0.500.
+- **Results vs v2 / Verdict: REVERT to full set.** Torch F1 0.5699→0.4706 (**−0.099**), ROC 0.8814→0.8466;
+  scratch F1 0.5581→0.5000 (−0.058). Both twins agree: the 2/3 tier carries real, non-redundant signal —
+  most plausibly AcceptedCmp1 (biv 0.294, the strongest dropped feature) plus the Marital_Status/NumStorePurchases/Age
+  non-linear signals the deep net could exploit even though RF demoted them. The "RF family-demotion = redundancy"
+  reading from v1 was wrong for this track: demoted ≠ expendable. 2/3 stays.
+
+### Regression — Income (8 dims, z-scored target)
+
+- **Results — loss + scores** (n_test=443, raw $):
+
+  | Metric | PyTorch v3 | Scratch v3 | Δ | Tol | Verdict |
+  |---|---|---|---|---|---|
+  | test MSE | 114,570,589.1 | 116,585,505.8 | rel 0.018 | — | — |
+  | **RMSE** | **10,703.8** | **10,797.5** | **rel 0.009** | < 0.10 | PASS |
+  | MAE | 6,906.5 | 6,915.9 | rel 0.001 | — | — |
+  | **R²** | **0.7519** | **0.7476** | **0.0043** | < 0.05 | PASS |
+
+  Curves (z-MSE): torch train 0.651→0.470 / val 0.335→0.169, val-RMSE $15,061→$10,704;
+  scratch train 0.700→0.468 / val 0.399→0.172, val-RMSE $16,429→$10,798.
+  Parity here is the tightest of all three versions (RMSE relΔ 0.009, R² Δ 0.004).
+- **Results vs v2 / Verdict: REVERT to full set (weakly).** Torch R² 0.7673→0.7519 (−0.015), RMSE +3%;
+  scratch R² 0.7429→0.7476 (+0.005, flat). Asymmetry vs classification: the 3/3 spend core carries ~98% of the
+  signal (NumStorePurchases 0.530 / Kidhome −0.428 / MntFish 0.439 help at the margin but the deep net routes
+  around them). Keep the full 13-dim set — it costs nothing and is still best-by-oracle — but the practical
+  lesson is the 8-dim 3/3 model is nearly as good and simpler to deploy.
+
+### Shared notes (v3 — only what's new/changed)
+
+- New: `*_v3.ipynb` ×4, `weights_v3/`; clf params 5,953→5,185, reg 5,393→5,057; no other code changes
+  (scratch BN/residual/Adam untouched — ablation needed none).
+- Answer to the v1 open question: 2/3 tier is **load-bearing for Response, marginal-but-positive for Income**.
+- Next candidates (not run): LightGBM ceiling (Option D); log-target / robust loss for the $666k outlier.
+
 ## Version template (copy for v3, v4, …)
 
 ### Classification — …
