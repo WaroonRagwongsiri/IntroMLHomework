@@ -186,15 +186,65 @@ R² Δ 0.025 < 0.05). The from-scratch backprop reproduces the PyTorch oracles, 
     `weights/*_{pytorch,scratch}_test_metrics.json` (final test loss + scores).
   - Env: `torch 2.14.1` added to `/Data/pyproject.toml` via `uv add torch`; `scikit-learn`/`pandas`/`numpy` reused.
 
-## 2nd Version (…)
+## 2nd Version (deeper MLP)
 
-### Classification — …
-- Architecture / Features + reasons / Setup / Results vs v1 / Verdict (keep or revert)
+Same data, features, splits, seed, and losses as v1 — only depth, regularization, and schedule change:
+`FC(in→64)→BN→ReLU→Dropout(0.2)→FC(64→64)→BN→(+residual)→ReLU→Dropout(0.2)→FC(64→1)`,
+100 epochs, Adam(lr=1e-3) + cosine annealing + weight decay 1e-4. New files
+(`*_v2.ipynb`, `weights_v2/`); v1 files frozen. Clf params ≈ 5,953 / reg ≈ 5,393 (incl. BN).
+Scratch hand-codes batchnorm (batch stats + momentum-0.1 running stats, eps=1e-5, unbiased running-var
+like torch), inverted dropout (separate rng stream), BN backward, and the residual gradient split
+(`dD1 = dB2·W2ᵀ + dS`); cosine LR `0.5·lr0·(1+cos(π·(e−1)/100))` matches torch `CosineAnnealingLR(T_max=100)`;
+weight decay added to every gradient like torch Adam.
 
-### Regression — …
-- Architecture / Features + reasons / Setup / Results vs v1 / Verdict (keep or revert)
+### Classification — Response (same 18 cols → 22 dims)
+
+- **Architecture / Setup.** ResNet-style block above (residual wraps the 64→64 block only — dims match, no
+  projection). Weighted BCE (`pos_weight ≈ 5.7`) for training steps; all logged/reported losses unweighted.
+  Eval-mode train loss logged per epoch (same convention both twins).
+- **Results — loss + scores** (n_test=448):
+
+  | Metric | PyTorch v2 | Scratch v2 | absΔ | Tol | Verdict |
+  |---|---|---|---|---|---|
+  | test BCE | 0.3863 | 0.3775 | 0.0088 | < 0.05 | PASS |
+  | accuracy | 0.8214 | 0.8304 | 0.0090 | — | — |
+  | precision | 0.4454 | 0.4571 | 0.0117 | — | — |
+  | recall | 0.7910 | 0.7164 | 0.0746 | — | — |
+  | **F1** | **0.5699** | **0.5581** | **0.0118** | < 0.05 | PASS |
+  | ROC-AUC | 0.8814 | 0.8686 | 0.0128 | — | — |
+
+  Curves: torch train 1.055→0.543 / val 0.615→0.386, val-F1 0.425→0.570;
+  scratch train 0.642→0.281 / val 0.661→0.378, val-F1 0.366→0.558.
+- **Results vs v1 / Verdict: KEEP.** Torch F1 0.5165→0.5699 (+0.053), ROC 0.8725→0.8814; scratch F1
+  0.4920→0.5581 (+0.066). Capacity — not features — was the v1 bottleneck, as suspected (v1 curves never kinked).
+  Depth + BN/dropout bought recall without losing precision (torch recall 0.70→0.79, precision 0.41→0.45).
+
+### Regression — Income (same 13 dims, z-scored target)
+
+- **Architecture / Setup.** Same ResNet block with 13-dim input. z-space MSE loss; metrics in raw $.
+- **Results — loss + scores** (n_test=443, raw $):
+
+  | Metric | PyTorch v2 | Scratch v2 | Δ | Tol | Verdict |
+  |---|---|---|---|---|---|
+  | test MSE | 107,448,373.9 | 118,746,515.5 | rel 0.105 | — | — |
+  | **RMSE** | **10,365.7** | **10,897.1** | **rel 0.051** | < 0.10 | PASS |
+  | MAE | 6,592.4 | 6,692.6 | rel 0.015 | — | — |
+  | **R²** | **0.7673** | **0.7429** | **0.0244** | < 0.05 | PASS |
+
+  Curves (z-MSE): torch train 0.653→0.457 / val 0.394→0.159, val-RMSE $16,324→$10,366;
+  scratch train 0.732→0.463 / val 0.469→0.176, val-RMSE $17,815→$10,897.
+- **Results vs v1 / Verdict: KEEP.** Torch R² 0.7287→0.7673 (+0.039), RMSE $11,194→$10,366 (−7%);
+  scratch R² 0.7537→0.7429 (−0.011, init lottery within tolerance), RMSE $10,666→$10,897.
+  Net: depth helps the oracle clearly; scratch holds roughly at v1 level — twin still valid, v2 is the new best
+  per-track by oracle numbers with scratch confirming inside tolerance.
 
 ### Shared notes (v2 — only what's new/changed)
+
+- New: `*_v2.ipynb` ×4, `weights_v2/` (pt/npz/scaler/csv/json, same naming with v2 paths), cosine LR + wd 1e-4,
+  100 epochs, BN/dropout/residual in both frameworks.
+- Parity held despite deeper nets (BN running stats + dropout masks can't match exactly across libraries —
+  tolerances unchanged and still passing).
+- Next candidate (not run): LightGBM ceiling (Option D) and/or 3/3-only ablation (Option B).
 
 ## Version template (copy for v3, v4, …)
 
