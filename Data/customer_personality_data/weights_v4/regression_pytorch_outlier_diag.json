@@ -1,0 +1,7 @@
+{
+  "n_masked": 2,
+  "RMSE_masked": 8518.1,
+  "R2_masked": 0.8238,
+  "RMSE_full": 11307.4,
+  "R2_full": 0.7232
+}

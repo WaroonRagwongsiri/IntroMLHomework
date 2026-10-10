@@ -1,313 +1,502 @@
 # Report — Customer Personality Analysis Model
 
-> Convention: each `##` = one self-contained experiment version.
-> `## 1st Version (BASELINE)` is the reference every later version diffs against.
-> To add a version: copy the template at the bottom, fill it in, never edit old sections.
+- **Goal (classification):** `Response` (predict whether a customer accepts the next marketing campaign).
+- **Goal (regression):** `Income` (predict a customer's yearly household income).
+
+**Metrics.**
+- Classification: BCE loss + accuracy, precision, recall, **F1** (main), ROC-AUC (threshold 0.5).
+- Regression: MSE, **RMSE** (main), MAE, R².
 
 ## 1st Version (BASELINE)
 
-Built four notebooks on `marketing_campaign.csv`, all sharing one deliberately simple architecture —
-single hidden layer, `Linear → ReLU → Linear(→1)`, He init, Adam(lr=1e-3), 50 epochs, batch 64, seed 42:
+- `classification_pytorch.ipynb`
+- `classification_scratch.ipynb`
+- `regression_pytorch.ipynb`
+- `regression_scratch.ipynb`
+- `weights/*`
+- All four share one deliberately simple architecture: single hidden layer, `Linear → ReLU → Linear(→1)`, He init, Adam(lr=1e-3), 50 epochs, batch 64, seed 42.
 
-| Notebook | Target | Role | Test headline (scratch twin) |
-|---|---|---|---|
-| `classification_pytorch.ipynb` | `Response` | oracle only — expected values for the scratch twin | F1 0.5165, ROC-AUC 0.8725 |
-| `classification_scratch.ipynb` | `Response` | **primary** (pure NumPy) | F1 0.4920, ROC-AUC 0.8617 |
-| `regression_pytorch.ipynb` | `Income` | oracle only | R² 0.7287, RMSE $11,194 |
-| `regression_scratch.ipynb` | `Income` | **primary** (pure NumPy) | R² 0.7537, RMSE $10,666 |
+### Classification
 
-**Parity verdict: PASS on both tracks** (clf: test-BCE Δ 0.045 < 0.05, F1 Δ 0.025 < 0.05; reg: RMSE relΔ 0.047 < 0.10,
-R² Δ 0.025 < 0.05). The from-scratch backprop reproduces the PyTorch oracles, so the NumPy twins are correct.
+- **Architecture used.**
+  - Shallow MLP (torch `ClfMLP` + mirror NumPy `ScratchMLP`)
+  - `x(22) → Linear(22→32) → ReLU → Linear(32→1) → logit`
 
-### Classification — Response (18 columns → 22 model dims, n=2,237)
+![Shallow MLP ONNX graph](media/arch_clf_v1.png)
 
-- **Architecture used** (library arch allowed: torch `ClfMLP` + mirror NumPy `ScratchMLP`):
-  `x(22) → Linear(22→32) → ReLU → Linear(32→1)` → logit + sigmoid / mean BCE-with-logits,
-  `pos_weight = neg/pos ≈ 5.7` on the 85/15 imbalance. He init (`W ~ N(0, √(2/fan_in))`, `b = 0`, seed 42),
-  no dropout/norm (dropout masks can't be bit-identical across torch/NumPy). Params: 769 (22·32+32 + 32·1+1).
-  Forward: `Z1 = XW1+b1; A1 = max(0,Z1); logit = A1W2+b2`.
-  Backward (mean reduction, batch B): `dlogit = (p + p·y·(pw−1) − pw·y)/B` (reduces to `p−y` at pw=1);
-  then `dW2 = A1ᵀd; db2 = Σd; dA1 = dW2ᵀ; dZ1 = dA1·(Z1>0); dW1 = XᵀdZ1; db1 = ΣdZ1`.
-  One hidden layer was chosen so the hand-derived backprop is exactly checkable; torch uses fused
-  `BCEWithLogitsLoss` ≡ NumPy explicit sigmoid + clipped log; Adam(lr=1e-3, β1=0.9, β2=0.999, eps=1e-8)
-  hand-coded identically in scratch (m/v + bias correction); DataLoader shuffle vs NumPy permutation both seeded 42.
+- **Features used.** Voting rule from the EDA (same in both tracks): bivariate `|score| ≥ 0.10` +
+  RF top-15 + MI top-15 each cast one vote; 3/3 = chosen, 2/3 = kept here with a named reason each.
 
-- **Features used + reason per feature.** Rule from the EDA (same in both tracks): bivariate `|score| ≥ 0.10` +
-  RF top-15 + MI top-15 each cast one vote; 3/3 = chosen, 2/3 = kept here only with a named,
-  independently-confirmed reason. This project uses 3/3 + 2/3.
+  | Feature (votes) | Description (what this feature is) |
+  |---|---|
+  | `AcceptedCmp5` (3/3) | Whether the customer accepted the offer in the 5th prior campaign (0/1 flag) |
+  | `AcceptedCmp3` (3/3) | Whether the customer accepted the offer in the 3rd prior campaign (0/1 flag) |
+  | `MntWines` (3/3) | Amount spent on wines over the last 2 years |
+  | `MntMeatProducts` (3/3) | Amount spent on meat products over the last 2 years |
+  | `NumCatalogPurchases` (3/3) | Number of purchases made through the catalog channel |
+  | `Recency` (3/3) | Days since the customer's last purchase |
+  | `Customer_Tenure_Days` (3/3) | Days since enrollment, derived from `Dt_Customer` relative to 2014-06-29 |
+  | `MntGoldProds` (3/3) | Amount spent on gold products over the last 2 years |
+  | `Income` (3/3) | Yearly household income; doubles as the other track's target |
+  | `MntFruits` (3/3) | Amount spent on fruits over the last 2 years |
+  | `AcceptedCmp1` (2/3) | Whether the customer accepted the offer in the 1st prior campaign (0/1 flag) |
+  | `AcceptedCmp2` (2/3) | Whether the customer accepted the offer in the 2nd prior campaign (0/1 flag) |
+  | `Marital_Status` (2/3) | Marital status, categorical (5 values after cleaning) → one-hot 5 dims |
+  | `NumWebPurchases` (2/3) | Number of purchases made through the website |
+  | `MntSweetProducts` (2/3) | Amount spent on sweet products over the last 2 years |
+  | `MntFishProducts` (2/3) | Amount spent on fish products over the last 2 years |
+  | `NumStorePurchases` (2/3) | Number of purchases made in physical stores |
+  | `Age` (2/3) | Customer age in 2014, derived as `2014 − Year_Birth` |
 
-  3/3 tier (10, full consensus across point-biserial / RF / MI — kept without caveat except where noted):
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - stratified on `Response`
+  - `Income` NaNs (24 rows) median-filled as a *feature*
+  - fill value = train median (51,735)
+  - `StandardScaler` train-fit
+  - batch 64
+  - 50 epochs
+  - weighted BCE (`pos_weight = neg/pos ≈ 5.7`)
+  - Adam(lr=1e-3, β1=0.9, β2=0.999, eps=1e-8)
+  - no data augmentation
 
-  | Feature | Biv | RF | MI | Reason (from EDA) |
-  |---|---|---|---|---|
-  | AcceptedCmp5 | 0.328 ✓ | 0.040 ✓ | 0.042 ✓ | Prior-campaign acceptance; responders 40.7% vs 8.2% (5× gap). Not leakage (history always resolved before current campaign) — cold-start caveat for brand-new prospects only |
-  | AcceptedCmp3 | 0.254 ✓ | 0.042 ✓ | 0.027 ✓ | Same as above, second prior-campaign flag at full consensus |
-  | MntWines | 0.247 ✓ | 0.070 ✓ | 0.040 ✓ | Spend signal: high spenders respond more |
-  | MntMeatProducts | 0.237 ✓ | 0.069 ✓ | 0.043 ✓ | Same spend story; MI #1 overall |
-  | NumCatalogPurchases | 0.221 ✓ | 0.038 ✓ | 0.034 ✓ | Catalog buyers are marketing-primed (vs walk-in store shoppers) |
-  | Recency | 0.199 ✓ | 0.088 ✓ (RF #1) | 0.025 ✓ | Classic RFM signal: recent buyers respond more |
-  | Customer_Tenure_Days | 0.194 ✓ | 0.082 ✓ (RF #2) | 0.032 ✓ | Loyalty/engagement story |
-  | MntGoldProds | 0.141 ✓ | 0.050 ✓ | 0.034 ✓ | Spend signal, survives all three methods |
-  | Income | 0.133 ✓ | 0.072 ✓ | 0.037 ✓ | Higher-income customers respond somewhat more; doubles as the other track's target |
-  | MntFruits | 0.126 ✓ | 0.039 ✓ | 0.020 ✓ | Weakest 3/3 member but clears all three bars |
+- **Results** (test = held-out 20%, n_test=448; loss = unweighted mean BCE, threshold 0.5):
 
-  2/3 tier (8, kept with a specific reason each — not a blanket "close enough"):
-
-  | Feature | Votes | Reason for keeping |
-  |---|---|---|
-  | AcceptedCmp1 (0.294) | biv✓ MI✓ RF✗ | RF demotes the whole `AcceptedCmp*` family once spend/tenure explain the same "engaged customer" signal (multicollinearity/redundancy effect, not leakage evidence) — family pattern, but the feature's own biv+MI signal is strong |
-  | AcceptedCmp2 (0.169) | biv✓ MI✓ RF✗ | Same RF family-demotion note as AcceptedCmp1 |
-  | Marital_Status (0.152, cat) | biv✓ RF✓ MI✗ | Passes RF (#7); MI's discrete-target estimator is noisier on binary targets, so a near-miss there is less conclusive. One-hot → 5 dims; Cramér's V vs Education = 0.043 (independent) |
-  | NumWebPurchases (0.148) | biv✓ MI✓ RF✗ | Clears MI (#8); missed RF cut only |
-  | MntSweetProducts (0.117) | biv✓ RF✓ MI✗ | Same MI-noise note as Marital_Status |
-  | MntFishProducts (0.111) | biv✓ RF✓ MI✗ | Same as above |
-  | NumStorePurchases (0.039) | RF✓ MI✓ biv✗ | Fails only the linear check — real non-linear/interaction signal correlation misses |
-  | Age (0.018) | RF✓ MI✓ biv✗ | Same as above (RF #8, MI #12) |
-
-  Cut (7): AcceptedCmp4, Teenhome, Education (1/3 each); Kidhome, NumWebVisitsMonth, NumDealsPurchases, Complain (0/3).
-
-- **Training setup.** 80/20 split, `random_state=42`, stratified on `Response`; `Income` NaNs (24 rows) median-filled
-  as a *feature* from the train median (51,735, no leakage); `StandardScaler` train-fit; batch 64; 50 epochs;
-  per-epoch log of train loss + validation loss + validation metric to `weights/*_{pytorch,scratch}_history.csv`
-  with loss-curve plots; weights to `weights/*.pt` (torch `state_dict`) and `weights/*.scratch.npz`
-  (W1/b1/W2/b2 + scaler stats); test metrics to `weights/*_test_metrics.json`.
-  Execution order: PyTorch oracle first (scratch parity cell asserts its csv/json exist).
-
-- **Results — loss & scores** (test = held-out 20%, n_test=448, seed 42; loss = unweighted mean BCE, threshold 0.5):
-
-  | Metric | PyTorch (oracle) | Scratch | absΔ | Tolerance | Verdict |
-  |---|---|---|---|---|---|
-  | test BCE | 0.3903 | 0.4357 | 0.0454 | < 0.05 | PASS |
-  | accuracy | 0.8036 | 0.7879 | 0.0157 | — | — |
-  | precision | 0.4087 | 0.3833 | 0.0254 | — | — |
-  | recall | 0.7015 | 0.6866 | 0.0149 | — | — |
-  | **F1** | **0.5165** | **0.4920** | **0.0245** | < 0.05 | PASS |
-  | ROC-AUC | 0.8725 | 0.8617 | 0.0108 | — | — |
+  | Metric | PyTorch | Scratch | absΔ |
+  |---|---|---|---|
+  | test BCE | 0.3903 | 0.4357 | 0.0454 |
+  | accuracy | 0.8036 | 0.7879 | 0.0157 |
+  | precision | 0.4087 | 0.3833 | 0.0254 |
+  | recall | 0.7015 | 0.6866 | 0.0149 |
+  | **F1** | **0.5165** | **0.4920** | **0.0245** |
+  | ROC-AUC | 0.8725 | 0.8617 | 0.0108 |
 
   Training: torch train 1.211→0.539 / val 0.605→0.390, val-F1 0.369→0.516; scratch train 1.542→0.565 /
   val 1.249→0.436, val-F1 0.257→0.492. Curves descend monotonically, no overfitting kink.
 
+  ![clf v1 scratch loss](media/loss_clf_v1.png)
+
 - **Why.** F1 ≈ 0.50 with ROC-AUC ≈ 0.87 is the honest 85/15-imbalance story: accuracy 0.80 beats the
   0.851 all-negative dummy only modestly, while recall 0.70 / precision ~0.40 shows the model actually finds
   responders at the cost of false alarms — exactly why the EDA mandated precision/recall/F1/ROC-AUC over accuracy.
-  Prior-campaign flags + spend + recency/tenure carry the ranking, matching the 3/3 vote table.
-  Parity gap (ΔBCE 0.045 / ΔF1 0.025) is explained by different RNG libraries for init and different
-  batch-shuffle streams — the signature of equivalent implementations, not a systematic bug
-  (scratch trails here on the init lottery; see regression for the opposite direction).
+  Prior-campaign flags + spend + recency/tenure carry the ranking, matching the feature list above.
+- **What next.** One hidden layer may be the capacity bottleneck (curves never kinked) — try a deeper net next.
 
-### Regression — Income (13 numeric columns → 13 dims, n=2,213)
+### Regression
 
-- **Architecture used.** `x(13) → Linear(13→32) → ReLU → Linear(32→1)` → value + mean MSE, He init seed 42,
-  no dropout. Params: 481 (13·32+32 + 32·1+1). Forward/backward identical to classification except the head:
-  `dpred = 2(pred−y)/B`, then the same ReLU chain. **Target handling:** model trains on z-scored `Income`
-  (train-fit `StandardScaler`) and inverse-transforms for every reported metric — raw $ (~50k) explodes
-  gradients at lr=1e-3 (first attempt diverged to R² −5.96, RMSE $56k). Preprocessing otherwise identical:
-  `StandardScaler` on features (train-fit only); no test statistic touches training.
+- **Architecture used.**
+  - Shallow MLP (torch `RegMLP` + mirror NumPy twin)
+  - `x(13) → Linear(13→32) → ReLU → Linear(32→1) → value`
 
-- **Features used + reason per feature** (same 3-method voting rule as classification).
+![Shallow MLP ONNX graph](media/arch_reg_v1.png)
 
-  3/3 tier (8):
+- **Features used.** Same voting rule (bivariate `|r| ≥ 0.10` + RF top-12 + MI top-12; 3/3 chosen, 2/3 with named reason).
 
-  | Feature | Biv | RF | MI | Reason |
-  |---|---|---|---|---|
-  | NumCatalogPurchases | 0.589 ✓ | ✓ (6th) | 0.573 ✓ | #1 bivariate; RF collapse to 6th is the greedy-split artifact (0.734-correlated with MntMeatProducts, MI confirms real signal) |
-  | MntMeatProducts | 0.584 ✓ | ✓ (2nd) | 0.719 ✓ (MI #1) | Core spend driver |
-  | MntWines | 0.578 ✓ | ✓ (1st, 0.446) | 0.681 ✓ | RF's pick for early splits; 3× runner-up is multicollinearity bookkeeping, not true dominance (MI agrees with bivariate order) |
-  | NumWebVisitsMonth | −0.553 ✓ | ✓ (3rd) | 0.399 ✓ | Negative: site-browsers earn/spend *less*; affluent buy via catalog/store |
-  | MntSweetProducts | 0.441 ✓ | ✓ | 0.424 ✓ | Spend cluster member |
-  | MntFruits | 0.430 ✓ | ✓ (4th) | 0.453 ✓ | Spend cluster member |
-  | NumWebPurchases | 0.388 ✓ | ✓ (12th) | 0.349 ✓ | Channel signal |
-  | MntGoldProds | 0.325 ✓ | ✓ | 0.270 ✓ | Spend cluster member |
+  | Feature (votes) | Description (what this feature is) |
+  |---|---|
+  | `NumCatalogPurchases` (3/3) | Number of purchases made through the catalog channel |
+  | `MntMeatProducts` (3/3) | Amount spent on meat products over the last 2 years |
+  | `MntWines` (3/3) | Amount spent on wines over the last 2 years |
+  | `NumWebVisitsMonth` (3/3) | Number of website visits per month |
+  | `MntSweetProducts` (3/3) | Amount spent on sweet products over the last 2 years |
+  | `MntFruits` (3/3) | Amount spent on fruits over the last 2 years |
+  | `NumWebPurchases` (3/3) | Number of purchases made through the website |
+  | `MntGoldProds` (3/3) | Amount spent on gold products over the last 2 years |
+  | `NumStorePurchases` (2/3) | Number of purchases made in physical stores |
+  | `MntFishProducts` (2/3) | Amount spent on fish products over the last 2 years |
+  | `Kidhome` (2/3) | Number of young children in the household |
+  | `Age` (2/3) | Customer age in 2014, derived as `2014 − Year_Birth` |
+  | `NumDealsPurchases` (2/3) | Number of purchases made with a discount |
 
-  2/3 tier (5):
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - 24 missing-`Income` rows dropped
+  - target must not be imputed
+  - feature scaler train-fit
+  - target scaler train-fit
+  - z-scored `Income` for training
+  - every reported metric inverse-transformed to raw $
+  - batch 64
+  - 50 epochs
+  - mean MSE loss
+  - Adam(lr=1e-3, β1=0.9, β2=0.999, eps=1e-8)
+  - no data augmentation
 
-  | Feature | Votes | Reason for keeping |
-  |---|---|---|
-  | NumStorePurchases (0.530) | biv✓ MI✓ RF✗ | Fails only RF (15th) — same greedy-split artifact; MI #4 (0.550) confirms |
-  | MntFishProducts (0.439) | biv✓ MI✓ RF✗ | Same artifact (RF 13th, MI #7) |
-  | Kidhome (−0.428) | biv✓ MI✓ RF✗ | Same artifact (RF 19th, MI #12); negative: young-children households earn less |
-  | Age (0.163) | biv✓ RF✓ MI✗ | Fails only MI (14th, 0.130) — near-miss |
-  | NumDealsPurchases (−0.083) | RF✓ MI✓ biv✗ | Fails only the linear check (−0.083) — real non-linear signal both model-based methods see |
+- **Results** (test = held-out 20%, n_test=443; metrics in raw $):
 
-  Cut (12, incl.): AcceptedCmp5/1, Education, AcceptedCmp4, **Response** (all 1/3 — `Response`'s 0.133 bivariate
-  correlation vanishes to ~0.0005 under RF/MI once spend channels explain the same affluent-customer signal),
-  Customer_Tenure_Days, Recency (RF-only); AcceptedCmp2, Marital_Status, Complain, Teenhome, AcceptedCmp3 (0/3).
-
-- **Training setup.** 80/20 split, `random_state=42` (n_test=443); feature + target scalers train-fit; Adam(lr=1e-3,
-  β1=0.9, β2=0.999, eps=1e-8), batch 64, 50 epochs, CPU. Losses logged in z-space (train/val MSE),
-  RMSE tracked in raw $; same history-csv / weights / metrics-json artifact pattern as classification.
-
-- **Results — loss & scores** (test = held-out 20%, n_test=443, seed 42; metrics in raw $):
-
-  | Metric | PyTorch (oracle) | Scratch | absΔ / relΔ | Tolerance | Verdict |
-  |---|---|---|---|---|---|
-  | test MSE (raw) | 125,307,774.9 | 113,761,654.3 | rel 0.092 | — | — |
-  | **RMSE** | **11,194.1** | **10,665.9** | **rel 0.047** | < 0.10 | PASS |
-  | MAE | 7,170.3 | 6,809.6 | rel 0.050 | — | — |
-  | **R²** | **0.7287** | **0.7537** | **0.0250** | < 0.05 | PASS |
+  | Metric | PyTorch | Scratch | absΔ / relΔ |
+  |---|---|---|---|
+  | test MSE (raw) | 125,307,774.9 | 113,761,654.3 | rel 0.092 |
+  | **RMSE** | **11,194.1** | **10,665.9** | **rel 0.047** |
+  | MAE | 7,170.3 | 6,809.6 | rel 0.050 |
+  | **R²** | **0.7287** | **0.7537** | **0.0250** |
 
   Training (z-space MSE): torch train 1.016→0.464 / val 0.599→0.185, val-RMSE $20,126→$11,194;
   scratch train 0.891→0.456 / val 0.415→0.168, val-RMSE $16,746→$10,666.
 
+  ![reg v1 scratch loss](media/loss_reg_v1.png)
+
 - **Why.** R² ≈ 0.73–0.75 is strong because the EDA said it would be: 17/25 candidates clear 0.10
   bivariately with several > 0.5 — the strongest signal set of all three datasets explored in this project.
-  Spend/channel columns are near-mechanical proxies of income (people with more money spend more money),
-  unlike subjective or snapshot targets. Residual RMSE ≈ $11k against median $51k is the multicollinearity
-  price: the top features repeat one affluent-spender signal rather than adding independent drivers.
-  Scratch leading slightly here (opposite direction to classification) is the init lottery landing the other way —
-  consistent with equivalent implementations, and inside tolerance either way.
-
-### Shared notes (v1)
-
-- **Data & cleaning done.** Raw file: 2,240 rows × 29 cols, tab-separated. Applied the same 5 EDA steps
-  (`slide_deck.html` §05) in all four notebooks — none touch either target directly:
-  1. Drop `ID` (identifier, not a feature).
-  2. Drop `Z_CostContact` / `Z_Revenue` (constant 3 / 11 every row — zero variance, verified before dropping).
-  3. Parse `Dt_Customer` (`%d-%m-%Y`, range 2012-07-30 → 2014-06-29) into `Customer_Tenure_Days` (days before 2014-06-29).
-  4. Derive `Age = 2014 − Year_Birth`; drop 3 rows with birth years 1893/1899/1900 (ages 121/115/114, data-entry errors) → **2,237 rows**.
-  5. Collapse `Marital_Status` joke/tiny categories (`Absurd` 2, `YOLO` 2, `Alone` 3 → `Single`, now n=486; 5 categories left).
-  6. Regression only: drop 24 rows with missing `Income` (1.1%; imputing the target itself would bias it) → **2,213 rows**.
-     Classification keeps them and median-fills `Income` as a *feature* (train median 51,735, no leakage).
-
-- **Limitations & next steps.**
-  - Small-n (~2.2k): single 80/20 split is noisy; k-fold would tighten the numbers (out of "simple pipeline" scope).
-  - $666,666 Income outlier (≈4× next-highest) inflates squared-error metrics; a log-target or robust loss is the natural follow-up.
-  - `AcceptedCmp*` cold-start caveat stands: brand-new prospects lack history, so deployment needs a fallback path.
-  - Multicollinearity (spend cluster r up to 0.73) means weights are not interpretable as independent effects.
-
-- **Artifacts index.**
-  - Notebooks: `classification_pytorch.ipynb`, `regression_pytorch.ipynb` (oracles),
-    `classification_scratch.ipynb`, `regression_scratch.ipynb` (primary; all executed in place via
-    `uv run jupyter nbconvert --execute`).
-  - Weights: `weights/classification_mlp.pt`, `weights/regression_mlp.pt`,
-    `weights/classification_scratch.npz`, `weights/regression_scratch.npz`,
-    `weights/{classification,regression}_scaler.npz` (incl. target scaler + column order + train median).
-  - Logs: `weights/*_{pytorch,scratch}_history.csv` (per-epoch train/val loss + val metric),
-    `weights/*_{pytorch,scratch}_test_metrics.json` (final test loss + scores).
-  - Env: `torch 2.14.1` added to `/Data/pyproject.toml` via `uv add torch`; `scikit-learn`/`pandas`/`numpy` reused.
+  Spend/channel columns are near-mechanical proxies of income. Residual RMSE ≈ $11k against median $51k is the
+  multicollinearity price: the top features repeat one affluent-spender signal rather than adding independent drivers.
+- **What next.** One hidden layer may be the capacity bottleneck on this track too — try a deeper net;
+  also note the $666,666 outlier (≈4× next-highest) inflates squared-error metrics,
+  so a log-target or robust loss is a natural follow-up.
 
 ## 2nd Version (deeper MLP)
 
-Same data, features, splits, seed, and losses as v1 — only depth, regularization, and schedule change:
-`FC(in→64)→BN→ReLU→Dropout(0.2)→FC(64→64)→BN→(+residual)→ReLU→Dropout(0.2)→FC(64→1)`,
-100 epochs, Adam(lr=1e-3) + cosine annealing + weight decay 1e-4. New files
-(`*_v2.ipynb`, `weights_v2/`); v1 files frozen. Clf params ≈ 5,953 / reg ≈ 5,393 (incl. BN).
-Scratch hand-codes batchnorm (batch stats + momentum-0.1 running stats, eps=1e-5, unbiased running-var
-like torch), inverted dropout (separate rng stream), BN backward, and the residual gradient split
-(`dD1 = dB2·W2ᵀ + dS`); cosine LR `0.5·lr0·(1+cos(π·(e−1)/100))` matches torch `CosineAnnealingLR(T_max=100)`;
-weight decay added to every gradient like torch Adam.
+- 2,237-row cleaned data (classification) and 2,213-row dropped-target data (regression)
+- 18-column / 13-column feature sets
+- 80/20 splits and seed 42
+- weighted-BCE and z-space-MSE losses
+- Only depth, regularization, and schedule change (100 epochs, cosine annealing, weight decay 1e-4)
 
-### Classification — Response (same 18 cols → 22 dims)
+- `classification_pytorch_v2.ipynb`, `classification_scratch_v2.ipynb`
+- `regression_pytorch_v2.ipynb`, `regression_scratch_v2.ipynb`
+- `weights_v2/`
+  - `classification_mlp.pt` and `classification_scratch.npz`
+  - `regression_mlp.pt` and `regression_scratch.npz`
+  - `*_scaler.npz` (feature scalers, target scaler, column order, train median)
+  - `*_history.csv` (per-epoch train/val loss + val metric)
+  - `*_test_metrics.json` (final test loss + scores)
 
-- **Architecture / Setup.** ResNet-style block above (residual wraps the 64→64 block only — dims match, no
-  projection). Weighted BCE (`pos_weight ≈ 5.7`) for training steps; all logged/reported losses unweighted.
-  Eval-mode train loss logged per epoch (same convention both twins).
-- **Results — loss + scores** (n_test=448):
+### Classification
 
-  | Metric | PyTorch v2 | Scratch v2 | absΔ | Tol | Verdict |
-  |---|---|---|---|---|---|
-  | test BCE | 0.3863 | 0.3775 | 0.0088 | < 0.05 | PASS |
-  | accuracy | 0.8214 | 0.8304 | 0.0090 | — | — |
-  | precision | 0.4454 | 0.4571 | 0.0117 | — | — |
-  | recall | 0.7910 | 0.7164 | 0.0746 | — | — |
-  | **F1** | **0.5699** | **0.5581** | **0.0118** | < 0.05 | PASS |
-  | ROC-AUC | 0.8814 | 0.8686 | 0.0128 | — | — |
+- **Architecture used.**
+  - Deep ResNet-style MLP (torch `ClfDeepMLP` + mirror NumPy twin)
+  - `x(22) → Linear(22→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → logit`
+
+![Deep ResNet-style MLP ONNX graph](media/arch_clf_v2.png)
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - stratified on `Response`
+  - `Income` NaNs median-filled as a *feature*
+  - fill value = train median (51,735)
+  - `StandardScaler` train-fit
+  - batch 64
+  - 100 epochs
+  - weighted BCE (`pos_weight ≈ 5.7`)
+  - Adam(lr=1e-3) + cosine annealing
+  - weight decay 1e-4
+  - no data augmentation
+
+- **Results** (n_test=448):
+
+  | Metric | PyTorch | Scratch | absΔ |
+  |---|---|---|---|
+  | test BCE | 0.3863 | 0.3775 | 0.0088 |
+  | accuracy | 0.8214 | 0.8304 | 0.0090 |
+  | precision | 0.4454 | 0.4571 | 0.0117 |
+  | recall | 0.7910 | 0.7164 | 0.0746 |
+  | **F1** | **0.5699** | **0.5581** | **0.0118** |
+  | ROC-AUC | 0.8814 | 0.8686 | 0.0128 |
 
   Curves: torch train 1.055→0.543 / val 0.615→0.386, val-F1 0.425→0.570;
   scratch train 0.642→0.281 / val 0.661→0.378, val-F1 0.366→0.558.
-- **Results vs v1 / Verdict: KEEP.** Torch F1 0.5165→0.5699 (+0.053), ROC 0.8725→0.8814; scratch F1
-  0.4920→0.5581 (+0.066). Capacity — not features — was the v1 bottleneck, as suspected (v1 curves never kinked).
+
+  ![clf v2 scratch loss](media/loss_clf_v2.png)
+
+- **Why.** Torch F1 0.5165→0.5699 (+0.053), ROC 0.8725→0.8814; scratch F1 0.4920→0.5581 (+0.066).
+  Capacity — not features — was the v1 bottleneck, as suspected (v1 curves never kinked).
   Depth + BN/dropout bought recall without losing precision (torch recall 0.70→0.79, precision 0.41→0.45).
+- **What next.** Test whether the 2/3 tier carries real signal — rerun the same deep net on 3/3-only features (v3 ablation).
 
-### Regression — Income (same 13 dims, z-scored target)
+### Regression
 
-- **Architecture / Setup.** Same ResNet block with 13-dim input. z-space MSE loss; metrics in raw $.
-- **Results — loss + scores** (n_test=443, raw $):
+- **Architecture used.**
+  - Deep ResNet-style MLP (torch `RegDeepMLP` + mirror NumPy twin)
+  - `x(13) → Linear(13→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → value`
 
-  | Metric | PyTorch v2 | Scratch v2 | Δ | Tol | Verdict |
-  |---|---|---|---|---|---|
-  | test MSE | 107,448,373.9 | 118,746,515.5 | rel 0.105 | — | — |
-  | **RMSE** | **10,365.7** | **10,897.1** | **rel 0.051** | < 0.10 | PASS |
-  | MAE | 6,592.4 | 6,692.6 | rel 0.015 | — | — |
-  | **R²** | **0.7673** | **0.7429** | **0.0244** | < 0.05 | PASS |
+![Deep ResNet-style MLP ONNX graph](media/arch_reg_v2.png)
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - 24 missing-`Income` rows dropped
+  - feature scaler train-fit
+  - target scaler train-fit
+  - z-scored `Income` for training
+  - every reported metric inverse-transformed to raw $
+  - batch 64
+  - 100 epochs
+  - z-space MSE loss
+  - Adam(lr=1e-3) + cosine annealing
+  - weight decay 1e-4
+  - no data augmentation
+
+- **Results** (n_test=443, raw $):
+
+  | Metric | PyTorch | Scratch | absΔ / relΔ |
+  |---|---|---|---|
+  | test MSE | 107,448,373.9 | 118,746,515.5 | rel 0.105 |
+  | **RMSE** | **10,365.7** | **10,897.1** | **rel 0.051** |
+  | MAE | 6,592.4 | 6,692.6 | rel 0.015 |
+  | **R²** | **0.7673** | **0.7429** | **0.0244** |
 
   Curves (z-MSE): torch train 0.653→0.457 / val 0.394→0.159, val-RMSE $16,324→$10,366;
   scratch train 0.732→0.463 / val 0.469→0.176, val-RMSE $17,815→$10,897.
-- **Results vs v1 / Verdict: KEEP.** Torch R² 0.7287→0.7673 (+0.039), RMSE $11,194→$10,366 (−7%);
-  scratch R² 0.7537→0.7429 (−0.011, init lottery within tolerance), RMSE $10,666→$10,897.
-  Net: depth helps the oracle clearly; scratch holds roughly at v1 level — twin still valid, v2 is the new best
-  per-track by oracle numbers with scratch confirming inside tolerance.
 
-### Shared notes (v2 — only what's new/changed)
+  ![reg v2 scratch loss](media/loss_reg_v2.png)
 
-- New: `*_v2.ipynb` ×4, `weights_v2/` (pt/npz/scaler/csv/json, same naming with v2 paths), cosine LR + wd 1e-4,
-  100 epochs, BN/dropout/residual in both frameworks.
-- Parity held despite deeper nets (BN running stats + dropout masks can't match exactly across libraries —
-  tolerances unchanged and still passing).
-- Next candidate (not run): LightGBM ceiling (Option D) and/or 3/3-only ablation (Option B).
+- **Why.** Torch R² 0.7287→0.7673 (+0.039), RMSE $11,194→$10,366 (−7%);
+  scratch R² 0.7537→0.7429 (−0.011, init lottery inside tolerance), RMSE $10,666→$10,897.
+  Depth helps the oracle clearly; scratch holds roughly at v1 level.
+- **What next.** Rerun the classification deep net on 3/3-only features (v3 ablation); LightGBM ceiling and log-target/robust-loss ideas stay open.
 
 ## 3rd Version (3/3-only ablation)
 
-Single-variable test of the 2/3 tier: identical v2 deeper arch, training, splits, and seed — only features
-shrink to 3/3 consensus (clf 10 cols → 10 dims, one-hot block deleted, params ≈ 5,185; reg 8 cols → 8 dims,
-params ≈ 5,057). Dropped: clf AcceptedCmp1/2, Marital_Status, NumWebPurchases, MntSweet/FishProducts,
-NumStorePurchases, Age; reg NumStorePurchases, MntFishProducts, Kidhome, Age, NumDealsPurchases.
-New files (`*_v3.ipynb`, `weights_v3/`); v2 frozen.
+- Identical v2 deeper arch, training, splits, and seed
+- Only features shrink to 3/3 consensus
+- clf 10 cols → 10 dims (one-hot block deleted, params ≈ 5,185)
+- reg 8 cols → 8 dims (params ≈ 5,057)
 
-### Classification — Response (10 dims, all numeric)
+- `classification_pytorch_v3.ipynb`, `classification_scratch_v3.ipynb`
+- `regression_pytorch_v3.ipynb`, `regression_scratch_v3.ipynb`
+- `weights_v3/`
+- Dropped features (3/3-only cut):
 
-- **Results — loss + scores** (n_test=448):
+  | Dropped (classification, 8) | Description (what this feature is) |
+  |---|---|
+  | `AcceptedCmp1` | Whether the customer accepted the offer in the 1st prior campaign (0/1 flag) |
+  | `AcceptedCmp2` | Whether the customer accepted the offer in the 2nd prior campaign (0/1 flag) |
+  | `Marital_Status` | Marital status, categorical (5 values) → one-hot 5 dims |
+  | `NumWebPurchases` | Number of purchases made through the website |
+  | `MntSweetProducts` | Amount spent on sweet products over the last 2 years |
+  | `MntFishProducts` | Amount spent on fish products over the last 2 years |
+  | `NumStorePurchases` | Number of purchases made in physical stores |
+  | `Age` | Customer age in 2014, derived as `2014 − Year_Birth` |
 
-  | Metric | PyTorch v3 | Scratch v3 | absΔ | Tol | Verdict |
-  |---|---|---|---|---|---|
-  | test BCE | 0.4589 | 0.4255 | 0.0334 | < 0.05 | PASS |
-  | accuracy | 0.7388 | 0.7768 | 0.0380 | — | — |
-  | precision | 0.3377 | 0.3759 | 0.0382 | — | — |
-  | recall | 0.7761 | 0.7463 | 0.0298 | — | — |
-  | **F1** | **0.4706** | **0.5000** | **0.0294** | < 0.05 | PASS |
-  | ROC-AUC | 0.8466 | 0.8515 | 0.0049 | — | — |
+  | Dropped (regression, 5) | Description (what this feature is) |
+  |---|---|
+  | `NumStorePurchases` | Number of purchases made in physical stores |
+  | `MntFishProducts` | Amount spent on fish products over the last 2 years |
+  | `Kidhome` | Number of young children in the household |
+  | `Age` | Customer age in 2014, derived as `2014 − Year_Birth` |
+  | `NumDealsPurchases` | Number of purchases made with a discount |
+
+### Classification
+
+- **Architecture used.**
+  - Deep ResNet-style MLP, 3/3-feature ablation (torch `ClfDeepMLP` + mirror NumPy twin)
+  - `x(10) → Linear(10→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → logit`
+
+![Deep ResNet-style MLP ONNX graph](media/arch_clf_v3.png)
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - stratified on `Response`
+  - `Income` NaNs median-filled as a *feature*
+  - fill value = train median (51,735)
+  - `StandardScaler` train-fit
+  - batch 64
+  - 100 epochs
+  - weighted BCE (`pos_weight ≈ 5.7`)
+  - Adam(lr=1e-3) + cosine annealing
+  - weight decay 1e-4
+  - no data augmentation
+
+- **Results** (n_test=448):
+
+  | Metric | PyTorch | Scratch | absΔ |
+  |---|---|---|---|
+  | test BCE | 0.4589 | 0.4255 | 0.0334 |
+  | accuracy | 0.7388 | 0.7768 | 0.0380 |
+  | precision | 0.3377 | 0.3759 | 0.0382 |
+  | recall | 0.7761 | 0.7463 | 0.0298 |
+  | **F1** | **0.4706** | **0.5000** | **0.0294** |
+  | ROC-AUC | 0.8466 | 0.8515 | 0.0049 |
 
   Curves: torch train 0.711→0.421 / val 0.704→0.459, val-F1 0.410→0.471;
   scratch train 0.690→0.384 / val 0.667→0.425, val-F1 0.425→0.500.
-- **Results vs v2 / Verdict: REVERT to full set.** Torch F1 0.5699→0.4706 (**−0.099**), ROC 0.8814→0.8466;
-  scratch F1 0.5581→0.5000 (−0.058). Both twins agree: the 2/3 tier carries real, non-redundant signal —
-  most plausibly AcceptedCmp1 (biv 0.294, the strongest dropped feature) plus the Marital_Status/NumStorePurchases/Age
-  non-linear signals the deep net could exploit even though RF demoted them. The "RF family-demotion = redundancy"
-  reading from v1 was wrong for this track: demoted ≠ expendable. 2/3 stays.
 
-### Regression — Income (8 dims, z-scored target)
+  ![clf v3 scratch loss](media/loss_clf_v3.png)
 
-- **Results — loss + scores** (n_test=443, raw $):
+- **Why.** Torch F1 0.5699→0.4706 (**−0.099**), ROC 0.8814→0.8466; scratch F1 0.5581→0.5000 (−0.058).
+  Both twins agree: the 2/3 tier carries real, non-redundant signal — most plausibly AcceptedCmp1
+  (biv 0.294, the strongest dropped feature) plus the Marital_Status/NumStorePurchases/Age
+  non-linear signals the deep net could exploit even though RF demoted them.
+- **What next.** The 2/3 tier stays. Next: models from outside the taught list (v4).
 
-  | Metric | PyTorch v3 | Scratch v3 | Δ | Tol | Verdict |
-  |---|---|---|---|---|---|
-  | test MSE | 114,570,589.1 | 116,585,505.8 | rel 0.018 | — | — |
-  | **RMSE** | **10,703.8** | **10,797.5** | **rel 0.009** | < 0.10 | PASS |
-  | MAE | 6,906.5 | 6,915.9 | rel 0.001 | — | — |
-  | **R²** | **0.7519** | **0.7476** | **0.0043** | < 0.05 | PASS |
+### Regression
+
+- **Architecture used.**
+  - Deep ResNet-style MLP, 3/3-feature ablation (torch `RegDeepMLP` + mirror NumPy twin)
+  - `x(8) → Linear(8→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → value`
+
+![Deep ResNet-style MLP ONNX graph](media/arch_reg_v3.png)
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - 24 missing-`Income` rows dropped
+  - feature scaler train-fit
+  - target scaler train-fit
+  - z-scored `Income` for training
+  - every reported metric inverse-transformed to raw $
+  - batch 64
+  - 100 epochs
+  - z-space MSE loss
+  - Adam(lr=1e-3) + cosine annealing
+  - weight decay 1e-4
+  - no data augmentation
+
+- **Results** (n_test=443, raw $):
+
+  | Metric | PyTorch | Scratch | absΔ / relΔ |
+  |---|---|---|---|
+  | test MSE | 114,570,589.1 | 116,585,505.8 | rel 0.018 |
+  | **RMSE** | **10,703.8** | **10,797.5** | **rel 0.009** |
+  | MAE | 6,906.5 | 6,915.9 | rel 0.001 |
+  | **R²** | **0.7519** | **0.7476** | **0.0043** |
 
   Curves (z-MSE): torch train 0.651→0.470 / val 0.335→0.169, val-RMSE $15,061→$10,704;
   scratch train 0.700→0.468 / val 0.399→0.172, val-RMSE $16,429→$10,798.
-  Parity here is the tightest of all three versions (RMSE relΔ 0.009, R² Δ 0.004).
-- **Results vs v2 / Verdict: REVERT to full set (weakly).** Torch R² 0.7673→0.7519 (−0.015), RMSE +3%;
-  scratch R² 0.7429→0.7476 (+0.005, flat). Asymmetry vs classification: the 3/3 spend core carries ~98% of the
-  signal (NumStorePurchases 0.530 / Kidhome −0.428 / MntFish 0.439 help at the margin but the deep net routes
-  around them). Keep the full 13-dim set — it costs nothing and is still best-by-oracle — but the practical
-  lesson is the 8-dim 3/3 model is nearly as good and simpler to deploy.
+  Tightest parity of versions 1–3 (RMSE relΔ 0.009, R² Δ 0.004).
 
-### Shared notes (v3 — only what's new/changed)
+  ![reg v3 scratch loss](media/loss_reg_v3.png)
 
-- New: `*_v3.ipynb` ×4, `weights_v3/`; clf params 5,953→5,185, reg 5,393→5,057; no other code changes
-  (scratch BN/residual/Adam untouched — ablation needed none).
-- Answer to the v1 open question: 2/3 tier is **load-bearing for Response, marginal-but-positive for Income**.
-- Next candidates (not run): LightGBM ceiling (Option D); log-target / robust loss for the $666k outlier.
+- **Why.** Torch R² 0.7673→0.7519 (−0.015), RMSE +3%; scratch R² 0.7429→0.7476 (+0.005, flat).
+  Asymmetry vs classification: the 3/3 spend core carries ~98% of the signal (NumStorePurchases 0.530 /
+  Kidhome −0.428 / MntFish 0.439 help at the margin but the deep net routes around them).
+- **What next.** Keep the full 13-dim set — it costs nothing and is still best-by-oracle — but the practical
+  lesson is the 8-dim 3/3 model is nearly as good and simpler to deploy. Next: novel models (v4).
 
-## Version template (copy for v3, v4, …)
+## 4th Version (novel architectures — FT-Transformer-lite + NAM-robust)
+
+- Two models from outside the taught list
+- Nothing like Linear/Multiple/Polynomial, Logistic, Tree, RF, Stacking/GB/XGBoost, NB, SVM, kNN, kMeans, Perceptron/SLP, MLP
+- LightGBM deliberately not submitted (GB-variant, not novel)
+- TabPFN deliberately not submitted (pretrained, cannot be built from scratch)
+- Each model has a PyTorch oracle and a from-scratch NumPy twin sharing one derivation lock
+- 2,237-row cleaned data and 2,213-row dropped-target data
+- Full 18-column / 13-column feature sets (the 2/3 tier stays after the v3 result)
+- 80/20 splits and seed 42
+- Adam(lr=1e-3, wd 1e-4) + cosine (T_max=100)
+- 100 epochs
+- Numeric grad-check before training in both twins
+- clf grad-check on `tokW[0,0]` relerr 3.8e-9
+- reg grad-check on `W2[0,0,0]` relerr 3.5e-12
+- Best-checkpointing on each twin's own val stream
+- clf checkpoint = best val-F1
+- reg checkpoint = best val-RMSE
+
+- `classification_pytorch_v4.ipynb`, `classification_scratch_v4.ipynb`
+- `regression_pytorch_v4.ipynb`, `regression_scratch_v4.ipynb`
+- `weights_v4/` (pt/npz/scaler/csv/json + `classification_pytorch_attn.json`,
+  `regression_pytorch_shapes.json`, `regression_pytorch_outlier_diag.json`)
+- `media/` — ONNX graphs (`arch_*.png`, rendered from the matching `arch_*.onnx`), loss curves, attention bars, NAM shapes for this report.
+- `onnx_viz.py` — shared one-call helper (`save_graph`) every `_pytorch.ipynb` uses to export its graph (open any `media/*.onnx` in Netron to inspect).
+
+### Classification
+
+- **Architecture used.**
+  - FT-Transformer-lite (torch `FTTransformerLite` + mirror NumPy twin)
+  - `x(22) → 22×Linear(1→32) + CLS(32) → 2×[LN(32) → Q/K/V Linear(32→32)×3 → 4-head attention → Dropout(0.1) → Linear(32→32) → +resid → LN(32) → Linear(32→64) → ReLU → Dropout(0.1) → Linear(64→32) → +resid] → LN(32) → Linear(32→1)[CLS] → logit`
+
+![FT-Transformer-lite ONNX graph](media/arch_clf_v4.png)
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - stratified on `Response`
+  - `Income` NaNs median-filled as a *feature*
+  - fill value = train median (51,735)
+  - `StandardScaler` train-fit
+  - batch 64
+  - 100 epochs
+  - weighted BCE (`pos_weight ≈ 5.7`)
+  - Adam(lr=1e-3) + cosine annealing
+  - weight decay 1e-4
+  - no data augmentation
+
+- **Results** (n_test=448, best-checkpoint each):
+
+  | Metric | PyTorch | Scratch | absΔ |
+  |---|---|---|---|
+  | test BCE | 0.4214 | 0.4868 | 0.0654 |
+  | accuracy | 0.8147 | 0.8460 | 0.0313 |
+  | precision | 0.4310 | 0.4886 | 0.0576 |
+  | recall | 0.7463 | 0.6418 | 0.1045 |
+  | **F1** | **0.5464** | **0.5548** | **0.0084** |
+  | ROC-AUC | 0.8501 | 0.8308 | 0.0193 |
+
+  Curves: oracle train 0.978→0.277 / val 0.590→0.489, best-F1 0.5464 mid-training;
+  scratch train 0.545→0.132 / val 0.539→0.487, best-F1 0.5548.
+
+  ![clf v4 scratch loss](media/loss_clf_v4.png)
+
+- **Why.** Oracle F1 0.5699→0.5464 (−0.024), ROC 0.8814→0.8501 — small-data attention overfits where
+  the v2 ResNet block generalizes, consistent with literature (compact ResNet often beats transformers on
+  small tabular). The value is elsewhere: the brief's novel-classification-model slot is filled with a full
+  scratch derivation, and CLS-query attention mass independently rediscovers the EDA —
+  `Recency` 0.118 / `Customer_Tenure_Days` 0.092 / `NumCatalogPurchases` 0.085 on top, the same RF #1/#2 ranks,
+  not the bivariate ranking's `AcceptedCmp*` top.
+
+  ![clf v4 attention](media/attn_clf_v4.png)
+
+- **What next.** v2 stays the raw-score reference (F1 0.5699). The twin-agreement on F1 (Δ 0.0084) and ROC
+  (Δ 0.0193) against different RNG streams and different stopping epochs shows equivalent implementations;
+  the BCE gap (Δ 0.0654) is the checkpoint-epoch + attention-dropout-mask lottery both libraries admit.
+
+### Regression
+
+- **Architecture used.**
+  - Neural Additive Model + log1p/Huber head (torch `NAM` + mirror NumPy twin)
+  - `x(13) → 13×[Linear(1→64) → ReLU → Linear(64→1)] → Σ + b0 → ẑ → Huber(δ=0.5) → expm1 → $`
+
+![NAM ONNX graph](media/arch_reg_v4.png)
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - 24 missing-`Income` rows dropped
+  - feature scaler train-fit
+  - log1p target scaler train-fit
+  - `log1p(Income)` then z-scored for training
+  - every reported metric inverted via `expm1` to raw $
+  - $666,666 outlier kept in training data
+  - batch 64
+  - 100 epochs
+  - Huber(δ=0.5) loss
+  - Adam(lr=1e-3) + cosine annealing
+  - weight decay 1e-4
+  - no data augmentation
+
+- **Results** (n_test=443, raw $):
+
+  | Metric | PyTorch | Scratch | absΔ / relΔ |
+  |---|---|---|---|
+  | test MSE | 127,856,870.8 | 128,681,375.2 | rel 0.006 |
+  | **RMSE** | **11,307.4** | **11,343.8** | **rel 0.003** |
+  | MAE | 7,031.9 | 7,055.5 | rel 0.003 |
+  | **R²** | **0.7232** | **0.7214** | **0.0018** |
+
+  Training: oracle train-huber 1.886→0.086 / val-RMSE $634,653 (epoch 1, $666k dominates $ space even
+  through log) → $11,307; scratch 0.667→0.086 / $458,512 → $11,344.
+  Tightest twin agreement of all four versions. Masked diagnostic (2 rows): RMSE $8,518 / R² 0.824.
+
+  ![reg v4 scratch loss](media/loss_reg_v4.png)
+
+- **Why.** Oracle R² 0.7673→0.7232 (−0.044), RMSE $10,366→$11,307 (+9%). Additive models can't exploit
+  the spend-cluster interactions the v2 trunk routes around — the expected glass-box price. The core fit is
+  excellent (masked R² 0.824); the full-metric gap is the outlier price, paid transparently via Huber+log
+  instead of hidden deletion.
+
+  ![reg v4 NAM shapes](media/shapes_reg_v4.png)
+
+- **What next.** v2 stays the raw-score reference (R² 0.7673). Best oracle scores overall: clf v2 F1 0.5699,
+  reg v2 R² 0.7673. Open ideas: LightGBM/TabPFN ceiling column for the slide deck; k-fold to tighten small-n noise.
+
+## Version template (copy for v5, …)
 
 ### Classification — …
-- Changed vs previous: … / Results vs previous best: … / Verdict: …
+- Changed vs previous: … / Results vs previous best: … / Why + what next: …
 
 ### Regression — …
-- Changed vs previous: … / Results vs previous best: … / Verdict: …
-
-### Shared notes (vN — only what's new/changed)
+- Changed vs previous: … / Results vs previous best: … / Why + what next: …

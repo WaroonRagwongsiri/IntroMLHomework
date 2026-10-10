@@ -1,0 +1,10 @@
+{
+  "test_loss_BCE": 0.4868,
+  "accuracy": 0.846,
+  "precision": 0.4886,
+  "recall": 0.6418,
+  "f1": 0.5548,
+  "roc_auc": 0.8308,
+  "n_test": 448,
+  "seed": 42
+}

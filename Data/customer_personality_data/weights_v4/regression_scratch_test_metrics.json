@@ -1,0 +1,10 @@
+{
+  "test_MSE": 128681375.2,
+  "RMSE": 11343.8,
+  "MAE": 7055.5,
+  "R2": 0.7214,
+  "n_test": 443,
+  "seed": 42,
+  "delta": 0.5,
+  "target": "log1p+Huber"
+}
