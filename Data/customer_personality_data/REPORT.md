@@ -49,6 +49,8 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Shallow MLP (torch `ClfMLP` + mirror NumPy `ScratchMLP`)
   - `x(22) → Linear(22→32) → ReLU → Linear(32→1) → logit`
+  - `Linear`: weighted sum of inputs — the block that learns features
+  - `ReLU`: `max(0,x)` — non-linearity, so stacking Linear layers doesn't collapse into one linear map
 
 ![Shallow MLP ONNX graph](media/arch_clf_v1.png)
 
@@ -116,6 +118,8 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Shallow MLP (torch `RegMLP` + mirror NumPy twin)
   - `x(13) → Linear(13→32) → ReLU → Linear(32→1) → value`
+  - `Linear`: weighted sum of inputs — the block that learns features
+  - `ReLU`: `max(0,x)` — non-linearity, so stacking Linear layers doesn't collapse into one linear map
 
 ![Shallow MLP ONNX graph](media/arch_reg_v1.png)
 
@@ -202,6 +206,11 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Deep ResNet-style MLP (torch `ClfDeepMLP` + mirror NumPy twin)
   - `x(22) → Linear(22→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → logit`
+  - `Linear`: weighted sum of inputs — learns features
+  - `BN`: normalizes each unit's activations across the batch — stabilizes training through the deeper stack
+  - `ReLU`: `max(0,x)` — non-linearity
+  - `Dropout`: randomly zeroes units during training — regularizes against overfitting
+  - `+residual`: adds the block's input back onto its output — keeps the extra depth safe to train
 
 ![Deep ResNet-style MLP ONNX graph](media/arch_clf_v2.png)
 
@@ -245,6 +254,11 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Deep ResNet-style MLP (torch `RegDeepMLP` + mirror NumPy twin)
   - `x(13) → Linear(13→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → value`
+  - `Linear`: weighted sum of inputs — learns features
+  - `BN`: normalizes each unit's activations across the batch — stabilizes training through the deeper stack
+  - `ReLU`: `max(0,x)` — non-linearity
+  - `Dropout`: randomly zeroes units during training — regularizes against overfitting
+  - `+residual`: adds the block's input back onto its output — keeps the extra depth safe to train
 
 ![Deep ResNet-style MLP ONNX graph](media/arch_reg_v2.png)
 
@@ -318,6 +332,11 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Deep ResNet-style MLP, 3/3-feature ablation (torch `ClfDeepMLP` + mirror NumPy twin)
   - `x(10) → Linear(10→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → logit`
+  - `Linear`: weighted sum of inputs — learns features
+  - `BN`: normalizes each unit's activations across the batch — stabilizes training through the deeper stack
+  - `ReLU`: `max(0,x)` — non-linearity
+  - `Dropout`: randomly zeroes units during training — regularizes against overfitting
+  - `+residual`: adds the block's input back onto its output — keeps the extra depth safe to train
 
 ![Deep ResNet-style MLP ONNX graph](media/arch_clf_v3.png)
 
@@ -362,6 +381,11 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Deep ResNet-style MLP, 3/3-feature ablation (torch `RegDeepMLP` + mirror NumPy twin)
   - `x(8) → Linear(8→64) → BN → ReLU → Dropout(0.2) → Linear(64→64) → BN → (+residual) → ReLU → Dropout(0.2) → Linear(64→1) → value`
+  - `Linear`: weighted sum of inputs — learns features
+  - `BN`: normalizes each unit's activations across the batch — stabilizes training through the deeper stack
+  - `ReLU`: `max(0,x)` — non-linearity
+  - `Dropout`: randomly zeroes units during training — regularizes against overfitting
+  - `+residual`: adds the block's input back onto its output — keeps the extra depth safe to train
 
 ![Deep ResNet-style MLP ONNX graph](media/arch_reg_v3.png)
 
@@ -432,6 +456,11 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - FT-Transformer-lite (torch `FTTransformerLite` + mirror NumPy twin)
   - `x(22) → 22×Linear(1→32) + CLS(32) → 2×[LN(32) → Q/K/V Linear(32→32)×3 → 4-head attention → Dropout(0.1) → Linear(32→32) → +resid → LN(32) → Linear(32→64) → ReLU → Dropout(0.1) → Linear(64→32) → +resid] → LN(32) → Linear(32→1)[CLS] → logit`
+  - `Linear` (tokenizer): projects each scalar feature into its own 32-dim embedding
+  - `CLS`: one extra learned token that gathers information via attention and makes the final prediction
+  - `LN`: normalizes each token's own features (pre-norm, before each sub-layer) — attention's analogue of BN
+  - `Q/K/V Linear` + attention: each token looks at every other token and weighs them by learned relevance
+  - `Dropout`, `+resid`, `ReLU`: same roles as v2/v3 — regularization, safe depth, non-linearity
 
 ![FT-Transformer-lite ONNX graph](media/arch_clf_v4.png)
 
@@ -495,6 +524,10 @@ that was already the test split's max under this seed, so the full-dataset and t
 - **Architecture used.**
   - Neural Additive Model + log1p/Huber head (torch `NAM` + mirror NumPy twin)
   - `x(13) → 13×[Linear(1→64) → ReLU → Linear(64→1)] → Σ + b0 → ẑ → Huber(δ=0.5) → expm1 → $`
+  - `Linear` / `ReLU`: same roles as above, inside each feature's own small subnet
+  - `Σ + b0`: sums every feature's subnet output plus a global bias — additive, so each feature's effect stays inspectable on its own (the NAM shape-function plots)
+  - `Huber(δ=0.5)`: quadratic loss for small errors, linear for large ones — less sensitive to outliers than plain MSE
+  - `expm1`: inverts the `log1p` target transform back to raw dollars
 
 ![NAM ONNX graph](media/arch_reg_v4.png)
 
@@ -581,6 +614,10 @@ that was already the test split's max under this seed, so the full-dataset and t
     CART-with-gradient/Hessian tree, shared with the regression twin)
   - LightGBM: 500-round cap, early-stopped at iteration 73 on a held-out 10% train slice; `learning_rate=0.05`,
     `num_leaves=31`, `max_depth=-1` (unlimited), `subsample=0.8`, `colsample_bytree=0.8`, `reg_lambda=1.0`
+  - `num_leaves`/`max_depth`: caps how complex any one tree can get
+  - `subsample`/`colsample_bytree`: each round trains on a random slice of rows/columns — regularizes by decorrelating trees
+  - `reg_lambda`: L2 penalty on leaf values — shrinks extreme leaf predictions
+  - `learning_rate`: how much each new tree's output is added to the running prediction — small steps, many rounds
   - Scratch: 500-round cap, early-stopped at iteration 8 on its own val-BCE stream; `learning_rate=0.05`,
     `max_depth=5` (depth-wise, deliberate stand-in for LightGBM's leaf-wise `num_leaves=31`),
     `min_samples_leaf=20`, `reg_lambda=1.0`, row/column subsample 0.8/0.8; Newton-step leaves `-G/(H+λ)`,
@@ -664,6 +701,10 @@ that was already the test split's max under this seed, so the full-dataset and t
     (same generic CART-with-gradient/Hessian tree as the classification twin)
   - LightGBM: 500-round cap, early-stopped at iteration 98 on a held-out 10% train slice; `learning_rate=0.05`,
     `num_leaves=31`, `max_depth=-1` (unlimited), `subsample=0.8`, `colsample_bytree=0.8`, `reg_lambda=1.0`
+  - `num_leaves`/`max_depth`: caps how complex any one tree can get
+  - `subsample`/`colsample_bytree`: each round trains on a random slice of rows/columns — regularizes by decorrelating trees
+  - `reg_lambda`: L2 penalty on leaf values — shrinks extreme leaf predictions
+  - `learning_rate`: how much each new tree's output is added to the running prediction — small steps, many rounds
   - Scratch: 500-round cap, early-stopped at iteration 114 on its own val-RMSE stream; `learning_rate=0.05`,
     `max_depth=5` (depth-wise stand-in for leaf-wise `num_leaves=31`), `min_samples_leaf=20`, `reg_lambda=1.0`,
     row/column subsample 0.8/0.8; `g_i = pred_i − y_i`, `h_i = 1` recovers residual fitting through the same
