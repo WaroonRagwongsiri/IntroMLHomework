@@ -2,68 +2,68 @@
   "top10_cls_attention": [
     {
       "feature": "Recency",
-      "mass": 0.1183
-    },
-    {
-      "feature": "Customer_Tenure_Days",
-      "mass": 0.092
+      "mass": 0.1065
     },
     {
       "feature": "NumCatalogPurchases",
-      "mass": 0.0847
+      "mass": 0.1043
     },
     {
-      "feature": "Income",
-      "mass": 0.0643
-    },
-    {
-      "feature": "Age",
-      "mass": 0.058
-    },
-    {
-      "feature": "Marital_Status_Married",
-      "mass": 0.0574
-    },
-    {
-      "feature": "NumWebPurchases",
-      "mass": 0.0541
-    },
-    {
-      "feature": "NumStorePurchases",
-      "mass": 0.0483
+      "feature": "Customer_Tenure_Days",
+      "mass": 0.1021
     },
     {
       "feature": "MntFruits",
-      "mass": 0.0436
+      "mass": 0.0588
+    },
+    {
+      "feature": "MntGoldProds",
+      "mass": 0.0568
+    },
+    {
+      "feature": "NumWebPurchases",
+      "mass": 0.0558
+    },
+    {
+      "feature": "AcceptedCmp5",
+      "mass": 0.0497
+    },
+    {
+      "feature": "Marital_Status_Together",
+      "mass": 0.0489
+    },
+    {
+      "feature": "Income",
+      "mass": 0.0458
     },
     {
       "feature": "MntWines",
-      "mass": 0.0405
+      "mass": 0.0451
     }
   ],
   "all": {
-    "CLS": 0.01885,
-    "AcceptedCmp5": 0.03189,
-    "AcceptedCmp3": 0.0219,
-    "MntWines": 0.04053,
-    "MntMeatProducts": 0.03835,
-    "NumCatalogPurchases": 0.08468,
-    "Recency": 0.11825,
-    "Customer_Tenure_Days": 0.09201,
-    "MntGoldProds": 0.03829,
-    "Income": 0.06425,
-    "MntFruits": 0.04357,
-    "AcceptedCmp1": 0.02796,
-    "AcceptedCmp2": 0.01574,
-    "NumWebPurchases": 0.05412,
-    "MntSweetProducts": 0.03578,
-    "MntFishProducts": 0.02499,
-    "NumStorePurchases": 0.04833,
-    "Age": 0.058,
-    "Marital_Status_Divorced": 0.01522,
-    "Marital_Status_Married": 0.05738,
-    "Marital_Status_Single": 0.02116,
-    "Marital_Status_Together": 0.03325,
-    "Marital_Status_Widow": 0.0155
+    "CLS": 0.01042,
+    "AcceptedCmp5": 0.04972,
+    "AcceptedCmp3": 0.02044,
+    "MntWines": 0.04507,
+    "MntMeatProducts": 0.04257,
+    "NumCatalogPurchases": 0.10433,
+    "Recency": 0.10654,
+    "Customer_Tenure_Days": 0.10215,
+    "MntGoldProds": 0.05684,
+    "Income": 0.0458,
+    "MntFruits": 0.05877,
+    "AcceptedCmp1": 0.02147,
+    "AcceptedCmp2": 0.01512,
+    "NumWebPurchases": 0.05576,
+    "MntSweetProducts": 0.04328,
+    "MntFishProducts": 0.01306,
+    "NumStorePurchases": 0.04163,
+    "Age": 0.02018,
+    "Marital_Status_Divorced": 0.0274,
+    "Marital_Status_Married": 0.03438,
+    "Marital_Status_Single": 0.0243,
+    "Marital_Status_Together": 0.04894,
+    "Marital_Status_Widow": 0.01184
   }
 }

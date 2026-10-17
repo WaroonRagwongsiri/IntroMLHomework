@@ -1,0 +1,9 @@
+{
+  "test_loss_MSE_raw": 84877500.6,
+  "rmse": 9212.9,
+  "mae": 5904.9,
+  "r2": 0.8213,
+  "n_test": 443,
+  "seed": 42,
+  "best_iteration": 114
+}

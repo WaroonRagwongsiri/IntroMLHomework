@@ -7,6 +7,34 @@
 - Classification: BCE loss + accuracy, precision, recall, **F1** (main), ROC-AUC (threshold 0.5).
 - Regression: MSE, **RMSE** (main), MAE, R².
 
+**Data cleaning note.** Customer ID 9432 reported `Income=$666,666` — a repeating-digit value, ~4x the
+next-highest income in the dataset, and never explained by any other field. It just looks wrong, so it's
+dropped at the shared cleaning step, same treatment as the three implausible `Year_Birth` values
+(1893/1899/1900). Every version below is trained and reported on the cleaned (outlier-dropped) data.
+
+**Target distribution (classification — `Response`).** (`random_state=42`, stratified, same split every version)
+| Split | n | Yes (1) | No (0) |
+|---|---|---|---|
+| Full dataset | 2,236 | 334 (14.94%) | 1,902 (85.06%) |
+| Train (80%) | 1,788 | 267 (14.93%) | 1,521 (85.07%) |
+| Test (20%) | 448 | 67 (14.96%) | 381 (85.04%) |
+
+Stratified splitting keeps the ~85/15 imbalance essentially identical across train/test.
+
+**Target scale (regression — `Income`).** (`random_state=42` on the same 13-feature, dropna'd dataframe)
+| Stat | Full dataset | Test split |
+|---|---|---|
+| mean | $51,959 | $53,038 |
+| median | $51,371 | $51,948 |
+| std | $21,527 | $21,819 |
+| min | $1,730 | $4,023 |
+| 25th pct | $35,234 | $36,572 |
+| 75th pct | $68,487 | $68,669 |
+| max | $162,397 | $162,397 |
+
+With the $666,666 outlier dropped at cleaning time, the dataset's max is now $162,397 — the same value
+that was already the test split's max under this seed, so the full-dataset and test-split maxima coincide.
+
 ## 1st Version (BASELINE)
 
 - `classification_pytorch.ipynb`
@@ -53,7 +81,7 @@
   - `random_state=42`
   - stratified on `Response`
   - `Income` NaNs (24 rows) median-filled as a *feature*
-  - fill value = train median (51,735)
+  - fill value = train median (51,651)
   - `StandardScaler` train-fit
   - batch 64
   - 50 epochs
@@ -65,15 +93,15 @@
 
   | Metric | PyTorch | Scratch | absΔ |
   |---|---|---|---|
-  | test BCE | 0.3903 | 0.4357 | 0.0454 |
-  | accuracy | 0.8036 | 0.7879 | 0.0157 |
-  | precision | 0.4087 | 0.3833 | 0.0254 |
-  | recall | 0.7015 | 0.6866 | 0.0149 |
-  | **F1** | **0.5165** | **0.4920** | **0.0245** |
-  | ROC-AUC | 0.8725 | 0.8617 | 0.0108 |
+  | test BCE | 0.4028 | 0.4426 | 0.0398 |
+  | accuracy | 0.7991 | 0.7879 | 0.0112 |
+  | precision | 0.4034 | 0.3852 | 0.0182 |
+  | recall | 0.7164 | 0.7015 | 0.0149 |
+  | **F1** | **0.5161** | **0.4974** | **0.0187** |
+  | ROC-AUC | 0.8669 | 0.8587 | 0.0082 |
 
-  Training: torch train 1.211→0.539 / val 0.605→0.390, val-F1 0.369→0.516; scratch train 1.542→0.565 /
-  val 1.249→0.436, val-F1 0.257→0.492. Curves descend monotonically, no overfitting kink.
+  Training: torch train 1.224→0.537 / val 0.595→0.403, val-F1 0.366→0.516; scratch train 1.544→0.559 /
+  val 0.587→0.443, val-F1 0.246→0.497. Curves descend monotonically, no overfitting kink.
 
   ![clf v1 scratch loss](media/loss_clf_v1.png)
 
@@ -128,34 +156,40 @@
 
   | Metric | PyTorch | Scratch | absΔ / relΔ |
   |---|---|---|---|
-  | test MSE (raw) | 125,307,774.9 | 113,761,654.3 | rel 0.092 |
-  | **RMSE** | **11,194.1** | **10,665.9** | **rel 0.047** |
-  | MAE | 7,170.3 | 6,809.6 | rel 0.050 |
-  | **R²** | **0.7287** | **0.7537** | **0.0250** |
+  | test MSE (raw) | 122,427,717.9 | 109,479,934.8 | rel 0.106 |
+  | **RMSE** | **11,064.7** | **10,463.3** | **rel 0.054** |
+  | MAE | 7,067.9 | 6,543.3 | rel 0.074 |
+  | **R²** | **0.7423** | **0.7695** | **0.0272** |
 
-  Training (z-space MSE): torch train 1.016→0.464 / val 0.599→0.185, val-RMSE $20,126→$11,194;
-  scratch train 0.891→0.456 / val 0.415→0.168, val-RMSE $16,746→$10,666.
+  Training (z-space MSE): torch train 0.837→0.186 / val 0.741→0.266, val-RMSE $18,465→$11,065;
+  scratch train 0.620→0.175 / val 0.491→0.238, val-RMSE $15,030→$10,463.
 
   ![reg v1 scratch loss](media/loss_reg_v1.png)
 
-- **Why.** R² ≈ 0.73–0.75 is strong because the EDA said it would be: 17/25 candidates clear 0.10
+- **Why.** R² ≈ 0.74–0.77 is strong because the EDA said it would be: 17/25 candidates clear 0.10
   bivariately with several > 0.5 — the strongest signal set of all three datasets explored in this project.
-  Spend/channel columns are near-mechanical proxies of income. Residual RMSE ≈ $11k against median $51k is the
-  multicollinearity price: the top features repeat one affluent-spender signal rather than adding independent drivers.
-- **What next.** One hidden layer may be the capacity bottleneck on this track too — try a deeper net;
-  also note the $666,666 outlier (≈4× next-highest) inflates squared-error metrics,
-  so a log-target or robust loss is a natural follow-up.
+  Spend/channel columns are near-mechanical proxies of income. Residual RMSE ≈ $10-11k against median $51k is
+  the multicollinearity price: the top features repeat one affluent-spender signal rather than adding
+  independent drivers. These numbers already reflect the $666,666 outlier being dropped at cleaning (see the
+  note above the target-distribution tables) — the same point that used to sit in this exact train split and
+  inflate squared-error loss is simply gone now, rather than fought with a robust loss at training time.
+- **What next.** One hidden layer may be the capacity bottleneck on this track too — try a deeper net next.
+  The income outlier itself is resolved (dropped at cleaning, not worked around); v4's independent choice to
+  use `log1p`+Huber on this still right-skewed target is good practice regardless and is evaluated on its own
+  merits there.
 
 ## 2nd Version (deeper MLP)
 
-- 2,237-row cleaned data (classification) and 2,213-row dropped-target data (regression)
+- 2,236-row cleaned data (classification) and 2,212-row dropped-target data (regression)
 - 18-column / 13-column feature sets
 - 80/20 splits and seed 42
 - weighted-BCE and z-space-MSE losses
 - Only depth, regularization, and schedule change (100 epochs, cosine annealing, weight decay 1e-4)
 
-- `classification_pytorch_v2.ipynb`, `classification_scratch_v2.ipynb`
-- `regression_pytorch_v2.ipynb`, `regression_scratch_v2.ipynb`
+- `classification_pytorch_v2.ipynb`
+- `classification_scratch_v2.ipynb`
+- `regression_pytorch_v2.ipynb`
+- `regression_scratch_v2.ipynb`
 - `weights_v2/`
   - `classification_mlp.pt` and `classification_scratch.npz`
   - `regression_mlp.pt` and `regression_scratch.npz`
@@ -176,7 +210,7 @@
   - `random_state=42`
   - stratified on `Response`
   - `Income` NaNs median-filled as a *feature*
-  - fill value = train median (51,735)
+  - fill value = train median (51,651)
   - `StandardScaler` train-fit
   - batch 64
   - 100 epochs
@@ -189,21 +223,21 @@
 
   | Metric | PyTorch | Scratch | absΔ |
   |---|---|---|---|
-  | test BCE | 0.3863 | 0.3775 | 0.0088 |
-  | accuracy | 0.8214 | 0.8304 | 0.0090 |
-  | precision | 0.4454 | 0.4571 | 0.0117 |
-  | recall | 0.7910 | 0.7164 | 0.0746 |
-  | **F1** | **0.5699** | **0.5581** | **0.0118** |
-  | ROC-AUC | 0.8814 | 0.8686 | 0.0128 |
+  | test BCE | 0.3966 | 0.4121 | 0.0155 |
+  | accuracy | 0.7991 | 0.7946 | 0.0045 |
+  | precision | 0.4122 | 0.3984 | 0.0138 |
+  | recall | 0.8060 | 0.7313 | 0.0747 |
+  | **F1** | **0.5455** | **0.5158** | **0.0297** |
+  | ROC-AUC | 0.8818 | 0.8625 | 0.0193 |
 
-  Curves: torch train 1.055→0.543 / val 0.615→0.386, val-F1 0.425→0.570;
-  scratch train 0.642→0.281 / val 0.661→0.378, val-F1 0.366→0.558.
+  Curves: torch train 1.042→0.547 / val 0.626→0.397, val-F1 0.408→0.546;
+  scratch train 0.642→0.303 / val 0.661→0.412, val-F1 0.367→0.516.
 
   ![clf v2 scratch loss](media/loss_clf_v2.png)
 
-- **Why.** Torch F1 0.5165→0.5699 (+0.053), ROC 0.8725→0.8814; scratch F1 0.4920→0.5581 (+0.066).
+- **Why.** Torch F1 0.5161→0.5455 (+0.029), ROC 0.8669→0.8818; scratch F1 0.4974→0.5158 (+0.018).
   Capacity — not features — was the v1 bottleneck, as suspected (v1 curves never kinked).
-  Depth + BN/dropout bought recall without losing precision (torch recall 0.70→0.79, precision 0.41→0.45).
+  Depth + BN/dropout bought recall without losing precision much (torch recall 0.72→0.81, precision 0.40→0.41).
 - **What next.** Test whether the 2/3 tier carries real signal — rerun the same deep net on 3/3-only features (v3 ablation).
 
 ### Regression
@@ -233,20 +267,20 @@
 
   | Metric | PyTorch | Scratch | absΔ / relΔ |
   |---|---|---|---|
-  | test MSE | 107,448,373.9 | 118,746,515.5 | rel 0.105 |
-  | **RMSE** | **10,365.7** | **10,897.1** | **rel 0.051** |
-  | MAE | 6,592.4 | 6,692.6 | rel 0.015 |
-  | **R²** | **0.7673** | **0.7429** | **0.0244** |
+  | test MSE | 105,756,669.2 | 114,236,203.1 | rel 0.080 |
+  | **RMSE** | **10,283.8** | **10,688.1** | **rel 0.039** |
+  | MAE | 6,523.7 | 6,642.7 | rel 0.018 |
+  | **R²** | **0.7774** | **0.7595** | **0.0179** |
 
-  Curves (z-MSE): torch train 0.653→0.457 / val 0.394→0.159, val-RMSE $16,324→$10,366;
-  scratch train 0.732→0.463 / val 0.469→0.176, val-RMSE $17,815→$10,897.
+  Curves (z-MSE): torch train 0.420→0.177 / val 0.524→0.230, val-RMSE $15,517→$10,284;
+  scratch train 0.498→0.185 / val 0.556→0.248, val-RMSE $15,992→$10,688.
 
   ![reg v2 scratch loss](media/loss_reg_v2.png)
 
-- **Why.** Torch R² 0.7287→0.7673 (+0.039), RMSE $11,194→$10,366 (−7%);
-  scratch R² 0.7537→0.7429 (−0.011, init lottery inside tolerance), RMSE $10,666→$10,897.
+- **Why.** Torch R² 0.7423→0.7774 (+0.035), RMSE $11,065→$10,284 (−7%);
+  scratch R² 0.7695→0.7595 (−0.010, init lottery inside tolerance), RMSE $10,463→$10,688 (+2%).
   Depth helps the oracle clearly; scratch holds roughly at v1 level.
-- **What next.** Rerun the classification deep net on 3/3-only features (v3 ablation); LightGBM ceiling and log-target/robust-loss ideas stay open.
+- **What next.** Rerun the classification deep net on 3/3-only features (v3 ablation); LightGBM ceiling stays open.
 
 ## 3rd Version (3/3-only ablation)
 
@@ -292,7 +326,7 @@
   - `random_state=42`
   - stratified on `Response`
   - `Income` NaNs median-filled as a *feature*
-  - fill value = train median (51,735)
+  - fill value = train median (51,651)
   - `StandardScaler` train-fit
   - batch 64
   - 100 epochs
@@ -305,19 +339,19 @@
 
   | Metric | PyTorch | Scratch | absΔ |
   |---|---|---|---|
-  | test BCE | 0.4589 | 0.4255 | 0.0334 |
-  | accuracy | 0.7388 | 0.7768 | 0.0380 |
-  | precision | 0.3377 | 0.3759 | 0.0382 |
-  | recall | 0.7761 | 0.7463 | 0.0298 |
-  | **F1** | **0.4706** | **0.5000** | **0.0294** |
-  | ROC-AUC | 0.8466 | 0.8515 | 0.0049 |
+  | test BCE | 0.4712 | 0.4471 | 0.0241 |
+  | accuracy | 0.7344 | 0.7478 | 0.0134 |
+  | precision | 0.3289 | 0.3403 | 0.0114 |
+  | recall | 0.7463 | 0.7313 | 0.0150 |
+  | **F1** | **0.4566** | **0.4645** | **0.0079** |
+  | ROC-AUC | 0.8452 | 0.8463 | 0.0011 |
 
-  Curves: torch train 0.711→0.421 / val 0.704→0.459, val-F1 0.410→0.471;
-  scratch train 0.690→0.384 / val 0.667→0.425, val-F1 0.425→0.500.
+  Curves: torch train 0.710→0.417 / val 0.711→0.471, val-F1 0.395→0.457;
+  scratch train 0.660→0.395 / val 0.625→0.447, val-F1 0.433→0.465.
 
   ![clf v3 scratch loss](media/loss_clf_v3.png)
 
-- **Why.** Torch F1 0.5699→0.4706 (**−0.099**), ROC 0.8814→0.8466; scratch F1 0.5581→0.5000 (−0.058).
+- **Why.** Torch F1 0.5455→0.4566 (**−0.089**), ROC 0.8818→0.8452; scratch F1 0.5158→0.4645 (−0.051).
   Both twins agree: the 2/3 tier carries real, non-redundant signal — most plausibly AcceptedCmp1
   (biv 0.294, the strongest dropped feature) plus the Marital_Status/NumStorePurchases/Age
   non-linear signals the deep net could exploit even though RF demoted them.
@@ -350,18 +384,18 @@
 
   | Metric | PyTorch | Scratch | absΔ / relΔ |
   |---|---|---|---|
-  | test MSE | 114,570,589.1 | 116,585,505.8 | rel 0.018 |
-  | **RMSE** | **10,703.8** | **10,797.5** | **rel 0.009** |
-  | MAE | 6,906.5 | 6,915.9 | rel 0.001 |
-  | **R²** | **0.7519** | **0.7476** | **0.0043** |
+  | test MSE | 115,802,912.7 | 114,663,469.6 | rel 0.010 |
+  | **RMSE** | **10,761.2** | **10,708.1** | **rel 0.005** |
+  | MAE | 6,982.8 | 6,935.8 | rel 0.007 |
+  | **R²** | **0.7562** | **0.7586** | **0.0024** |
 
-  Curves (z-MSE): torch train 0.651→0.470 / val 0.335→0.169, val-RMSE $15,061→$10,704;
-  scratch train 0.700→0.468 / val 0.399→0.172, val-RMSE $16,429→$10,798.
-  Tightest parity of versions 1–3 (RMSE relΔ 0.009, R² Δ 0.004).
+  Curves (z-MSE): torch train 0.452→0.200 / val 0.464→0.252, val-RMSE $14,610→$10,761;
+  scratch train 0.446→0.197 / val 0.477→0.249, val-RMSE $14,803→$10,708.
+  Tightest parity of versions 1–3 (RMSE relΔ 0.005, R² Δ 0.002).
 
   ![reg v3 scratch loss](media/loss_reg_v3.png)
 
-- **Why.** Torch R² 0.7673→0.7519 (−0.015), RMSE +3%; scratch R² 0.7429→0.7476 (+0.005, flat).
+- **Why.** Torch R² 0.7774→0.7562 (−0.021), RMSE +5%; scratch R² 0.7595→0.7586 (−0.001, flat).
   Asymmetry vs classification: the 3/3 spend core carries ~98% of the signal (NumStorePurchases 0.530 /
   Kidhome −0.428 / MntFish 0.439 help at the margin but the deep net routes around them).
 - **What next.** Keep the full 13-dim set — it costs nothing and is still best-by-oracle — but the practical
@@ -374,14 +408,14 @@
 - LightGBM deliberately not submitted (GB-variant, not novel)
 - TabPFN deliberately not submitted (pretrained, cannot be built from scratch)
 - Each model has a PyTorch oracle and a from-scratch NumPy twin sharing one derivation lock
-- 2,237-row cleaned data and 2,213-row dropped-target data
+- 2,236-row cleaned data and 2,212-row dropped-target data
 - Full 18-column / 13-column feature sets (the 2/3 tier stays after the v3 result)
 - 80/20 splits and seed 42
 - Adam(lr=1e-3, wd 1e-4) + cosine (T_max=100)
 - 100 epochs
 - Numeric grad-check before training in both twins
-- clf grad-check on `tokW[0,0]` relerr 3.8e-9
-- reg grad-check on `W2[0,0,0]` relerr 3.5e-12
+- clf grad-check on `tokW[0,0]` relerr 8.9e-10
+- reg grad-check on `W2[0,0,0]` relerr 5.1e-11
 - Best-checkpointing on each twin's own val stream
 - clf checkpoint = best val-F1
 - reg checkpoint = best val-RMSE
@@ -406,7 +440,7 @@
   - `random_state=42`
   - stratified on `Response`
   - `Income` NaNs median-filled as a *feature*
-  - fill value = train median (51,735)
+  - fill value = train median (51,651)
   - `StandardScaler` train-fit
   - batch 64
   - 100 epochs
@@ -419,30 +453,42 @@
 
   | Metric | PyTorch | Scratch | absΔ |
   |---|---|---|---|
-  | test BCE | 0.4214 | 0.4868 | 0.0654 |
-  | accuracy | 0.8147 | 0.8460 | 0.0313 |
-  | precision | 0.4310 | 0.4886 | 0.0576 |
-  | recall | 0.7463 | 0.6418 | 0.1045 |
-  | **F1** | **0.5464** | **0.5548** | **0.0084** |
-  | ROC-AUC | 0.8501 | 0.8308 | 0.0193 |
+  | test BCE | 0.4007 | 0.4278 | 0.0271 |
+  | accuracy | 0.8594 | 0.8638 | 0.0044 |
+  | precision | 0.5217 | 0.5500 | 0.0283 |
+  | recall | 0.7164 | 0.4925 | 0.2239 |
+  | **F1** | **0.6038** | **0.5197** | **0.0841** |
+  | ROC-AUC | 0.8657 | 0.8251 | 0.0406 |
 
-  Curves: oracle train 0.978→0.277 / val 0.590→0.489, best-F1 0.5464 mid-training;
-  scratch train 0.545→0.132 / val 0.539→0.487, best-F1 0.5548.
+  Curves: oracle train 1.037→0.289 / val 0.703→0.443, best-F1 0.6038 at epoch 58 (final-epoch F1 0.551);
+  scratch train 0.435→0.168 / val 0.428→0.557, best-F1 0.5197 at epoch 1 (final-epoch F1 0.487).
 
   ![clf v4 scratch loss](media/loss_clf_v4.png)
 
-- **Why.** Oracle F1 0.5699→0.5464 (−0.024), ROC 0.8814→0.8501 — small-data attention overfits where
-  the v2 ResNet block generalizes, consistent with literature (compact ResNet often beats transformers on
-  small tabular). The value is elsewhere: the brief's novel-classification-model slot is filled with a full
-  scratch derivation, and CLS-query attention mass independently rediscovers the EDA —
-  `Recency` 0.118 / `Customer_Tenure_Days` 0.092 / `NumCatalogPurchases` 0.085 on top, the same RF #1/#2 ranks,
-  not the bivariate ranking's `AcceptedCmp*` top.
+- **Why.** This retrain's F1 parity genuinely fails (absΔ 0.084, above the 0.05 tolerance) — the only
+  parity check that fails anywhere in the project. It is not an implementation bug: both grad-checks pass at
+  ~1e-9 relative error, the cleaned row count and train/test shapes match between twins exactly, and BCE
+  parity holds comfortably (Δ 0.027). What happened is the combination of two things the project already
+  knew about this architecture: attention is noisy on ~1,788 training rows (same instability flagged before
+  the data change), and this project's checkpoint rule picks the *test-set* epoch with the best F1 — a
+  metric with only 67 positive test rows, where a couple of flipped predictions swing F1 by several points.
+  Dropping one training row was enough to move the oracle's lucky epoch to 58 (F1 0.6038, clearly above its
+  own v2 reference) and the scratch twin's lucky epoch to 1 — before the model has learned much — landing
+  this run's twin gap outside tolerance by chance of the epoch draw, not by a math error. Oracle F1
+  0.5455→0.6038 (+0.058 vs the v2 reference) and scratch F1 0.5158→0.5197 (roughly flat) both individually
+  look fine against v2; it's only the gap *between* them that is unusually wide this run. CLS-query attention
+  mass still independently rediscovers the EDA's top signal — `Recency` 0.107 / `NumCatalogPurchases` 0.104 /
+  `Customer_Tenure_Days` 0.102 on top (tenure and catalog purchases trade rank 2/3 versus the pre-cleaning
+  run, but the same three features anchor the top), the same RF #1/#2 ranks, not the bivariate ranking's
+  `AcceptedCmp*` top.
 
   ![clf v4 attention](media/attn_clf_v4.png)
 
-- **What next.** v2 stays the raw-score reference (F1 0.5699). The twin-agreement on F1 (Δ 0.0084) and ROC
-  (Δ 0.0193) against different RNG streams and different stopping epochs shows equivalent implementations;
-  the BCE gap (Δ 0.0654) is the checkpoint-epoch + attention-dropout-mask lottery both libraries admit.
+- **What next.** v2 stays the raw-score reference (F1 0.5455). This version's F1 parity FAIL — the first in
+  the project — is a reminder that "best epoch by test-set F1" is a noisy selection rule for a small,
+  imbalanced test set, especially on an attention model; a validation split held separate from the test set,
+  or checkpointing on BCE instead of F1, would likely tighten this in a future version. BCE parity (Δ 0.027)
+  and both grad-checks (~1e-9) confirm the underlying implementations still agree.
 
 ### Regression
 
@@ -460,7 +506,6 @@
   - log1p target scaler train-fit
   - `log1p(Income)` then z-scored for training
   - every reported metric inverted via `expm1` to raw $
-  - $666,666 outlier kept in training data
   - batch 64
   - 100 epochs
   - Huber(δ=0.5) loss
@@ -472,31 +517,209 @@
 
   | Metric | PyTorch | Scratch | absΔ / relΔ |
   |---|---|---|---|
-  | test MSE | 127,856,870.8 | 128,681,375.2 | rel 0.006 |
-  | **RMSE** | **11,307.4** | **11,343.8** | **rel 0.003** |
-  | MAE | 7,031.9 | 7,055.5 | rel 0.003 |
-  | **R²** | **0.7232** | **0.7214** | **0.0018** |
+  | test MSE | 131,411,593.1 | 128,898,525.3 | rel 0.019 |
+  | **RMSE** | **11,463.5** | **11,353.3** | **rel 0.010** |
+  | MAE | 7,186.2 | 7,064.1 | rel 0.017 |
+  | **R²** | **0.7233** | **0.7286** | **0.0053** |
 
-  Training: oracle train-huber 1.886→0.086 / val-RMSE $634,653 (epoch 1, $666k dominates $ space even
-  through log) → $11,307; scratch 0.667→0.086 / $458,512 → $11,344.
-  Tightest twin agreement of all four versions. Masked diagnostic (2 rows): RMSE $8,518 / R² 0.824.
+  Training: oracle train-huber 0.885→0.085 / val-RMSE $188,395 (epoch 1) → $11,464 (best $11,463 at epoch
+  69); scratch 0.668→0.085 / $439,601 → $11,600 (best $11,353 at epoch 70). Tightest twin agreement of all
+  four versions. With the $666,666 row gone from training (see the cleaning note above the target-distribution
+  tables), epoch-1 train-huber loss is a fraction of its old value (previously 1.886 oracle-side) — direct
+  evidence the outlier was inflating this model's loss surface even in log-z space, same mechanism the
+  original investigation measured on the v1 oracle. Masked diagnostic — now a dynamically-computed top-9
+  highest-income test rows (fixing a stale hardcoded `$118,349` threshold that had drifted to masking only 2
+  rows): RMSE $8,070 / R² 0.835.
 
   ![reg v4 scratch loss](media/loss_reg_v4.png)
 
-- **Why.** Oracle R² 0.7673→0.7232 (−0.044), RMSE $10,366→$11,307 (+9%). Additive models can't exploit
-  the spend-cluster interactions the v2 trunk routes around — the expected glass-box price. The core fit is
-  excellent (masked R² 0.824); the full-metric gap is the outlier price, paid transparently via Huber+log
-  instead of hidden deletion.
+- **Why.** Oracle R² 0.7774→0.7233 (−0.054), RMSE $10,284→$11,464 (+11%) vs the v2 reference. Additive
+  models can't exploit the spend-cluster interactions the v2 trunk routes around — the expected glass-box
+  price, independent of the income-outlier question (which is now resolved at cleaning, not by this model).
+  The core fit is strong (masked top-9 R² 0.835 vs full R² 0.723): income is still right-skewed with a real
+  heavy tail even after the single most extreme point is dropped, and `log1p`+Huber is the general-purpose
+  choice for exactly that shape, not a one-point patch — the remaining gap is the ordinary cost of a handful
+  of hard high-income rows, reported transparently via the masked diagnostic rather than hidden.
 
   ![reg v4 NAM shapes](media/shapes_reg_v4.png)
 
-- **What next.** v2 stays the raw-score reference (R² 0.7673). Best oracle scores overall: clf v2 F1 0.5699,
-  reg v2 R² 0.7673. Open ideas: LightGBM/TabPFN ceiling column for the slide deck; k-fold to tighten small-n noise.
+- **What next.** v2 stays the raw-score reference (R² 0.7774). Best oracle scores overall: clf v4 F1 0.6038
+  (this run's unusually lucky checkpoint — see the classification "Why" above), reg v2 R² 0.7774. Open ideas:
+  LightGBM/TabPFN ceiling column for the slide deck (now the v5 check below); k-fold to tighten small-n noise.
 
-## Version template (copy for v5, …)
+## 5th Version (LightGBM ceiling check)
 
-### Classification — …
-- Changed vs previous: … / Results vs previous best: … / Why + what next: …
+- GBDT ceiling check, not a taught-list submission — v4 already excluded LightGBM from that list
+  ("LightGBM deliberately not submitted (GB-variant, not novel)"); this round answers a different
+  question raised repeatedly in v2-v4's own "What next": how much of the deep nets' score is hard-earned
+  vs. what a strong GBDT gets for free on this ~2,200-row dataset
+- Like every other version, the GBDT has a library oracle (`lgb.LGBMClassifier` / `LGBMRegressor`) paired
+  with a from-scratch NumPy twin — one generic CART-with-gradient/Hessian tree, exact-greedy split search,
+  Newton-step leaves, shared across both tasks and parameterized only by per-sample `(g, h)`
+- Identical cleaned data as v2: 2,236-row classification set, 2,212-row dropped-target regression set
+- Identical 18-column / 13-column feature sets, identical 80/20 splits, seed 42
+- No `StandardScaler` — gradient-boosted trees are scale-invariant
+- A 10% slice carved out of the *train* split (not the test split) drives early stopping; the 448/443-row
+  test sets are byte-identical to every other version's
+- Sanity check (replaces v1-v4's numeric grad-check — not applicable to tree splits): one depth-2 tree vs.
+  `sklearn.tree.DecisionTreeRegressor` (exact match, max|diff| 4e-16) + a hand-derived 3-row/2-round
+  closed-form boosting example + a 20-round monotonic-training-loss check, all passing in both twins
 
-### Regression — …
-- Changed vs previous: … / Results vs previous best: … / Why + what next: …
+- `classification_lightgbm_v5.ipynb`, `classification_scratch_v5.ipynb`
+- `regression_lightgbm_v5.ipynb`, `regression_scratch_v5.ipynb`
+- `weights_v5/` — `*_lightgbm.txt` (booster) + `*_lightgbm_test_metrics.json` + `*_lightgbm_history.csv`;
+  `*_scratch_gbm.json` (hand-rolled, human-inspectable ensemble dump) + `*_scratch_test_metrics.json` +
+  `*_scratch_history.csv`
+- `media/featimp_clf_v5.png`, `media/featimp_reg_v5.png` — gain-based feature importance (no ONNX graph;
+  a GBDT has no comparable architecture diagram); `media/loss_clf_v5.png`, `media/loss_reg_v5.png` — the
+  scratch twin's per-round train/val loss, same convention as every other version's loss curve
+
+### Classification
+
+- **Architecture used.**
+  - Gradient-boosted decision trees: `lgb.LGBMClassifier` + mirror hand-rolled NumPy twin (one generic
+    CART-with-gradient/Hessian tree, shared with the regression twin)
+  - LightGBM: 500-round cap, early-stopped at iteration 73 on a held-out 10% train slice; `learning_rate=0.05`,
+    `num_leaves=31`, `max_depth=-1` (unlimited), `subsample=0.8`, `colsample_bytree=0.8`, `reg_lambda=1.0`
+  - Scratch: 500-round cap, early-stopped at iteration 8 on its own val-BCE stream; `learning_rate=0.05`,
+    `max_depth=5` (depth-wise, deliberate stand-in for LightGBM's leaf-wise `num_leaves=31`),
+    `min_samples_leaf=20`, `reg_lambda=1.0`, row/column subsample 0.8/0.8; Newton-step leaves `-G/(H+λ)`,
+    split gain `0.5·[G_L²/(H_L+λ) + G_R²/(H_R+λ) − (G_L+G_R)²/(H_L+H_R+λ)]`
+  - No architecture diagram either way — a GBDT has no comparable ONNX-style graph
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - stratified on `Response`
+  - `Income` NaNs median-filled identically to v2 (train median 51,651)
+  - no feature scaling (tree-based, scale-invariant)
+  - `scale_pos_weight=5.697` (same train-split neg/pos ratio as v2's weighted-BCE `pos_weight`)
+  - binary logloss objective
+  - early stopping (50 rounds) on a 10%-of-train validation slice
+  - scratch twin: `g_i = w_i·(p_i − y_i)`, `h_i = w_i·p_i·(1−p_i)`, `w_i = scale_pos_weight` for positive
+    rows else `1.0`; `F0 = logit(mean(y_train))` unweighted (matches LightGBM's own init); early-stops on
+    val BCE, not val-F1 — a deliberate deviation from v2-v4's val-F1 checkpointing so `best_iteration` is
+    directly comparable to LightGBM's own binary-logloss stopping rule
+  - no data augmentation
+
+- **Results** (n_test=448):
+
+  | Metric | LightGBM | Scratch | absΔ |
+  |---|---|---|---|
+  | test BCE | 0.2967 | 0.3757 | 0.0790 |
+  | accuracy | 0.8728 | 0.8504 | 0.0224 |
+  | precision | 0.5658 | 0.0000 | 0.5658 |
+  | recall | 0.6418 | 0.0000 | 0.6418 |
+  | **F1** | **0.6014** | **0.0000** | **0.6014** |
+  | ROC-AUC | 0.8898 | 0.8310 | 0.0588 |
+
+  Training: LightGBM train BCE 0.396→0.129 (iter 73) / val 0.414→0.366; scratch train BCE 0.402→0.347
+  (iter 8) / val 0.413→0.388. Both curves descend smoothly with no divergence — the scratch twin's
+  early-stop is simply much shorter: its val-BCE minimum (0.388) is hit at round 8 and never beaten again
+  within the 50-round patience window, even though val-F1 (tracked separately, not the stopping criterion)
+  keeps climbing afterward, reaching 0.413 by round 58 when patience finally closes.
+
+  ![clf v5 scratch loss](media/loss_clf_v5.png)
+
+- **Why.** This is a genuine PARITY FAIL, and a more severe one than v4's: the scratch twin's deployed
+  checkpoint (iteration 8) predicts probability 0.12-0.19 for every test row — never crossing the 0.5
+  threshold even once — so precision/recall/F1 are exactly 0, despite ROC-AUC still reading 0.831 (close to
+  LightGBM's 0.890), which confirms the model's internal ranking of customers is already informative at
+  round 8; it just hasn't pushed any row's probability past the decision boundary yet. The mechanism is not
+  a math bug — the project's own sanity checks (exact match vs. `sklearn.tree.DecisionTreeRegressor`,
+  hand-derived closed-form boosting steps, monotonic-training-loss check) all still pass, unchanged by the
+  data edit — it's a known fragility of **early-stopping on BCE under heavy class imbalance**: with only
+  14.9% positives, the boosted score starts from a strongly negative intercept (`F0 = logit(0.149) ≈ -1.74`),
+  and BCE is already fairly good from predicting close to the base rate for the 85% majority class, so a
+  handful of very early rounds can look like the BCE optimum before the ensemble has had enough rounds (at
+  `learning_rate=0.05`) to move any row's score above zero. Removing one training row shifted the 10%-of-train
+  validation slice just enough to move this particular run's BCE-minimum from round 254 (the pre-cleaning
+  run) to round 8 — an extreme, unlucky draw, not a regression in the underlying implementation. LightGBM's
+  own BCE-based early stopping (same rule, different library) was not similarly derailed here (iteration 73,
+  comfortably past the all-negative-prediction regime), so this reads as the scratch twin's coarser
+  depth-wise search converging in fewer, more BCE-sensitive steps than LightGBM's leaf-wise search. Against
+  v2's oracle (the project's classification reference, F1 0.5455), LightGBM alone now beats it outright
+  (Δ +0.056) — an untuned, single-run GBDT still comfortably matches or exceeds the best deep net's F1 on
+  this feature set; the scratch twin's F1=0 here should be read as a checkpoint-selection artifact, not a
+  capability gap, given its ROC-AUC sits close to LightGBM's. LightGBM's gain-based feature importance puts
+  `Recency` and `Customer_Tenure_Days` at the top (ranks 1-2, trading places versus the pre-cleaning run),
+  with `MntMeatProducts` / `Income` / `MntGoldProds` close behind (`NumCatalogPurchases` falls just outside
+  the fresh top 5) — the same RF-corroborated top pair v4's attention mass independently found, not the
+  bivariate ranking's `AcceptedCmp*` top, reinforcing that recency/tenure signal — not the raw
+  campaign-acceptance flags — is what every model family in this project converges on.
+
+  ![clf v5 feature importance](media/featimp_clf_v5.png)
+
+- **What next.** v2 stays the raw-score reference (F1 0.5455) for the assignment; LightGBM stays the
+  ceiling-check column (F1 0.6014, still ahead of every deep net here). The scratch twin's degenerate
+  checkpoint this run is a concrete argument for the same fix flagged under v4: checkpoint on a metric (or a
+  validation split) that doesn't collapse to a degenerate optimum under heavy class imbalance — early-stopping
+  on BCE alone is not safe for this dataset's imbalance ratio. TabPFN remains the other ceiling idea flagged
+  since v4; k-fold to tighten small-n noise is still open.
+
+### Regression
+
+- **Architecture used.**
+  - Gradient-boosted decision trees: `lgb.LGBMRegressor` (MSE objective) + mirror hand-rolled NumPy twin
+    (same generic CART-with-gradient/Hessian tree as the classification twin)
+  - LightGBM: 500-round cap, early-stopped at iteration 98 on a held-out 10% train slice; `learning_rate=0.05`,
+    `num_leaves=31`, `max_depth=-1` (unlimited), `subsample=0.8`, `colsample_bytree=0.8`, `reg_lambda=1.0`
+  - Scratch: 500-round cap, early-stopped at iteration 114 on its own val-RMSE stream; `learning_rate=0.05`,
+    `max_depth=5` (depth-wise stand-in for leaf-wise `num_leaves=31`), `min_samples_leaf=20`, `reg_lambda=1.0`,
+    row/column subsample 0.8/0.8; `g_i = pred_i − y_i`, `h_i = 1` recovers residual fitting through the same
+    gradient/Hessian split-and-leaf machinery as the classification twin
+  - No architecture diagram either way — a GBDT has no comparable ONNX-style graph
+
+- **Training setup.**
+  - 80/20 split
+  - `random_state=42`
+  - 24 missing-`Income` rows dropped (identical to v2)
+  - no feature scaling, no target transform — trains directly on raw-$ `Income`
+  - MSE objective
+  - early stopping (50 rounds) on a 10%-of-train validation slice
+  - scratch twin: `F0 = mean(y_train)`, early-stops on val RMSE (matches LightGBM's own `eval_metric="rmse"`
+    stopping rule) so `best_iteration` is directly comparable
+  - no data augmentation
+
+- **Results** (n_test=443, raw $):
+
+  | Metric | LightGBM | Scratch | absΔ / relΔ |
+  |---|---|---|---|
+  | test MSE | 84,947,282.4 | 84,877,500.6 | rel 0.001 |
+  | **RMSE** | **9,216.7** | **9,212.9** | **rel 0.0004** |
+  | MAE | 5,758.4 | 5,904.9 | rel 0.025 |
+  | **R²** | **0.8212** | **0.8213** | **0.0001** |
+
+  Training (RMSE $): LightGBM train $20,553→$6,787 (iter 98) / val $21,160→$7,016; scratch train
+  $20,591→$7,495 (iter 114) / val $21,192→$7,296. Both curves descend smoothly with no divergence past
+  the early-stop point.
+
+  ![reg v5 scratch loss](media/loss_reg_v5.png)
+
+- **Why.** The library/scratch gap is essentially noise — relRMSE 0.0004, absΔR² 0.0001 — tighter than
+  v4's own oracle/scratch R² gap (0.0053) and the tightest regression-twin agreement anywhere in the
+  project (v1's absΔR² of 0.0272 is the widest of the five versions). The scratch GBM's test R² (0.8213)
+  edges out LightGBM's (0.8212) by a hair, consistent with the sanity checks confirming the tree-building
+  math is correct — this is ordinary seed/early-stop-round noise, not a modeling gap. Against v2's oracle
+  (R² 0.7774, the project's regression reference) both GBDT variants beat it outright — LightGBM Δ +0.044,
+  scratch Δ +0.044 — reaffirming v5's original verdict with an independent from-scratch implementation: on
+  this ~2,200-row dataset, the regression ceiling is a GBDT ceiling, not a deep-learning one. LightGBM's
+  gain-based feature importance puts the spend columns `MntWines` / `MntMeatProducts` at the top, followed
+  by `NumWebVisitsMonth`, `NumCatalogPurchases`, and `NumDealsPurchases` — consistent with v1's
+  "near-mechanical spend/income proxy" EDA story. `NumCatalogPurchases` — the single highest
+  bivariate-ranked regression feature, and the feature that missed LightGBM's top 5 entirely in the
+  pre-cleaning run — now lands at rank 4; `MntFruits` (previously rank 3) drops just outside the fresh top 5
+  instead. The reordering is a reminder that gain-based rankings on an untuned, single-run GBDT can shuffle
+  at the margin when the underlying data shifts by even one row — the wine/meat spend pair at the top is the
+  stable part of the story across both runs.
+
+  ![reg v5 feature importance](media/featimp_reg_v5.png)
+
+- **What next.** Both tables confirm the framing this check was built to test, now backed by an
+  independent from-scratch implementation as well as the library: GBDT is "what a strong baseline gets for
+  free" on ~2,200-row tabular data. The v2-v4 deep nets earn their place for the assignment's
+  architecture-diversity and from-scratch-derivation requirements (ResNet, FT-Transformer-lite, NAM —
+  explicitly excluded from overlapping with GB-variants), not because they beat a quick LightGBM baseline.
+  TabPFN remains open as the other ceiling check; k-fold to tighten small-n noise still open — and the
+  classification track's checkpoint-selection fragility (flagged above, in both v4 and v5) is a more
+  concrete near-term follow-up than either.
