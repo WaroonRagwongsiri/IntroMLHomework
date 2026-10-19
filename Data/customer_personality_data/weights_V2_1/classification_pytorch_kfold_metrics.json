@@ -3,74 +3,74 @@
   "folds": [
     {
       "fold": 1,
-      "test_loss_BCE": 0.3847,
-      "accuracy": 0.8795,
-      "precision": 0.5783,
-      "recall": 0.7164,
-      "f1": 0.64,
-      "roc_auc": 0.8886
+      "test_loss_BCE": 0.4002,
+      "accuracy": 0.8839,
+      "precision": 0.6027,
+      "recall": 0.6567,
+      "f1": 0.6286,
+      "roc_auc": 0.8797
     },
     {
       "fold": 2,
-      "test_loss_BCE": 0.4576,
-      "accuracy": 0.8501,
-      "precision": 0.5,
+      "test_loss_BCE": 0.467,
+      "accuracy": 0.8456,
+      "precision": 0.4898,
       "recall": 0.7164,
-      "f1": 0.589,
-      "roc_auc": 0.8544
+      "f1": 0.5818,
+      "roc_auc": 0.8518
     },
     {
       "fold": 3,
-      "test_loss_BCE": 0.4094,
-      "accuracy": 0.8143,
-      "precision": 0.4322,
-      "recall": 0.7612,
-      "f1": 0.5514,
-      "roc_auc": 0.8664
+      "test_loss_BCE": 0.4613,
+      "accuracy": 0.7808,
+      "precision": 0.3931,
+      "recall": 0.8507,
+      "f1": 0.5377,
+      "roc_auc": 0.8777
     },
     {
       "fold": 4,
-      "test_loss_BCE": 0.4081,
-      "accuracy": 0.8255,
-      "precision": 0.4495,
-      "recall": 0.7313,
-      "f1": 0.5568,
-      "roc_auc": 0.8448
+      "test_loss_BCE": 0.4231,
+      "accuracy": 0.8143,
+      "precision": 0.4286,
+      "recall": 0.7164,
+      "f1": 0.5363,
+      "roc_auc": 0.8417
     },
     {
       "fold": 5,
-      "test_loss_BCE": 0.3795,
-      "accuracy": 0.8479,
-      "precision": 0.4898,
-      "recall": 0.7273,
-      "f1": 0.5854,
-      "roc_auc": 0.8691
+      "test_loss_BCE": 0.4191,
+      "accuracy": 0.8523,
+      "precision": 0.5,
+      "recall": 0.6818,
+      "f1": 0.5769,
+      "roc_auc": 0.8616
     }
   ],
   "summary": {
     "test_loss_BCE": {
-      "mean": 0.4079,
-      "std": 0.0309
+      "mean": 0.4341,
+      "std": 0.0288
     },
     "accuracy": {
-      "mean": 0.8435,
-      "std": 0.0252
+      "mean": 0.8354,
+      "std": 0.0393
     },
     "precision": {
-      "mean": 0.49,
-      "std": 0.0567
+      "mean": 0.4828,
+      "std": 0.0802
     },
     "recall": {
-      "mean": 0.7305,
-      "std": 0.0184
+      "mean": 0.7244,
+      "std": 0.075
     },
     "f1": {
-      "mean": 0.5845,
-      "std": 0.0352
+      "mean": 0.5723,
+      "std": 0.038
     },
     "roc_auc": {
-      "mean": 0.8647,
-      "std": 0.0165
+      "mean": 0.8625,
+      "std": 0.0164
     }
   }
 }

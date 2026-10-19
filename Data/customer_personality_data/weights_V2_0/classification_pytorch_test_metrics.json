@@ -1,12 +1,12 @@
 {
-  "test_loss_BCE": 0.4007,
-  "accuracy": 0.8594,
-  "precision": 0.5217,
+  "test_loss_BCE": 0.38,
+  "accuracy": 0.8616,
+  "precision": 0.5275,
   "recall": 0.7164,
-  "f1": 0.6038,
-  "roc_auc": 0.8657,
-  "best_thr": 0.6,
-  "best_thr_f1": 0.6174,
+  "f1": 0.6076,
+  "roc_auc": 0.87,
+  "best_thr": 0.5,
+  "best_thr_f1": 0.6076,
   "n_test": 448,
   "seed": 42
 }
