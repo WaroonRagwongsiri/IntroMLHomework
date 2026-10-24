@@ -1,0 +1,54 @@
+{
+  "Linear regression (1 feature)": {
+    "j": 1
+  },
+  "Multiple regression": {},
+  "Polynomial regression": {
+    "deg": 2,
+    "a": 61.63020306936902
+  },
+  "Decision tree": {
+    "d": 6,
+    "leaf": 2
+  },
+  "Random forest": {
+    "n": 300,
+    "d": 14,
+    "leaf": 1,
+    "mf": 0.5
+  },
+  "ExtraTrees": {
+    "n": 100,
+    "d": 15,
+    "leaf": 1,
+    "mf": 0.5
+  },
+  "Gradient boosting": {
+    "n": 250,
+    "lr": 0.10660679097432305,
+    "d": 4,
+    "sub": 0.6957079686260053
+  },
+  "HistGradientBoosting": {
+    "it": 300,
+    "lr": 0.09843002647092639,
+    "leaf": 19,
+    "l2": 2.2099881622532864
+  },
+  "kNN": {
+    "k": 7,
+    "w": "distance",
+    "p": 1
+  },
+  "SVR (RBF)": {
+    "C": 41.284521213658664,
+    "g": 0.0329714393599075,
+    "e": 0.1667655768229163
+  },
+  "MLP (sklearn)": {
+    "h1": 96,
+    "two": true,
+    "a": 0.0015375920235481753,
+    "lr": 0.001530574436550018
+  }
+}

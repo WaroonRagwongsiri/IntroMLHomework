@@ -1,0 +1,39 @@
+{
+  "n_test": 443,
+  "seed": 42,
+  "models": [
+    {
+      "model": "NAM (log1p + Huber) | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.7212,
+      "rmse": 11507.7,
+      "mae": 7176.0,
+      "mse": 132426146.9,
+      "epochs": 95,
+      "n_params": 2510
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, same hidden",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.7558,
+      "rmse": 10769.3,
+      "mae": 6881.4,
+      "mse": 115977225.4,
+      "epochs": 97,
+      "n_params": 4174
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.757,
+      "rmse": 10743.0,
+      "mae": 6911.4,
+      "mse": 115411520.0,
+      "epochs": 97,
+      "n_params": 2484
+    }
+  ]
+}

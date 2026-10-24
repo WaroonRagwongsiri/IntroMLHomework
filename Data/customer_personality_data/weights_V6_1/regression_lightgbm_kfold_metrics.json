@@ -1,0 +1,353 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "n_trials": 30,
+  "folds": [
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8337,
+      "rmse": 8887.6204,
+      "mae": 5301.7925,
+      "mse": 78989795.8678,
+      "params": {
+        "n": 500,
+        "lr": 0.026732395265315196,
+        "nl": 56,
+        "mcs": 7,
+        "sub": 0.6287098075930305,
+        "col": 0.6977709317203945,
+        "lam": 2.949107073521191
+      },
+      "seconds": 16.4
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7767,
+      "rmse": 9988.9534,
+      "mae": 5178.5066,
+      "mse": 99779190.9104,
+      "params": {
+        "n": 600,
+        "lr": 0.03731912121962027,
+        "nl": 46,
+        "mcs": 10,
+        "sub": 0.9696428156207292,
+        "col": 0.6508755129442034,
+        "lam": 2.9483886275783777
+      },
+      "seconds": 19.6
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8837,
+      "rmse": 7220.8819,
+      "mae": 5132.501,
+      "mse": 52141135.5723,
+      "params": {
+        "n": 600,
+        "lr": 0.03443640053069974,
+        "nl": 47,
+        "mcs": 22,
+        "sub": 0.9278323977526913,
+        "col": 0.8858103636939577,
+        "lam": 1.7089305933389949
+      },
+      "seconds": 20.0
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7769,
+      "rmse": 10484.0347,
+      "mae": 6085.5154,
+      "mse": 109914983.5259,
+      "params": {
+        "n": 600,
+        "lr": 0.06612746268954715,
+        "nl": 21,
+        "mcs": 12,
+        "sub": 0.6850175869097355,
+        "col": 0.7674946359275415,
+        "lam": 0.01384397534112362
+      },
+      "seconds": 14.4
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8129,
+      "rmse": 9166.5639,
+      "mae": 5942.5029,
+      "mse": 84025893.8835,
+      "params": {
+        "n": 300,
+        "lr": 0.04662606395971857,
+        "nl": 24,
+        "mcs": 36,
+        "sub": 0.8666691199363598,
+        "col": 0.581770236954771,
+        "lam": 4.559523941578042
+      },
+      "seconds": 8.5
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8425,
+      "rmse": 8665.4665,
+      "mae": 5573.6272,
+      "mse": 75090309.3081,
+      "params": {
+        "n": 300,
+        "lr": 0.03625345929616554,
+        "nl": 39,
+        "mcs": 17,
+        "sub": 0.8276048917539256,
+        "col": 0.7289818173957534,
+        "lam": 0.06071021780326652
+      },
+      "seconds": 11.9
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7724,
+      "rmse": 9968.6367,
+      "mae": 5550.4241,
+      "mse": 99373717.0225,
+      "params": {
+        "n": 400,
+        "lr": 0.10696781186729577,
+        "nl": 14,
+        "mcs": 15,
+        "sub": 0.8271364353535108,
+        "col": 0.8959226176782561,
+        "lam": 0.03428738817053947
+      },
+      "seconds": 9.2
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8907,
+      "rmse": 7135.5769,
+      "mae": 5366.4524,
+      "mse": 50916458.2774,
+      "params": {
+        "n": 500,
+        "lr": 0.13268199123035115,
+        "nl": 9,
+        "mcs": 6,
+        "sub": 0.913396756105796,
+        "col": 0.6377700201967335,
+        "lam": 0.029385042720880158
+      },
+      "seconds": 10.4
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7342,
+      "rmse": 10882.2357,
+      "mae": 6158.9001,
+      "mse": 118423054.4659,
+      "params": {
+        "n": 300,
+        "lr": 0.028092940264352544,
+        "nl": 13,
+        "mcs": 5,
+        "sub": 0.8050763163533674,
+        "col": 0.6852444692277432,
+        "lam": 0.025238061849528707
+      },
+      "seconds": 5.7
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8778,
+      "rmse": 7718.0121,
+      "mae": 5098.1536,
+      "mse": 59567711.2109,
+      "params": {
+        "n": 600,
+        "lr": 0.03278535250971311,
+        "nl": 56,
+        "mcs": 15,
+        "sub": 0.761301562234427,
+        "col": 0.7516253924119749,
+        "lam": 0.676888675525214
+      },
+      "seconds": 19.6
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7821,
+      "rmse": 10503.7861,
+      "mae": 5792.7597,
+      "mse": 110329521.7431,
+      "params": {
+        "n": 600,
+        "lr": 0.0712780523180641,
+        "nl": 62,
+        "mcs": 5,
+        "sub": 0.6688765358071858,
+        "col": 0.8456669812633348,
+        "lam": 0.0352196308052084
+      },
+      "seconds": 23.9
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8539,
+      "rmse": 7929.4247,
+      "mae": 5604.5421,
+      "mse": 62875775.7624,
+      "params": {
+        "n": 600,
+        "lr": 0.06348803103316326,
+        "nl": 15,
+        "mcs": 17,
+        "sub": 0.8790525891772177,
+        "col": 0.5084707661251302,
+        "lam": 0.1364759520319709
+      },
+      "seconds": 11.2
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8385,
+      "rmse": 8309.986,
+      "mae": 4890.1295,
+      "mse": 69055867.71,
+      "params": {
+        "n": 600,
+        "lr": 0.05869096533173971,
+        "nl": 52,
+        "mcs": 5,
+        "sub": 0.8030465887047442,
+        "col": 0.7491226911737204,
+        "lam": 0.6226111628586147
+      },
+      "seconds": 23.5
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6629,
+      "rmse": 13337.7027,
+      "mae": 6377.016,
+      "mse": 177894314.2383,
+      "params": {
+        "n": 500,
+        "lr": 0.033529491278737715,
+        "nl": 12,
+        "mcs": 7,
+        "sub": 0.9258616006895088,
+        "col": 0.9530290566834086,
+        "lam": 0.011084179723213064
+      },
+      "seconds": 12.3
+    },
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8636,
+      "rmse": 7579.1537,
+      "mae": 5542.6659,
+      "mse": 57443571.3489,
+      "params": {
+        "n": 500,
+        "lr": 0.038685247445803775,
+        "nl": 53,
+        "mcs": 37,
+        "sub": 0.980334155265966,
+        "col": 0.8299396633946138,
+        "lam": 4.297882827801861
+      },
+      "seconds": 12.6
+    }
+  ],
+  "summary": {
+    "LightGBM": {
+      "r2": {
+        "mean": 0.8135,
+        "std": 0.0629
+      },
+      "rmse": {
+        "mean": 9185.2024,
+        "std": 1696.6809
+      },
+      "mae": {
+        "mean": 5573.0326,
+        "std": 430.7233
+      }
+    }
+  }
+}

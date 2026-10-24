@@ -1,0 +1,50 @@
+task,model,tier,mean,rank,n_models,share_of_best_gain,folds_beating_best
+classification,LightGBM | + 3 modifiers + 5 pairs,curriculum,0.6042,1,28,1.0,0
+classification,LightGBM,curriculum,0.5896,2,28,0.9577,6
+classification,CatBoost,curriculum,0.5866,3,28,0.9491,5
+classification,LightGBM | + 3 modifiers (25),curriculum,0.5851,4,28,0.9445,4
+classification,XGBoost,curriculum,0.5835,5,28,0.94,5
+classification,LightGBM | base (22),curriculum,0.5812,6,28,0.9334,5
+classification,HistGradientBoosting,curriculum,0.5784,7,28,0.9253,4
+classification,Stacking,curriculum,0.5742,8,28,0.913,3
+classification,Gradient boosting,curriculum,0.5671,9,28,0.8924,2
+classification,Random forest,curriculum,0.5648,10,28,0.8856,1
+classification,PCA + Random forest,curriculum,0.5618,11,28,0.8768,0
+classification,SVM (RBF),curriculum,0.5583,12,28,0.8666,3
+classification,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,extracurricular,0.558,13,28,0.8658,3
+classification,MLP (sklearn),curriculum,0.5562,14,28,0.8608,5
+classification,FT-Transformer-lite | ReLU | base (22),extracurricular,0.556,15,28,0.8602,0
+classification,FT-Transformer-lite | ReLU | + 3 modifiers (25),extracurricular,0.5527,16,28,0.8505,1
+classification,ExtraTrees,curriculum,0.5503,17,28,0.8436,0
+classification,PCA + SVM,curriculum,0.5497,18,28,0.8418,1
+classification,FT-Transformer-lite | ReLU (baseline),extracurricular,0.5471,19,28,0.8344,1
+classification,"FT-Transformer-lite | ReGLU, same hidden",extracurricular,0.5445,20,28,0.8266,1
+classification,Logistic regression,curriculum,0.5395,21,28,0.8122,0
+classification,kNN,curriculum,0.5359,22,28,0.8017,2
+classification,"FT-Transformer-lite | ReGLU, param-matched",extracurricular,0.5206,23,28,0.7572,0
+classification,Naive Bayes,curriculum,0.4778,24,28,0.6328,0
+classification,k-Means (cluster rate),curriculum,0.4724,25,28,0.6172,0
+classification,Agglomerative (cluster rate),curriculum,0.4648,26,28,0.5952,0
+classification,Perceptron (SLP),curriculum,0.4564,27,28,0.5708,1
+classification,Decision tree,curriculum,0.4437,28,28,0.5337,0
+regression,CatBoost,curriculum family,0.8302,1,21,1.0,0
+regression,LightGBM | + Teenhome (14),curriculum family,0.8263,2,21,0.9953,3
+regression,ExtraTrees,curriculum family,0.8208,3,21,0.9888,4
+regression,Gradient boosting,curriculum family,0.8168,4,21,0.9839,3
+regression,XGBoost,curriculum family,0.8142,5,21,0.9807,4
+regression,LightGBM,curriculum family,0.8135,6,21,0.9799,4
+regression,HistGradientBoosting,curriculum family,0.8133,7,21,0.9796,3
+regression,Random forest,curriculum family,0.7969,8,21,0.9599,2
+regression,SVR (RBF),curriculum family,0.7889,9,21,0.9503,2
+regression,MLP (sklearn),curriculum family,0.7692,10,21,0.9266,1
+regression,kNN,curriculum family,0.7686,11,21,0.9258,1
+regression,NAM (log1p + Huber) | ReLU | + Teenhome + 5 Teenhome pairs,extracurricular,0.7567,12,21,0.9115,1
+regression,Polynomial regression,curriculum,0.7511,13,21,0.9048,1
+regression,NAM (log1p + Huber) | ReLU | + Teenhome (14),extracurricular,0.7477,14,21,0.9006,1
+regression,Decision tree,curriculum family,0.7383,15,21,0.8893,0
+regression,NAM (log1p + Huber) | ReLU (baseline),extracurricular,0.7353,16,21,0.8857,1
+regression,Multiple regression,curriculum,0.7332,17,21,0.8832,1
+regression,"NAM (log1p + Huber) | ReGLU, param-matched",extracurricular,0.7257,18,21,0.8742,0
+regression,NAM (log1p + Huber) | ReLU | 13 features + 4 pair nets,extracurricular,0.7246,19,21,0.8728,1
+regression,"NAM (log1p + Huber) | ReGLU, same hidden",extracurricular,0.7239,20,21,0.8719,0
+regression,Linear regression (1 feature),curriculum,0.4463,21,21,0.5376,0

@@ -1,0 +1,186 @@
+{
+  "k": 5,
+  "repeats": 1,
+  "folds": [
+    {
+      "model": "NAM (log1p + Huber) | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7107,
+      "rmse": 11722.5444,
+      "mae": 7376.7059,
+      "mse": 137418046.186,
+      "epochs": 77,
+      "n_params": 2510,
+      "seconds": 2.0
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7608,
+      "rmse": 10658.7119,
+      "mae": 6816.0166,
+      "mse": 113608139.8515,
+      "epochs": 76,
+      "n_params": 2484,
+      "seconds": 2.8
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.778,
+      "rmse": 9960.2775,
+      "mae": 7136.6855,
+      "mse": 99207126.9718,
+      "epochs": 93,
+      "n_params": 2510,
+      "seconds": 2.5
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.6558,
+      "rmse": 12401.3534,
+      "mae": 7120.3685,
+      "mse": 153793566.709,
+      "epochs": 99,
+      "n_params": 2484,
+      "seconds": 3.7
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.7699,
+      "rmse": 10156.3477,
+      "mae": 6856.9871,
+      "mse": 103151399.3255,
+      "epochs": 93,
+      "n_params": 2510,
+      "seconds": 2.4
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.7895,
+      "rmse": 9715.1612,
+      "mae": 6601.9687,
+      "mse": 94384356.8231,
+      "epochs": 93,
+      "n_params": 2484,
+      "seconds": 3.5
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7072,
+      "rmse": 12011.1347,
+      "mae": 7463.676,
+      "mse": 144267356.7427,
+      "epochs": 87,
+      "n_params": 2510,
+      "seconds": 2.4
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7229,
+      "rmse": 11685.3849,
+      "mae": 7606.6223,
+      "mse": 136548219.6857,
+      "epochs": 25,
+      "n_params": 2484,
+      "seconds": 1.0
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.6977,
+      "rmse": 11649.6908,
+      "mae": 7438.9311,
+      "mse": 135715296.1213,
+      "epochs": 98,
+      "n_params": 2510,
+      "seconds": 2.7
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7337,
+      "rmse": 10935.1033,
+      "mae": 7111.5589,
+      "mse": 119576483.3262,
+      "epochs": 73,
+      "n_params": 2484,
+      "seconds": 2.8
+    }
+  ],
+  "summary": {
+    "NAM (log1p + Huber) | ReGLU, param-matched": {
+      "r2": {
+        "mean": 0.7325,
+        "std": 0.0501
+      },
+      "rmse": {
+        "mean": 11079.1429,
+        "std": 1021.4849
+      },
+      "mae": {
+        "mean": 7051.307,
+        "std": 378.8276
+      }
+    },
+    "NAM (log1p + Huber) | ReLU (baseline)": {
+      "r2": {
+        "mean": 0.7327,
+        "std": 0.0381
+      },
+      "rmse": {
+        "mean": 11099.999,
+        "std": 962.9817
+      },
+      "mae": {
+        "mean": 7254.5971,
+        "std": 257.1966
+      }
+    }
+  }
+}

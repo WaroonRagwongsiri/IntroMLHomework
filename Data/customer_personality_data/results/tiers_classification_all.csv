@@ -1,0 +1,2 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,a,b,tier_a,tier_b
+15,0.0462,0.00262,0.11105,0.0225,0.0702,LightGBM | + 3 modifiers + 5 pairs,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,curriculum,extracurricular

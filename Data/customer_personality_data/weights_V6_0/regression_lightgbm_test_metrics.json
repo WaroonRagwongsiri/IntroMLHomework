@@ -1,0 +1,26 @@
+{
+  "n_test": 443,
+  "seed": 42,
+  "n_trials": 30,
+  "inner_k": 3,
+  "models": [
+    {
+      "model": "LightGBM",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "r2": 0.838,
+      "rmse": 8771.8319,
+      "mae": 5183.4053,
+      "mse": 76945034.48,
+      "params": {
+        "n": 500,
+        "lr": 0.09946828181545286,
+        "nl": 48,
+        "mcs": 16,
+        "sub": 0.955898682700932,
+        "col": 0.9076477599214288,
+        "lam": 0.03517148008815244
+      }
+    }
+  ]
+}

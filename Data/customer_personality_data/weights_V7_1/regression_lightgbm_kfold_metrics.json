@@ -1,0 +1,666 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "folds": [
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8085,
+      "rmse": 9536.9851,
+      "mae": 6259.6647,
+      "mse": 90954084.7612,
+      "params": {
+        "n": 1000,
+        "lr": 0.08937924218896404,
+        "mcs": 22,
+        "sub": 0.74745715991744,
+        "col": 0.6996271084413447,
+        "lam": 0.020882718058866764
+      },
+      "seconds": 3.1
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8674,
+      "rmse": 7936.2863,
+      "mae": 5325.5247,
+      "mse": 62984639.5095,
+      "params": {
+        "n": 600,
+        "lr": 0.15326298756856396,
+        "mcs": 22,
+        "sub": 0.9656664022815562,
+        "col": 0.7097763835518073,
+        "lam": 0.06739722095953346
+      },
+      "seconds": 3.5
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7182,
+      "rmse": 11219.7878,
+      "mae": 6136.2146,
+      "mse": 125883637.2256,
+      "params": {
+        "n": 900,
+        "lr": 0.0710073735238868,
+        "mcs": 5,
+        "sub": 0.6186549696659096,
+        "col": 0.8935545097684682,
+        "lam": 0.4602278291768238
+      },
+      "seconds": 3.7
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7571,
+      "rmse": 10416.4454,
+      "mae": 5645.2803,
+      "mse": 108502334.8693,
+      "params": {
+        "n": 1000,
+        "lr": 0.05440445353043496,
+        "mcs": 5,
+        "sub": 0.6880384615053288,
+        "col": 0.8095509180135942,
+        "lam": 0.4679271259113614
+      },
+      "seconds": 5.6
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8364,
+      "rmse": 8563.3312,
+      "mae": 5749.1236,
+      "mse": 73330641.5622,
+      "params": {
+        "n": 1000,
+        "lr": 0.24408529540305648,
+        "mcs": 13,
+        "sub": 0.9927705967497432,
+        "col": 0.6063494008998699,
+        "lam": 4.580744671440487
+      },
+      "seconds": 3.8
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8737,
+      "rmse": 7525.7373,
+      "mae": 5512.1638,
+      "mse": 56636721.3351,
+      "params": {
+        "n": 400,
+        "lr": 0.15720545483999596,
+        "mcs": 20,
+        "sub": 0.9475291126100457,
+        "col": 0.9034564817662476,
+        "lam": 6.447543149462623
+      },
+      "seconds": 4.3
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7897,
+      "rmse": 10179.9904,
+      "mae": 6320.7574,
+      "mse": 103632204.3055,
+      "params": {
+        "n": 500,
+        "lr": 0.23355657109025976,
+        "mcs": 43,
+        "sub": 0.9891840168250072,
+        "col": 0.7302721895908724,
+        "lam": 0.3082949709742077
+      },
+      "seconds": 3.1
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7994,
+      "rmse": 9942.1384,
+      "mae": 5920.6593,
+      "mse": 98846116.3852,
+      "params": {
+        "n": 800,
+        "lr": 0.12082163966192801,
+        "mcs": 50,
+        "sub": 0.9568588476068154,
+        "col": 0.7088613245473102,
+        "lam": 1.429902761010517
+      },
+      "seconds": 4.8
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7649,
+      "rmse": 10274.5622,
+      "mae": 6513.8084,
+      "mse": 105566629.3443,
+      "params": {
+        "n": 900,
+        "lr": 0.08110215668771058,
+        "mcs": 29,
+        "sub": 0.798667903687571,
+        "col": 0.7439674944469562,
+        "lam": 0.36063500744847354
+      },
+      "seconds": 4.3
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8027,
+      "rmse": 9411.5421,
+      "mae": 6201.006,
+      "mse": 88577125.3968,
+      "params": {
+        "n": 1000,
+        "lr": 0.042760742228197916,
+        "mcs": 36,
+        "sub": 0.788899413905405,
+        "col": 0.6356744142773597,
+        "lam": 7.9728532620554065
+      },
+      "seconds": 5.8
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.782,
+      "rmse": 10194.8105,
+      "mae": 6549.9975,
+      "mse": 103934160.6916,
+      "params": {
+        "n": 600,
+        "lr": 0.2990013878869861,
+        "mcs": 20,
+        "sub": 0.9934946401195972,
+        "col": 0.9012389519639429,
+        "lam": 1.9011578823300948
+      },
+      "seconds": 3.8
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8377,
+      "rmse": 8795.5738,
+      "mae": 5930.9077,
+      "mse": 77362117.8927,
+      "params": {
+        "n": 1000,
+        "lr": 0.032785709816004836,
+        "mcs": 23,
+        "sub": 0.9931158707730126,
+        "col": 0.8217416855967429,
+        "lam": 3.535302917038974
+      },
+      "seconds": 5.9
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8013,
+      "rmse": 9314.0263,
+      "mae": 6314.3041,
+      "mse": 86751085.537,
+      "params": {
+        "n": 300,
+        "lr": 0.18790260078970047,
+        "mcs": 7,
+        "sub": 0.72878502005828,
+        "col": 0.9459922672205512,
+        "lam": 1.6607188920230187
+      },
+      "seconds": 2.3
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7669,
+      "rmse": 10087.1017,
+      "mae": 5982.9346,
+      "mse": 101749621.6725,
+      "params": {
+        "n": 900,
+        "lr": 0.21828684408261823,
+        "mcs": 16,
+        "sub": 0.8215907686507079,
+        "col": 0.6831757399844457,
+        "lam": 0.015567149950814848
+      },
+      "seconds": 5.1
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.838,
+      "rmse": 8689.0587,
+      "mae": 6230.9903,
+      "mse": 75499740.2653,
+      "params": {
+        "n": 600,
+        "lr": 0.1206405459119478,
+        "mcs": 21,
+        "sub": 0.6749450169469438,
+        "col": 0.6551094993524229,
+        "lam": 0.2517919105114146
+      },
+      "seconds": 3.0
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8555,
+      "rmse": 8206.9639,
+      "mae": 5667.7254,
+      "mse": 67354256.5594,
+      "params": {
+        "n": 500,
+        "lr": 0.23907701024685635,
+        "mcs": 11,
+        "sub": 0.699904562869361,
+        "col": 0.8732158636120462,
+        "lam": 4.587803816990701
+      },
+      "seconds": 3.3
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7792,
+      "rmse": 9918.5142,
+      "mae": 6309.0368,
+      "mse": 98376923.0439,
+      "params": {
+        "n": 900,
+        "lr": 0.07437510316805804,
+        "mcs": 22,
+        "sub": 0.6991560454181791,
+        "col": 0.8287743819954463,
+        "lam": 0.010920615131081708
+      },
+      "seconds": 4.1
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7841,
+      "rmse": 9807.7799,
+      "mae": 5860.7053,
+      "mse": 96192546.9228,
+      "params": {
+        "n": 700,
+        "lr": 0.08752534719873652,
+        "mcs": 17,
+        "sub": 0.9734970935154457,
+        "col": 0.5535665921890107,
+        "lam": 0.3229670375166525
+      },
+      "seconds": 4.8
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8023,
+      "rmse": 9818.682,
+      "mae": 6206.4767,
+      "mse": 96406517.0281,
+      "params": {
+        "n": 1000,
+        "lr": 0.09231050458780858,
+        "mcs": 18,
+        "sub": 0.8058835062253782,
+        "col": 0.942980052442107,
+        "lam": 6.236699865470973
+      },
+      "seconds": 3.8
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8504,
+      "rmse": 8540.0727,
+      "mae": 5478.5207,
+      "mse": 72932842.0406,
+      "params": {
+        "n": 1000,
+        "lr": 0.09064789419493824,
+        "mcs": 10,
+        "sub": 0.986881806420075,
+        "col": 0.6880296766877881,
+        "lam": 5.657376597846319
+      },
+      "seconds": 5.1
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7906,
+      "rmse": 10297.3257,
+      "mae": 6666.4148,
+      "mse": 106034916.7202,
+      "params": {
+        "n": 1000,
+        "lr": 0.25270712541977614,
+        "mcs": 25,
+        "sub": 0.978098830986919,
+        "col": 0.756831029660433,
+        "lam": 0.309098329384853
+      },
+      "seconds": 4.0
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7769,
+      "rmse": 10628.5606,
+      "mae": 6102.7595,
+      "mse": 112966299.6862,
+      "params": {
+        "n": 1000,
+        "lr": 0.1545552494042711,
+        "mcs": 9,
+        "sub": 0.9762872932533754,
+        "col": 0.928024754511956,
+        "lam": 0.0768733690395963
+      },
+      "seconds": 5.8
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7923,
+      "rmse": 9456.6676,
+      "mae": 6288.1496,
+      "mse": 89428561.9368,
+      "params": {
+        "n": 600,
+        "lr": 0.16783110207686253,
+        "mcs": 16,
+        "sub": 0.8240835366785235,
+        "col": 0.5628932178639038,
+        "lam": 0.025742981553298218
+      },
+      "seconds": 2.7
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8247,
+      "rmse": 8685.8817,
+      "mae": 5674.041,
+      "mse": 75444540.9407,
+      "params": {
+        "n": 1000,
+        "lr": 0.1424619794773533,
+        "mcs": 12,
+        "sub": 0.6175073332394716,
+        "col": 0.9612424079713118,
+        "lam": 0.502312120922903
+      },
+      "seconds": 5.0
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.787,
+      "rmse": 9543.8526,
+      "mae": 5842.2008,
+      "mse": 91085122.4121,
+      "params": {
+        "n": 300,
+        "lr": 0.2647990178625507,
+        "mcs": 7,
+        "sub": 0.7546173317036309,
+        "col": 0.5070178320533033,
+        "lam": 3.7224064672132195
+      },
+      "seconds": 2.1
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8245,
+      "rmse": 8662.4246,
+      "mae": 5512.7642,
+      "mse": 75037599.9165,
+      "params": {
+        "n": 800,
+        "lr": 0.07693079931076074,
+        "mcs": 5,
+        "sub": 0.6711741233507862,
+        "col": 0.6685796063329459,
+        "lam": 0.3147839422216494
+      },
+      "seconds": 5.3
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.635,
+      "rmse": 13878.8093,
+      "mae": 6893.1126,
+      "mse": 192621346.2965,
+      "params": {
+        "n": 900,
+        "lr": 0.1076424451380116,
+        "mcs": 34,
+        "sub": 0.6720047597680413,
+        "col": 0.9443770634401187,
+        "lam": 0.3683000967809031
+      },
+      "seconds": 3.7
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6521,
+      "rmse": 13550.8025,
+      "mae": 6371.7871,
+      "mse": 183624248.5479,
+      "params": {
+        "n": 1000,
+        "lr": 0.09916185288571429,
+        "mcs": 44,
+        "sub": 0.82906877128961,
+        "col": 0.7106429686199232,
+        "lam": 0.40605902745347916
+      },
+      "seconds": 4.9
+    },
+    {
+      "model": "LightGBM stumps (additive, depth 1) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8176,
+      "rmse": 8765.8086,
+      "mae": 6153.1522,
+      "mse": 76839399.549,
+      "params": {
+        "n": 800,
+        "lr": 0.08736498087120088,
+        "mcs": 39,
+        "sub": 0.7677643224626024,
+        "col": 0.6750455647729314,
+        "lam": 0.05132390610264184
+      },
+      "seconds": 3.8
+    },
+    {
+      "model": "LightGBM depth 2 (pairwise) | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.856,
+      "rmse": 7788.2067,
+      "mae": 5715.4869,
+      "mse": 60656163.3679,
+      "params": {
+        "n": 900,
+        "lr": 0.08457618176113188,
+        "mcs": 43,
+        "sub": 0.8986566174782026,
+        "col": 0.9640793839517542,
+        "lam": 0.02902537161177418
+      },
+      "seconds": 5.8
+    }
+  ],
+  "summary": {
+    "LightGBM depth 2 (pairwise) | + Teenhome (14)": {
+      "r2": {
+        "mean": 0.8086,
+        "std": 0.0572
+      },
+      "rmse": {
+        "mean": 9332.3678,
+        "std": 1522.9396
+      },
+      "mae": {
+        "mean": 5793.4844,
+        "std": 293.4878
+      }
+    },
+    "LightGBM stumps (additive, depth 1) | + Teenhome (14)": {
+      "r2": {
+        "mean": 0.7829,
+        "std": 0.0501
+      },
+      "rmse": {
+        "mean": 9976.8141,
+        "std": 1289.869
+      },
+      "mae": {
+        "mean": 6295.5603,
+        "std": 289.2586
+      }
+    }
+  }
+}

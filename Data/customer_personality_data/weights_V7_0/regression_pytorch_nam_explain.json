@@ -1,0 +1,53 @@
+{
+  "test_metrics": {
+    "r2": 0.7637904934979779,
+    "rmse": 10592.40580505101,
+    "mae": 6394.100817402652,
+    "mse": 112199060.73887834,
+    "epochs": 95.0,
+    "n_params": 3988.0
+  },
+  "importance": {
+    "MntWines": 0.23841,
+    "NumWebVisitsMonth": 0.13697,
+    "Teenhome": 0.11591,
+    "MntMeatProducts": 0.11557,
+    "NumDealsPurchases": 0.11072,
+    "Kidhome": 0.0796,
+    "NumWebPurchases": 0.03967,
+    "NumCatalogPurchases": 0.03431,
+    "Teenhome x NumCatalogPurchases": 0.02775,
+    "MntSweetProducts": 0.02371,
+    "Teenhome x MntWines": 0.02348,
+    "Teenhome x MntMeatProducts": 0.02096,
+    "Teenhome x NumWebVisitsMonth": 0.01814,
+    "NumStorePurchases": 0.01484,
+    "MntFruits": 0.01484,
+    "MntFishProducts": 0.01162,
+    "MntGoldProds": 0.00993,
+    "Teenhome x NumStorePurchases": 0.00833,
+    "Age": 0.00811
+  },
+  "pairs": [
+    [
+      "Teenhome",
+      "NumCatalogPurchases"
+    ],
+    [
+      "Teenhome",
+      "NumWebVisitsMonth"
+    ],
+    [
+      "Teenhome",
+      "MntWines"
+    ],
+    [
+      "Teenhome",
+      "MntMeatProducts"
+    ],
+    [
+      "Teenhome",
+      "NumStorePurchases"
+    ]
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "n_test": 443,
+  "seed": 42,
+  "n_trials": 30,
+  "inner_k": 3,
+  "models": [
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "r2": 0.8045,
+      "rmse": 9637.1674,
+      "mae": 5155.2358,
+      "mse": 92874996.2883,
+      "params": {
+        "n": 500,
+        "lr": 0.14535142644765597,
+        "d": 5,
+        "l2": 2.5276159017966178
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,model,reference,mean,std
+15,-0.00335,0.76154,0.88321,-0.02289,0.0158,FT-Transformer-lite | ReLU | + 3 modifiers (25),FT-Transformer-lite | ReLU | base (22),0.55269,0.04368
+15,0.00191,0.72989,0.93553,-0.01793,0.02267,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,FT-Transformer-lite | ReLU | base (22),0.55795,0.04244
+15,0.0,,,,,FT-Transformer-lite | ReLU | base (22),FT-Transformer-lite | ReLU | base (22),0.55605,0.04186

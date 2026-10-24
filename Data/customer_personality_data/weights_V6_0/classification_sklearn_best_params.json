@@ -1,0 +1,84 @@
+{
+  "Logistic regression": {
+    "C": 0.04024684569085517,
+    "cw": null
+  },
+  "Decision tree": {
+    "d": 8,
+    "leaf": 21,
+    "cw": null
+  },
+  "Random forest": {
+    "n": 300,
+    "d": 9,
+    "leaf": 4,
+    "mf": "sqrt",
+    "cw": "balanced_subsample"
+  },
+  "ExtraTrees": {
+    "n": 100,
+    "d": 12,
+    "leaf": 4,
+    "mf": "sqrt",
+    "cw": "balanced_subsample"
+  },
+  "Gradient boosting": {
+    "n": 250,
+    "lr": 0.033263461417233166,
+    "d": 2,
+    "sub": 0.9297169863041432
+  },
+  "HistGradientBoosting": {
+    "it": 400,
+    "lr": 0.019449301892628557,
+    "leaf": 10,
+    "l2": 0.3345496977046335,
+    "cw": "balanced"
+  },
+  "Stacking": {
+    "C": 1.3311216080736885,
+    "pt": true
+  },
+  "Naive Bayes": {
+    "v": 0.03874088437917367
+  },
+  "SVM (RBF)": {
+    "C": 83.88474197233863,
+    "g": 0.0008712401927937663,
+    "cw": null
+  },
+  "PCA + Random forest": {
+    "nc": 17,
+    "n": 300,
+    "d": 11,
+    "leaf": 7
+  },
+  "PCA + SVM": {
+    "nc": 19,
+    "C": 0.7260328481133272,
+    "g": 0.006538460390733601
+  },
+  "kNN": {
+    "k": 45,
+    "w": "uniform",
+    "p": 1
+  },
+  "k-Means (cluster rate)": {
+    "k": 37
+  },
+  "Agglomerative (cluster rate)": {
+    "k": 36,
+    "l": "complete"
+  },
+  "Perceptron (SLP)": {
+    "a": 0.00109074758351577,
+    "pen": null,
+    "cw": "balanced"
+  },
+  "MLP (sklearn)": {
+    "h1": 128,
+    "two": false,
+    "a": 0.013386991018197979,
+    "lr": 0.009128162044953602
+  }
+}

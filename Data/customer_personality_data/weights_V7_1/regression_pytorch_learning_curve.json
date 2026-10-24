@@ -1,0 +1,353 @@
+{
+  "k": 5,
+  "fracs": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "rows": [
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 1,
+      "r2": 0.6977,
+      "seconds": 7.4
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 1,
+      "r2": 0.7575,
+      "seconds": 2.8
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.5,
+      "n_train": 884,
+      "fold": 1,
+      "r2": 0.7449,
+      "seconds": 13.2
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.5,
+      "n_train": 884,
+      "fold": 1,
+      "r2": 0.8419,
+      "seconds": 6.6
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.75,
+      "n_train": 1327,
+      "fold": 1,
+      "r2": 0.758,
+      "seconds": 19.1
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.75,
+      "n_train": 1327,
+      "fold": 1,
+      "r2": 0.826,
+      "seconds": 14.6
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 1.0,
+      "n_train": 1769,
+      "fold": 1,
+      "r2": 0.7672,
+      "seconds": 24.9
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 1.0,
+      "n_train": 1769,
+      "fold": 1,
+      "r2": 0.8409,
+      "seconds": 14.9
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 2,
+      "r2": 0.7413,
+      "seconds": 8.4
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 2,
+      "r2": 0.7902,
+      "seconds": 2.2
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.5,
+      "n_train": 884,
+      "fold": 2,
+      "r2": 0.8144,
+      "seconds": 14.5
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.5,
+      "n_train": 884,
+      "fold": 2,
+      "r2": 0.7984,
+      "seconds": 9.0
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.75,
+      "n_train": 1327,
+      "fold": 2,
+      "r2": 0.7925,
+      "seconds": 20.5
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.75,
+      "n_train": 1327,
+      "fold": 2,
+      "r2": 0.794,
+      "seconds": 10.9
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 1.0,
+      "n_train": 1769,
+      "fold": 2,
+      "r2": 0.7701,
+      "seconds": 27.0
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 1.0,
+      "n_train": 1769,
+      "fold": 2,
+      "r2": 0.7851,
+      "seconds": 19.8
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 3,
+      "r2": 0.7289,
+      "seconds": 7.1
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 3,
+      "r2": 0.7879,
+      "seconds": 2.1
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.5,
+      "n_train": 885,
+      "fold": 3,
+      "r2": 0.7826,
+      "seconds": 12.5
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.5,
+      "n_train": 885,
+      "fold": 3,
+      "r2": 0.8698,
+      "seconds": 4.8
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.75,
+      "n_train": 1328,
+      "fold": 3,
+      "r2": 0.7762,
+      "seconds": 21.2
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.75,
+      "n_train": 1328,
+      "fold": 3,
+      "r2": 0.8861,
+      "seconds": 11.7
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 1.0,
+      "n_train": 1770,
+      "fold": 3,
+      "r2": 0.7886,
+      "seconds": 24.8
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 1.0,
+      "n_train": 1770,
+      "fold": 3,
+      "r2": 0.8951,
+      "seconds": 22.1
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 4,
+      "r2": 0.7083,
+      "seconds": 7.5
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 4,
+      "r2": 0.7824,
+      "seconds": 3.9
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.5,
+      "n_train": 885,
+      "fold": 4,
+      "r2": 0.7054,
+      "seconds": 13.9
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.5,
+      "n_train": 885,
+      "fold": 4,
+      "r2": 0.7733,
+      "seconds": 6.8
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.75,
+      "n_train": 1328,
+      "fold": 4,
+      "r2": 0.7527,
+      "seconds": 19.2
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.75,
+      "n_train": 1328,
+      "fold": 4,
+      "r2": 0.8265,
+      "seconds": 9.2
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 1.0,
+      "n_train": 1770,
+      "fold": 4,
+      "r2": 0.7373,
+      "seconds": 26.3
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 1.0,
+      "n_train": 1770,
+      "fold": 4,
+      "r2": 0.7782,
+      "seconds": 11.0
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 5,
+      "r2": 0.6968,
+      "seconds": 6.8
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.25,
+      "n_train": 442,
+      "fold": 5,
+      "r2": 0.764,
+      "seconds": 5.9
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.5,
+      "n_train": 885,
+      "fold": 5,
+      "r2": 0.7437,
+      "seconds": 15.0
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.5,
+      "n_train": 885,
+      "fold": 5,
+      "r2": 0.7837,
+      "seconds": 5.1
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 0.75,
+      "n_train": 1328,
+      "fold": 5,
+      "r2": 0.7355,
+      "seconds": 18.6
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 0.75,
+      "n_train": 1328,
+      "fold": 5,
+      "r2": 0.7985,
+      "seconds": 7.2
+    },
+    {
+      "model": "NAM | + Teenhome + 5 Teenhome pairs",
+      "frac": 1.0,
+      "n_train": 1770,
+      "fold": 5,
+      "r2": 0.7626,
+      "seconds": 25.9
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "frac": 1.0,
+      "n_train": 1770,
+      "fold": 5,
+      "r2": 0.8251,
+      "seconds": 7.4
+    }
+  ],
+  "gap": [
+    {
+      "frac": 0.25,
+      "mean": 0.06180000000000001,
+      "std": 0.00946968848484465
+    },
+    {
+      "frac": 0.5,
+      "mean": 0.05521999999999998,
+      "std": 0.04536796226413527
+    },
+    {
+      "frac": 0.75,
+      "mean": 0.06323999999999999,
+      "std": 0.039125477632867285
+    },
+    {
+      "frac": 1.0,
+      "mean": 0.059720000000000016,
+      "std": 0.034444186737387195
+    }
+  ]
+}

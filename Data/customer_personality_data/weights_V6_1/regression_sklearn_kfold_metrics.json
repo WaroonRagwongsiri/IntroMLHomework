@@ -1,0 +1,3088 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "n_trials": 30,
+  "folds": [
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.4479,
+      "rmse": 16193.439,
+      "mae": 11630.18,
+      "mse": 262227465.6019,
+      "params": {
+        "j": 1
+      },
+      "seconds": 0.2
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7244,
+      "rmse": 11441.1156,
+      "mae": 7224.9036,
+      "mse": 130899125.5154,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7511,
+      "rmse": 10873.8787,
+      "mae": 6685.9938,
+      "mse": 118241237.0074,
+      "params": {
+        "deg": 2,
+        "a": 93.84467467373666
+      },
+      "seconds": 1.6
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8029,
+      "rmse": 9675.3351,
+      "mae": 7066.5024,
+      "mse": 93612109.4196,
+      "params": {
+        "d": 7,
+        "leaf": 9
+      },
+      "seconds": 0.6
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7771,
+      "rmse": 10289.4705,
+      "mae": 6142.9007,
+      "mse": 105873202.92,
+      "params": {
+        "n": 100,
+        "d": 10,
+        "leaf": 3,
+        "mf": 1.0
+      },
+      "seconds": 128.3
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7827,
+      "rmse": 10159.7011,
+      "mae": 5580.3192,
+      "mse": 103219527.2869,
+      "params": {
+        "n": 300,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 82.4
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7917,
+      "rmse": 9947.2243,
+      "mae": 5584.7705,
+      "mse": 98947271.9068,
+      "params": {
+        "n": 200,
+        "lr": 0.0566919097352964,
+        "d": 4,
+        "sub": 0.7232091575189488
+      },
+      "seconds": 95.9
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8424,
+      "rmse": 8651.4287,
+      "mae": 5658.6679,
+      "mse": 74847219.0284,
+      "params": {
+        "it": 400,
+        "lr": 0.020729514854464542,
+        "leaf": 18,
+        "l2": 0.20034822502854036
+      },
+      "seconds": 62.8
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7349,
+      "rmse": 11222.236,
+      "mae": 6252.8921,
+      "mse": 125938579.8483,
+      "params": {
+        "k": 13,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 2.3
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8136,
+      "rmse": 9408.8354,
+      "mae": 5755.9733,
+      "mse": 88526183.5585,
+      "params": {
+        "C": 8.675646749316828,
+        "g": 0.11062607075762967,
+        "e": 0.10405082245961458
+      },
+      "seconds": 19.1
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7758,
+      "rmse": 10320.4643,
+      "mae": 6442.9566,
+      "mse": 106511982.7953,
+      "params": {
+        "h1": 96,
+        "two": false,
+        "a": 0.05212845154937359,
+        "lr": 0.00370596652277938
+      },
+      "seconds": 26.1
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.3645,
+      "rmse": 16850.3643,
+      "mae": 11731.4216,
+      "mse": 283934776.1302,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.2
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7193,
+      "rmse": 11199.083,
+      "mae": 7658.3864,
+      "mse": 125419459.7603,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7154,
+      "rmse": 11276.3017,
+      "mae": 7018.7076,
+      "mse": 127154980.2321,
+      "params": {
+        "deg": 2,
+        "a": 53.90407351358946
+      },
+      "seconds": 1.8
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7255,
+      "rmse": 11074.2033,
+      "mae": 6986.4751,
+      "mse": 122637979.6386,
+      "params": {
+        "d": 6,
+        "leaf": 9
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7807,
+      "rmse": 9898.1419,
+      "mae": 5482.9808,
+      "mse": 97973212.243,
+      "params": {
+        "n": 100,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 115.3
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7992,
+      "rmse": 9471.9531,
+      "mae": 5371.7251,
+      "mse": 89717895.1432,
+      "params": {
+        "n": 100,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 72.0
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7581,
+      "rmse": 10396.8657,
+      "mae": 5301.1794,
+      "mse": 108094815.4284,
+      "params": {
+        "n": 300,
+        "lr": 0.060399886883490315,
+        "d": 5,
+        "sub": 0.6082369719455933
+      },
+      "seconds": 90.2
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7725,
+      "rmse": 10082.8585,
+      "mae": 5092.0389,
+      "mse": 101664035.0507,
+      "params": {
+        "it": 400,
+        "lr": 0.11684719591052696,
+        "leaf": 63,
+        "l2": 0.02253087530573763
+      },
+      "seconds": 119.3
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7429,
+      "rmse": 10717.7105,
+      "mae": 6183.1772,
+      "mse": 114869318.526,
+      "params": {
+        "k": 5,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 2.2
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7727,
+      "rmse": 10078.0142,
+      "mae": 6204.5069,
+      "mse": 101566370.6366,
+      "params": {
+        "C": 32.84096351187201,
+        "g": 0.030351868965536072,
+        "e": 0.3417406898596746
+      },
+      "seconds": 19.7
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7017,
+      "rmse": 11543.8374,
+      "mae": 6740.3383,
+      "mse": 133260181.3928,
+      "params": {
+        "h1": 96,
+        "two": true,
+        "a": 0.002224187107118631,
+        "lr": 0.003473557467669363
+      },
+      "seconds": 30.6
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.461,
+      "rmse": 15545.7962,
+      "mae": 12111.6803,
+      "mse": 241671780.4051,
+      "params": {
+        "j": 1
+      },
+      "seconds": 0.2
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.7586,
+      "rmse": 10403.786,
+      "mae": 7459.3504,
+      "mse": 108238763.5917,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8066,
+      "rmse": 9312.4942,
+      "mae": 6640.7595,
+      "mse": 86722547.8733,
+      "params": {
+        "deg": 2,
+        "a": 91.12146980803264
+      },
+      "seconds": 1.4
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8011,
+      "rmse": 9443.8341,
+      "mae": 7037.0353,
+      "mse": 89186001.8385,
+      "params": {
+        "d": 12,
+        "leaf": 14
+      },
+      "seconds": 0.6
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8418,
+      "rmse": 8422.6479,
+      "mae": 5821.0863,
+      "mse": 70940998.2163,
+      "params": {
+        "n": 100,
+        "d": 10,
+        "leaf": 5,
+        "mf": 1.0
+      },
+      "seconds": 78.6
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8882,
+      "rmse": 7080.9261,
+      "mae": 5103.4185,
+      "mse": 50139514.3276,
+      "params": {
+        "n": 300,
+        "d": 16,
+        "leaf": 2,
+        "mf": 1.0
+      },
+      "seconds": 70.8
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8863,
+      "rmse": 7139.9141,
+      "mae": 5252.5244,
+      "mse": 50978373.6501,
+      "params": {
+        "n": 150,
+        "lr": 0.19727180731430252,
+        "d": 5,
+        "sub": 0.6199384736474178
+      },
+      "seconds": 52.2
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.881,
+      "rmse": 7305.2476,
+      "mae": 5196.0426,
+      "mse": 53366642.8009,
+      "params": {
+        "it": 400,
+        "lr": 0.11033087269378979,
+        "leaf": 15,
+        "l2": 6.115209983887454
+      },
+      "seconds": 45.5
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.791,
+      "rmse": 9680.0677,
+      "mae": 6227.5061,
+      "mse": 93703711.2937,
+      "params": {
+        "k": 13,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 2.3
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8221,
+      "rmse": 8930.2545,
+      "mae": 6085.1478,
+      "mse": 79749446.2924,
+      "params": {
+        "C": 14.046469511062012,
+        "g": 0.019633804834488722,
+        "e": 0.03115100312566509
+      },
+      "seconds": 20.0
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8495,
+      "rmse": 8213.8019,
+      "mae": 6175.5265,
+      "mse": 67466542.225,
+      "params": {
+        "h1": 128,
+        "two": true,
+        "a": 0.0003356556045063245,
+        "lr": 0.0011766473870708579
+      },
+      "seconds": 36.6
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.4228,
+      "rmse": 16864.8848,
+      "mae": 12025.5245,
+      "mse": 284424338.107,
+      "params": {
+        "j": 2
+      },
+      "seconds": 0.2
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.766,
+      "rmse": 10737.5035,
+      "mae": 7685.1392,
+      "mse": 115293982.0696,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6569,
+      "rmse": 13002.3636,
+      "mae": 7389.1077,
+      "mse": 169061458.7102,
+      "params": {
+        "deg": 2,
+        "a": 96.81825668300618
+      },
+      "seconds": 1.9
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7219,
+      "rmse": 11706.1304,
+      "mae": 7775.4503,
+      "mse": 137033488.9353,
+      "params": {
+        "d": 7,
+        "leaf": 16
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7821,
+      "rmse": 10361.4488,
+      "mae": 6359.8952,
+      "mse": 107359622.0101,
+      "params": {
+        "n": 400,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.33
+      },
+      "seconds": 137.9
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7915,
+      "rmse": 10135.2869,
+      "mae": 5892.9176,
+      "mse": 102724040.1996,
+      "params": {
+        "n": 300,
+        "d": 15,
+        "leaf": 1,
+        "mf": 1.0
+      },
+      "seconds": 78.8
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.8051,
+      "rmse": 9799.6878,
+      "mae": 6083.8006,
+      "mse": 96033881.1742,
+      "params": {
+        "n": 150,
+        "lr": 0.17095444973709487,
+        "d": 4,
+        "sub": 0.8576539245053042
+      },
+      "seconds": 78.1
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7057,
+      "rmse": 12042.8106,
+      "mae": 6169.4776,
+      "mse": 145029287.7893,
+      "params": {
+        "it": 400,
+        "lr": 0.16421751061499787,
+        "leaf": 23,
+        "l2": 0.0025361247798356607
+      },
+      "seconds": 52.9
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7379,
+      "rmse": 11365.2202,
+      "mae": 6795.9365,
+      "mse": 129168229.4304,
+      "params": {
+        "k": 5,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.7
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6938,
+      "rmse": 12284.0434,
+      "mae": 6820.0375,
+      "mse": 150897723.3832,
+      "params": {
+        "C": 18.26685563257368,
+        "g": 0.07367192467589213,
+        "e": 0.09293405491672745
+      },
+      "seconds": 14.9
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.641,
+      "rmse": 13300.8101,
+      "mae": 7079.8775,
+      "mse": 176911550.5842,
+      "params": {
+        "h1": 80,
+        "two": true,
+        "a": 0.009006020429067368,
+        "lr": 0.00235220555875276
+      },
+      "seconds": 22.3
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.4329,
+      "rmse": 15957.5537,
+      "mae": 11603.949,
+      "mse": 254643519.0339,
+      "params": {
+        "j": 2
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7068,
+      "rmse": 11474.4445,
+      "mae": 7795.6065,
+      "mse": 131662875.7794,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7832,
+      "rmse": 9866.7715,
+      "mae": 7048.2413,
+      "mse": 97353180.5925,
+      "params": {
+        "deg": 2,
+        "a": 93.02184918678107
+      },
+      "seconds": 1.0
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7481,
+      "rmse": 10635.8151,
+      "mae": 7223.709,
+      "mse": 113120562.1588,
+      "params": {
+        "d": 9,
+        "leaf": 14
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7997,
+      "rmse": 9483.0844,
+      "mae": 6041.0515,
+      "mse": 89928889.7833,
+      "params": {
+        "n": 400,
+        "d": 14,
+        "leaf": 4,
+        "mf": 1.0
+      },
+      "seconds": 134.0
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8255,
+      "rmse": 8852.211,
+      "mae": 5733.2215,
+      "mse": 78361639.3065,
+      "params": {
+        "n": 100,
+        "d": 14,
+        "leaf": 3,
+        "mf": 1.0
+      },
+      "seconds": 44.6
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7919,
+      "rmse": 9665.2547,
+      "mae": 5757.6718,
+      "mse": 93417147.6295,
+      "params": {
+        "n": 250,
+        "lr": 0.05478033611245408,
+        "d": 5,
+        "sub": 0.864769094085858
+      },
+      "seconds": 88.5
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.825,
+      "rmse": 8863.9686,
+      "mae": 5756.2291,
+      "mse": 78569938.7884,
+      "params": {
+        "it": 250,
+        "lr": 0.030979383776288377,
+        "leaf": 62,
+        "l2": 9.334614768030008
+      },
+      "seconds": 51.0
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7562,
+      "rmse": 10462.0798,
+      "mae": 6593.8216,
+      "mse": 109455112.9455,
+      "params": {
+        "k": 25,
+        "w": "distance",
+        "p": 2
+      },
+      "seconds": 1.8
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7834,
+      "rmse": 9861.7629,
+      "mae": 6553.1456,
+      "mse": 97254366.6415,
+      "params": {
+        "C": 1.8082532743341815,
+        "g": 0.14652351915087328,
+        "e": 0.06941478752801357
+      },
+      "seconds": 11.0
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8401,
+      "rmse": 8473.8763,
+      "mae": 6488.7282,
+      "mse": 71806579.0286,
+      "params": {
+        "h1": 80,
+        "two": true,
+        "a": 0.0010199550473356685,
+        "lr": 0.0010586757393874035
+      },
+      "seconds": 23.0
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.4393,
+      "rmse": 16347.7414,
+      "mae": 11715.0469,
+      "mse": 267248649.6985,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7064,
+      "rmse": 11829.6358,
+      "mae": 7738.5491,
+      "mse": 139940283.0527,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7469,
+      "rmse": 10983.0995,
+      "mae": 7030.1787,
+      "mse": 120628475.5959,
+      "params": {
+        "deg": 2,
+        "a": 60.22528596609361
+      },
+      "seconds": 0.8
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7069,
+      "rmse": 11820.3758,
+      "mae": 7377.8482,
+      "mse": 139721285.0493,
+      "params": {
+        "d": 11,
+        "leaf": 22
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8006,
+      "rmse": 9749.9921,
+      "mae": 6103.5151,
+      "mse": 95062346.8596,
+      "params": {
+        "n": 200,
+        "d": 16,
+        "leaf": 3,
+        "mf": 1.0
+      },
+      "seconds": 143.7
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8756,
+      "rmse": 7699.8005,
+      "mae": 5389.3413,
+      "mse": 59286927.4472,
+      "params": {
+        "n": 400,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 59.6
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8833,
+      "rmse": 7457.1536,
+      "mae": 5331.2307,
+      "mse": 55609139.7751,
+      "params": {
+        "n": 250,
+        "lr": 0.05737561594309017,
+        "d": 5,
+        "sub": 0.6990895828067161
+      },
+      "seconds": 60.9
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8442,
+      "rmse": 8617.0365,
+      "mae": 5707.3028,
+      "mse": 74253318.8158,
+      "params": {
+        "it": 300,
+        "lr": 0.04913477437829559,
+        "leaf": 36,
+        "l2": 0.01687846678329547
+      },
+      "seconds": 50.2
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7853,
+      "rmse": 10116.3024,
+      "mae": 6122.3905,
+      "mse": 102339573.6027,
+      "params": {
+        "k": 9,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.6
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7845,
+      "rmse": 10134.3946,
+      "mae": 6312.1411,
+      "mse": 102705954.7559,
+      "params": {
+        "C": 28.636066284604905,
+        "g": 0.025850038261799876,
+        "e": 0.010585291086889732
+      },
+      "seconds": 23.3
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.847,
+      "rmse": 8539.4705,
+      "mae": 6100.1432,
+      "mse": 72922556.018,
+      "params": {
+        "h1": 128,
+        "two": true,
+        "a": 0.09091864573460809,
+        "lr": 0.006638126764016449
+      },
+      "seconds": 24.0
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.364,
+      "rmse": 16663.5424,
+      "mae": 11707.7367,
+      "mse": 277673645.4639,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7537,
+      "rmse": 10369.2486,
+      "mae": 7346.0741,
+      "mse": 107521315.8386,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7362,
+      "rmse": 10731.0834,
+      "mae": 6717.4905,
+      "mse": 115156151.4818,
+      "params": {
+        "deg": 2,
+        "a": 113.4862962114765
+      },
+      "seconds": 0.9
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.6699,
+      "rmse": 12004.9619,
+      "mae": 7482.6762,
+      "mse": 144119109.4571,
+      "params": {
+        "d": 5,
+        "leaf": 1
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8185,
+      "rmse": 8900.8091,
+      "mae": 5736.4014,
+      "mse": 79224403.4115,
+      "params": {
+        "n": 300,
+        "d": 14,
+        "leaf": 1,
+        "mf": 1.0
+      },
+      "seconds": 113.9
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8028,
+      "rmse": 9277.5777,
+      "mae": 5419.6667,
+      "mse": 86073448.3112,
+      "params": {
+        "n": 200,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 40.8
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8118,
+      "rmse": 9063.4592,
+      "mae": 5608.2964,
+      "mse": 82146293.3929,
+      "params": {
+        "n": 300,
+        "lr": 0.044544385919742774,
+        "d": 5,
+        "sub": 0.7435524442760574
+      },
+      "seconds": 62.3
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7683,
+      "rmse": 10057.9422,
+      "mae": 5682.8377,
+      "mse": 101162201.4154,
+      "params": {
+        "it": 400,
+        "lr": 0.07437273555888795,
+        "leaf": 16,
+        "l2": 0.0012170675337949517
+      },
+      "seconds": 32.8
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7537,
+      "rmse": 10369.8651,
+      "mae": 6195.1659,
+      "mse": 107534101.551,
+      "params": {
+        "k": 5,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.4
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.743,
+      "rmse": 10592.1938,
+      "mae": 6242.3556,
+      "mse": 112194569.8916,
+      "params": {
+        "C": 37.25946216159634,
+        "g": 0.058389055042777194,
+        "e": 0.2390486857668745
+      },
+      "seconds": 13.1
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.6955,
+      "rmse": 11529.718,
+      "mae": 6641.7403,
+      "mse": 132934397.0324,
+      "params": {
+        "h1": 80,
+        "two": false,
+        "a": 2.854800798564597e-05,
+        "lr": 0.004881697770969402
+      },
+      "seconds": 17.5
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.543,
+      "rmse": 14592.9234,
+      "mae": 11850.5349,
+      "mse": 212953413.8119,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.7858,
+      "rmse": 9990.91,
+      "mae": 7525.835,
+      "mse": 99818283.5955,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8357,
+      "rmse": 8750.2784,
+      "mae": 6874.4231,
+      "mse": 76567371.2407,
+      "params": {
+        "deg": 3,
+        "a": 147.96997832210664
+      },
+      "seconds": 1.3
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.7945,
+      "rmse": 9786.1424,
+      "mae": 6989.1685,
+      "mse": 95768583.9015,
+      "params": {
+        "d": 11,
+        "leaf": 14
+      },
+      "seconds": 0.6
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8664,
+      "rmse": 7889.0815,
+      "mae": 5626.6188,
+      "mse": 62237606.2407,
+      "params": {
+        "n": 100,
+        "d": 16,
+        "leaf": 2,
+        "mf": 1.0
+      },
+      "seconds": 70.6
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8911,
+      "rmse": 7123.6264,
+      "mae": 5112.8555,
+      "mse": 50746053.2362,
+      "params": {
+        "n": 200,
+        "d": 15,
+        "leaf": 1,
+        "mf": 1.0
+      },
+      "seconds": 38.5
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8872,
+      "rmse": 7250.0684,
+      "mae": 5470.2846,
+      "mse": 52563491.7097,
+      "params": {
+        "n": 200,
+        "lr": 0.09900986510726953,
+        "d": 4,
+        "sub": 0.7114408712729852
+      },
+      "seconds": 58.4
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8765,
+      "rmse": 7585.6983,
+      "mae": 5412.7742,
+      "mse": 57542817.9404,
+      "params": {
+        "it": 400,
+        "lr": 0.06448950330434607,
+        "leaf": 42,
+        "l2": 0.003067571292352973
+      },
+      "seconds": 51.8
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8263,
+      "rmse": 8998.0433,
+      "mae": 6281.1823,
+      "mse": 80964783.3172,
+      "params": {
+        "k": 9,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.4
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8328,
+      "rmse": 8828.0081,
+      "mae": 6050.6525,
+      "mse": 77933727.6535,
+      "params": {
+        "C": 23.415453461119963,
+        "g": 0.08525625068536524,
+        "e": 0.06782341246607976
+      },
+      "seconds": 17.3
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8431,
+      "rmse": 8550.5882,
+      "mae": 6441.0494,
+      "mse": 73112557.8646,
+      "params": {
+        "h1": 96,
+        "two": false,
+        "a": 0.0001375361983292743,
+        "lr": 0.006717388315053363
+      },
+      "seconds": 14.4
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.4978,
+      "rmse": 14957.6569,
+      "mae": 11350.9814,
+      "mse": 223731500.3514,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.678,
+      "rmse": 11977.1455,
+      "mae": 7791.3196,
+      "mse": 143452013.7844,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6928,
+      "rmse": 11699.2082,
+      "mae": 7025.2916,
+      "mse": 136871471.5026,
+      "params": {
+        "deg": 2,
+        "a": 111.3078813161866
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6246,
+      "rmse": 12930.9497,
+      "mae": 7332.1912,
+      "mse": 167209460.7107,
+      "params": {
+        "d": 6,
+        "leaf": 5
+      },
+      "seconds": 0.6
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7863,
+      "rmse": 9757.3997,
+      "mae": 5993.3611,
+      "mse": 95206849.7064,
+      "params": {
+        "n": 400,
+        "d": 16,
+        "leaf": 4,
+        "mf": 1.0
+      },
+      "seconds": 113.8
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7714,
+      "rmse": 10091.1575,
+      "mae": 5865.9141,
+      "mse": 101831460.1233,
+      "params": {
+        "n": 200,
+        "d": 13,
+        "leaf": 3,
+        "mf": 1.0
+      },
+      "seconds": 40.6
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7267,
+      "rmse": 11033.3097,
+      "mae": 5914.101,
+      "mse": 121733922.6113,
+      "params": {
+        "n": 250,
+        "lr": 0.05462467158999156,
+        "d": 4,
+        "sub": 0.6824511911922508
+      },
+      "seconds": 49.0
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7647,
+      "rmse": 10238.1406,
+      "mae": 6164.5055,
+      "mse": 104819522.3183,
+      "params": {
+        "it": 300,
+        "lr": 0.07525579477785259,
+        "leaf": 8,
+        "l2": 0.0076385397816625105
+      },
+      "seconds": 24.3
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7794,
+      "rmse": 9914.2718,
+      "mae": 6054.9815,
+      "mse": 98292786.162,
+      "params": {
+        "k": 11,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.4
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7688,
+      "rmse": 10148.2964,
+      "mae": 6501.3294,
+      "mse": 102987919.1989,
+      "params": {
+        "C": 2.0873985984225745,
+        "g": 0.12674923749528616,
+        "e": 0.021583095950168496
+      },
+      "seconds": 14.1
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6593,
+      "rmse": 12320.5315,
+      "mae": 6969.3519,
+      "mse": 151795496.1009,
+      "params": {
+        "h1": 112,
+        "two": false,
+        "a": 0.00026475718308371346,
+        "lr": 0.002662304664085562
+      },
+      "seconds": 17.6
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.5102,
+      "rmse": 15453.4935,
+      "mae": 11813.3554,
+      "mse": 238810460.11,
+      "params": {
+        "j": 1
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.7553,
+      "rmse": 10922.8304,
+      "mae": 7483.2614,
+      "mse": 119308223.6645,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8093,
+      "rmse": 9643.6234,
+      "mae": 6845.5762,
+      "mse": 92999473.0919,
+      "params": {
+        "deg": 2,
+        "a": 41.093667420201704
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8424,
+      "rmse": 8766.6106,
+      "mae": 6780.4414,
+      "mse": 76853460.8368,
+      "params": {
+        "d": 7,
+        "leaf": 7
+      },
+      "seconds": 0.6
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.84,
+      "rmse": 8831.0732,
+      "mae": 5923.3319,
+      "mse": 77987854.6592,
+      "params": {
+        "n": 200,
+        "d": 16,
+        "leaf": 4,
+        "mf": 1.0
+      },
+      "seconds": 81.9
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8968,
+      "rmse": 7093.466,
+      "mae": 5206.8147,
+      "mse": 50317260.2511,
+      "params": {
+        "n": 400,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 48.0
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8912,
+      "rmse": 7281.716,
+      "mae": 5408.5361,
+      "mse": 53023387.5391,
+      "params": {
+        "n": 250,
+        "lr": 0.20275548803958127,
+        "d": 2,
+        "sub": 0.6503726805341511
+      },
+      "seconds": 46.3
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8776,
+      "rmse": 7726.2127,
+      "mae": 5311.3213,
+      "mse": 59694362.5071,
+      "params": {
+        "it": 150,
+        "lr": 0.07678895821090909,
+        "leaf": 23,
+        "l2": 0.04396981575852122
+      },
+      "seconds": 29.7
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8193,
+      "rmse": 9386.2456,
+      "mae": 6179.5947,
+      "mse": 88101606.8155,
+      "params": {
+        "k": 5,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.3
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8565,
+      "rmse": 8365.7491,
+      "mae": 6161.6689,
+      "mse": 69985758.729,
+      "params": {
+        "C": 38.197068789800866,
+        "g": 0.07265950086750203,
+        "e": 0.31607594747136075
+      },
+      "seconds": 14.4
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8322,
+      "rmse": 9045.7974,
+      "mae": 6265.098,
+      "mse": 81826451.3217,
+      "params": {
+        "h1": 112,
+        "two": true,
+        "a": 0.02427195585199227,
+        "lr": 0.009038827230645545
+      },
+      "seconds": 14.6
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.3813,
+      "rmse": 17699.9252,
+      "mae": 12285.7193,
+      "mse": 313287352.0535,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7062,
+      "rmse": 12197.1329,
+      "mae": 8055.2346,
+      "mse": 148770051.0804,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.697,
+      "rmse": 12387.14,
+      "mae": 7181.9327,
+      "mse": 153441237.961,
+      "params": {
+        "deg": 2,
+        "a": 42.804451522481536
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7051,
+      "rmse": 12219.149,
+      "mae": 7266.2645,
+      "mse": 149307601.7587,
+      "params": {
+        "d": 7,
+        "leaf": 4
+      },
+      "seconds": 0.6
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7888,
+      "rmse": 10340.4424,
+      "mae": 6037.3403,
+      "mse": 106924748.6693,
+      "params": {
+        "n": 400,
+        "d": 14,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 103.9
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8069,
+      "rmse": 9888.1794,
+      "mae": 5582.4061,
+      "mse": 97776090.9954,
+      "params": {
+        "n": 300,
+        "d": 16,
+        "leaf": 1,
+        "mf": 1.0
+      },
+      "seconds": 49.9
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.789,
+      "rmse": 10336.4093,
+      "mae": 5886.8855,
+      "mse": 106841357.0367,
+      "params": {
+        "n": 300,
+        "lr": 0.11930479242423282,
+        "d": 3,
+        "sub": 0.7016846177717151
+      },
+      "seconds": 42.1
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7703,
+      "rmse": 10785.7979,
+      "mae": 5890.7796,
+      "mse": 116333436.4194,
+      "params": {
+        "it": 400,
+        "lr": 0.11816398793539795,
+        "leaf": 21,
+        "l2": 0.127819001636689
+      },
+      "seconds": 31.4
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7256,
+      "rmse": 11787.561,
+      "mae": 6716.0948,
+      "mse": 138946593.8715,
+      "params": {
+        "k": 5,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.1
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.731,
+      "rmse": 11671.9913,
+      "mae": 6590.0316,
+      "mse": 136235379.9429,
+      "params": {
+        "C": 59.07234381155642,
+        "g": 0.012534591600520548,
+        "e": 0.25095308794583054
+      },
+      "seconds": 9.0
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7468,
+      "rmse": 11323.5554,
+      "mae": 6730.181,
+      "mse": 128222905.7689,
+      "params": {
+        "h1": 80,
+        "two": true,
+        "a": 1.4836471558059514e-05,
+        "lr": 0.00940820844877844
+      },
+      "seconds": 15.9
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.5401,
+      "rmse": 14071.1018,
+      "mae": 11257.4359,
+      "mse": 197995905.5939,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7737,
+      "rmse": 9871.0729,
+      "mae": 7267.3671,
+      "mse": 97438079.9725,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8261,
+      "rmse": 8652.8657,
+      "mae": 6773.3651,
+      "mse": 74872084.1871,
+      "params": {
+        "deg": 2,
+        "a": 125.26827726379656
+      },
+      "seconds": 0.5
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7806,
+      "rmse": 9718.6077,
+      "mae": 6774.485,
+      "mse": 94451336.5661,
+      "params": {
+        "d": 7,
+        "leaf": 8
+      },
+      "seconds": 0.5
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7995,
+      "rmse": 9291.1354,
+      "mae": 5789.6355,
+      "mse": 86325197.2147,
+      "params": {
+        "n": 100,
+        "d": 14,
+        "leaf": 1,
+        "mf": 1.0
+      },
+      "seconds": 57.8
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8541,
+      "rmse": 7924.6761,
+      "mae": 5382.2578,
+      "mse": 62800491.3842,
+      "params": {
+        "n": 200,
+        "d": 15,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 25.7
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8492,
+      "rmse": 8056.4861,
+      "mae": 5301.3142,
+      "mse": 64906967.8588,
+      "params": {
+        "n": 250,
+        "lr": 0.07316362835054416,
+        "d": 5,
+        "sub": 0.8413874398394893
+      },
+      "seconds": 56.4
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8499,
+      "rmse": 8038.9555,
+      "mae": 5714.8393,
+      "mse": 64624805.6613,
+      "params": {
+        "it": 350,
+        "lr": 0.1217321188290378,
+        "leaf": 11,
+        "l2": 0.08082235937116646
+      },
+      "seconds": 22.7
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8478,
+      "rmse": 8094.9661,
+      "mae": 5926.7817,
+      "mse": 65528476.6356,
+      "params": {
+        "k": 9,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.1
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8692,
+      "rmse": 7504.3474,
+      "mae": 6027.5236,
+      "mse": 56315229.2537,
+      "params": {
+        "C": 13.948029071914565,
+        "g": 0.035306826790053016,
+        "e": 0.10212101120969053
+      },
+      "seconds": 12.2
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8476,
+      "rmse": 8100.6912,
+      "mae": 6406.7392,
+      "mse": 65621198.2486,
+      "params": {
+        "h1": 112,
+        "two": true,
+        "a": 0.014936360718454137,
+        "lr": 0.0030894424866843295
+      },
+      "seconds": 12.4
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.5113,
+      "rmse": 14454.9638,
+      "mae": 11694.4124,
+      "mse": 208945977.6924,
+      "params": {
+        "j": 1
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.798,
+      "rmse": 9293.618,
+      "mae": 6927.152,
+      "mse": 86371336.077,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8353,
+      "rmse": 8390.4576,
+      "mae": 6574.2818,
+      "mse": 70399778.8472,
+      "params": {
+        "deg": 2,
+        "a": 247.23620477131783
+      },
+      "seconds": 0.5
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.7788,
+      "rmse": 9725.9425,
+      "mae": 6703.7255,
+      "mse": 94593958.4701,
+      "params": {
+        "d": 11,
+        "leaf": 8
+      },
+      "seconds": 0.4
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8171,
+      "rmse": 8842.5722,
+      "mae": 5475.0182,
+      "mse": 78191082.4516,
+      "params": {
+        "n": 300,
+        "d": 16,
+        "leaf": 2,
+        "mf": 1.0
+      },
+      "seconds": 102.9
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8501,
+      "rmse": 8005.6607,
+      "mae": 5084.4565,
+      "mse": 64090603.4395,
+      "params": {
+        "n": 100,
+        "d": 14,
+        "leaf": 1,
+        "mf": 1.0
+      },
+      "seconds": 24.6
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8473,
+      "rmse": 8081.1664,
+      "mae": 5281.9949,
+      "mse": 65305249.9831,
+      "params": {
+        "n": 300,
+        "lr": 0.05298332696478012,
+        "d": 4,
+        "sub": 0.742857886054517
+      },
+      "seconds": 57.2
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8691,
+      "rmse": 7480.7017,
+      "mae": 5504.1614,
+      "mse": 55960898.2997,
+      "params": {
+        "it": 400,
+        "lr": 0.07519231504144044,
+        "leaf": 8,
+        "l2": 0.005952883548171683
+      },
+      "seconds": 21.9
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.82,
+      "rmse": 8771.9712,
+      "mae": 6115.1248,
+      "mse": 76947479.5323,
+      "params": {
+        "k": 5,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.1
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8617,
+      "rmse": 7688.6398,
+      "mae": 5759.1061,
+      "mse": 59115181.5043,
+      "params": {
+        "C": 30.427844070381113,
+        "g": 0.04648953587698561,
+        "e": 0.16996277752645406
+      },
+      "seconds": 10.5
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8437,
+      "rmse": 8174.0698,
+      "mae": 6392.5037,
+      "mse": 66815417.0764,
+      "params": {
+        "h1": 96,
+        "two": true,
+        "a": 0.02643272018790551,
+        "lr": 0.0024906392528384965
+      },
+      "seconds": 15.5
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.3468,
+      "rmse": 18567.2231,
+      "mae": 11926.7057,
+      "mse": 344741774.9162,
+      "params": {
+        "j": 2
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6371,
+      "rmse": 13839.1017,
+      "mae": 8155.5022,
+      "mse": 191520736.0568,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6011,
+      "rmse": 14509.8259,
+      "mae": 7624.7634,
+      "mse": 210535048.4834,
+      "params": {
+        "deg": 2,
+        "a": 83.13098700382622
+      },
+      "seconds": 0.5
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.5553,
+      "rmse": 15320.0997,
+      "mae": 7975.2539,
+      "mse": 234705454.6239,
+      "params": {
+        "d": 10,
+        "leaf": 16
+      },
+      "seconds": 0.4
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6089,
+      "rmse": 14367.0273,
+      "mae": 6729.7892,
+      "mse": 206411474.2925,
+      "params": {
+        "n": 300,
+        "d": 15,
+        "leaf": 3,
+        "mf": 1.0
+      },
+      "seconds": 89.2
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6213,
+      "rmse": 14137.1166,
+      "mae": 6183.5231,
+      "mse": 199858065.7126,
+      "params": {
+        "n": 200,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 28.9
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6509,
+      "rmse": 13574.4063,
+      "mae": 6230.3329,
+      "mse": 184264507.7319,
+      "params": {
+        "n": 300,
+        "lr": 0.05577145338161068,
+        "d": 5,
+        "sub": 0.9616559570705481
+      },
+      "seconds": 63.1
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.69,
+      "rmse": 12790.1969,
+      "mae": 6226.4166,
+      "mse": 163589136.3265,
+      "params": {
+        "it": 300,
+        "lr": 0.059260714544560285,
+        "leaf": 15,
+        "l2": 1.7875185404226992
+      },
+      "seconds": 34.2
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6038,
+      "rmse": 14459.703,
+      "mae": 6950.2494,
+      "mse": 209083010.1157,
+      "params": {
+        "k": 9,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.1
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6722,
+      "rmse": 13152.9794,
+      "mae": 6543.736,
+      "mse": 173000865.8536,
+      "params": {
+        "C": 21.390662429665884,
+        "g": 0.09358684671110672,
+        "e": 0.2149312169900499
+      },
+      "seconds": 7.2
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.5784,
+      "rmse": 14916.7628,
+      "mae": 7372.9456,
+      "mse": 222509813.3794,
+      "params": {
+        "h1": 128,
+        "two": false,
+        "a": 0.001597551755920718,
+        "lr": 0.0030690070930655105
+      },
+      "seconds": 14.6
+    },
+    {
+      "model": "Linear regression (1 feature)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.4314,
+      "rmse": 15475.5349,
+      "mae": 11466.3974,
+      "mse": 239492180.2262,
+      "params": {
+        "j": 0
+      },
+      "seconds": 0.1
+    },
+    {
+      "model": "Multiple regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.729,
+      "rmse": 10683.7553,
+      "mae": 7655.223,
+      "mse": 114142627.8541,
+      "params": {},
+      "seconds": 0.0
+    },
+    {
+      "model": "Polynomial regression",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.773,
+      "rmse": 9778.1433,
+      "mae": 6925.606,
+      "mse": 95612085.6381,
+      "params": {
+        "deg": 2,
+        "a": 104.96882253002053
+      },
+      "seconds": 0.7
+    },
+    {
+      "model": "Decision tree",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8166,
+      "rmse": 8788.1806,
+      "mae": 6831.3754,
+      "mse": 77232118.5699,
+      "params": {
+        "d": 8,
+        "leaf": 5
+      },
+      "seconds": 0.5
+    },
+    {
+      "model": "Random forest",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8456,
+      "rmse": 8065.5424,
+      "mae": 5708.3587,
+      "mse": 65052974.3304,
+      "params": {
+        "n": 200,
+        "d": 14,
+        "leaf": 2,
+        "mf": 1.0
+      },
+      "seconds": 86.2
+    },
+    {
+      "model": "ExtraTrees",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8554,
+      "rmse": 7805.1497,
+      "mae": 5712.5656,
+      "mse": 60920362.5892,
+      "params": {
+        "n": 400,
+        "d": 16,
+        "leaf": 1,
+        "mf": 0.5
+      },
+      "seconds": 42.6
+    },
+    {
+      "model": "Gradient boosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8818,
+      "rmse": 7055.3327,
+      "mae": 5568.763,
+      "mse": 49777720.1972,
+      "params": {
+        "n": 250,
+        "lr": 0.12073517531170763,
+        "d": 3,
+        "sub": 0.7157220153251829
+      },
+      "seconds": 41.3
+    },
+    {
+      "model": "HistGradientBoosting",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8616,
+      "rmse": 7633.7086,
+      "mae": 5513.641,
+      "mse": 58273506.6437,
+      "params": {
+        "it": 400,
+        "lr": 0.03348744474444298,
+        "leaf": 24,
+        "l2": 0.06672353498381883
+      },
+      "seconds": 35.1
+    },
+    {
+      "model": "kNN",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8047,
+      "rmse": 9070.2249,
+      "mae": 6456.127,
+      "mse": 82268979.58,
+      "params": {
+        "k": 7,
+        "w": "distance",
+        "p": 1
+      },
+      "seconds": 1.1
+    },
+    {
+      "model": "SVR (RBF)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8279,
+      "rmse": 8514.3283,
+      "mae": 6428.5203,
+      "mse": 72493785.9568,
+      "params": {
+        "C": 15.071800934752952,
+        "g": 0.1158424515360277,
+        "e": 0.2216906919239709
+      },
+      "seconds": 7.2
+    },
+    {
+      "model": "MLP (sklearn)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8368,
+      "rmse": 8290.5696,
+      "mae": 6404.1451,
+      "mse": 68733544.1827,
+      "params": {
+        "h1": 128,
+        "two": true,
+        "a": 0.0228722432675559,
+        "lr": 0.006701702068974856
+      },
+      "seconds": 17.5
+    }
+  ],
+  "summary": {
+    "Decision tree": {
+      "r2": {
+        "mean": 0.7383,
+        "std": 0.0781
+      },
+      "rmse": {
+        "mean": 10907.7559,
+        "std": 1790.1604
+      },
+      "mae": {
+        "mean": 7173.5068,
+        "std": 371.2223
+      }
+    },
+    "ExtraTrees": {
+      "r2": {
+        "mean": 0.8208,
+        "std": 0.0692
+      },
+      "rmse": {
+        "mean": 8983.0993,
+        "std": 1840.4638
+      },
+      "mae": {
+        "mean": 5508.0936,
+        "std": 325.3707
+      }
+    },
+    "Gradient boosting": {
+      "r2": {
+        "mean": 0.8168,
+        "std": 0.0693
+      },
+      "rmse": {
+        "mean": 9075.897,
+        "std": 1852.8924
+      },
+      "mae": {
+        "mean": 5598.7791,
+        "std": 312.199
+      }
+    },
+    "HistGradientBoosting": {
+      "r2": {
+        "mean": 0.8133,
+        "std": 0.0633
+      },
+      "rmse": {
+        "mean": 9193.3803,
+        "std": 1731.1743
+      },
+      "mae": {
+        "mean": 5666.7357,
+        "std": 345.2502
+      }
+    },
+    "Linear regression (1 feature)": {
+      "r2": {
+        "mean": 0.4463,
+        "std": 0.0643
+      },
+      "rmse": {
+        "mean": 15979.743,
+        "std": 1239.2384
+      },
+      "mae": {
+        "mean": 11744.7388,
+        "std": 275.5577
+      }
+    },
+    "MLP (sklearn)": {
+      "r2": {
+        "mean": 0.7692,
+        "std": 0.0921
+      },
+      "rmse": {
+        "mean": 10176.303,
+        "std": 2189.1623
+      },
+      "mae": {
+        "mean": 6576.755,
+        "std": 350.2748
+      }
+    },
+    "Multiple regression": {
+      "r2": {
+        "mean": 0.7332,
+        "std": 0.0431
+      },
+      "rmse": {
+        "mean": 11082.0256,
+        "std": 1122.1088
+      },
+      "mae": {
+        "mean": 7584.5936,
+        "std": 319.3167
+      }
+    },
+    "Polynomial regression": {
+      "r2": {
+        "mean": 0.7511,
+        "std": 0.0692
+      },
+      "rmse": {
+        "mean": 10657.169,
+        "std": 1731.7995
+      },
+      "mae": {
+        "mean": 6957.0479,
+        "std": 284.9315
+      }
+    },
+    "Random forest": {
+      "r2": {
+        "mean": 0.7969,
+        "std": 0.0588
+      },
+      "rmse": {
+        "mean": 9632.6579,
+        "std": 1532.4812
+      },
+      "mae": {
+        "mean": 5931.419,
+        "std": 332.1827
+      }
+    },
+    "SVR (RBF)": {
+      "r2": {
+        "mean": 0.7889,
+        "std": 0.06
+      },
+      "rmse": {
+        "mean": 9810.9226,
+        "std": 1628.9663
+      },
+      "mae": {
+        "mean": 6269.0584,
+        "std": 307.475
+      }
+    },
+    "kNN": {
+      "r2": {
+        "mean": 0.7686,
+        "std": 0.0592
+      },
+      "rmse": {
+        "mean": 10294.4312,
+        "std": 1547.1778
+      },
+      "mae": {
+        "mean": 6336.7351,
+        "std": 298.136
+      }
+    }
+  }
+}

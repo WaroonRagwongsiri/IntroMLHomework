@@ -1,0 +1,308 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "n_trials": 30,
+  "folds": [
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8108,
+      "rmse": 9478.7639,
+      "mae": 5080.7084,
+      "mse": 89846965.5546,
+      "params": {
+        "n": 500,
+        "lr": 0.1995637546694046,
+        "d": 7,
+        "l2": 2.846524510365264
+      },
+      "seconds": 44.8
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8279,
+      "rmse": 8768.0236,
+      "mae": 5146.7142,
+      "mse": 76878237.377,
+      "params": {
+        "n": 400,
+        "lr": 0.12322958887517392,
+        "d": 6,
+        "l2": 1.4299145119107162
+      },
+      "seconds": 23.6
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.9011,
+      "rmse": 6657.8024,
+      "mae": 4897.1945,
+      "mse": 44326332.8136,
+      "params": {
+        "n": 300,
+        "lr": 0.16608217060380454,
+        "d": 7,
+        "l2": 1.7123665132600787
+      },
+      "seconds": 27.7
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7714,
+      "rmse": 10612.4269,
+      "mae": 6160.1104,
+      "mse": 112623604.829,
+      "params": {
+        "n": 500,
+        "lr": 0.14441114295219104,
+        "d": 4,
+        "l2": 4.234499720723481
+      },
+      "seconds": 21.1
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.833,
+      "rmse": 8660.0449,
+      "mae": 5467.6646,
+      "mse": 74996377.3985,
+      "params": {
+        "n": 400,
+        "lr": 0.13094784329365033,
+        "d": 6,
+        "l2": 1.1878795647805815
+      },
+      "seconds": 36.3
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8927,
+      "rmse": 7153.111,
+      "mae": 5272.2184,
+      "mse": 51166997.3456,
+      "params": {
+        "n": 500,
+        "lr": 0.1608039233726113,
+        "d": 5,
+        "l2": 2.085674945720487
+      },
+      "seconds": 29.9
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8194,
+      "rmse": 8880.1192,
+      "mae": 5337.4044,
+      "mse": 78856516.6342,
+      "params": {
+        "n": 500,
+        "lr": 0.08939971503720123,
+        "d": 7,
+        "l2": 3.7620151196918545
+      },
+      "seconds": 33.2
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8804,
+      "rmse": 7465.5025,
+      "mae": 5537.0899,
+      "mse": 55733726.9426,
+      "params": {
+        "n": 500,
+        "lr": 0.056831797687537565,
+        "d": 5,
+        "l2": 2.1144165925334524
+      },
+      "seconds": 33.5
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6756,
+      "rmse": 12021.0075,
+      "mae": 5937.7504,
+      "mse": 144504620.497,
+      "params": {
+        "n": 300,
+        "lr": 0.17955166346756882,
+        "d": 4,
+        "l2": 2.2064714596923785
+      },
+      "seconds": 19.1
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.893,
+      "rmse": 7223.182,
+      "mae": 5268.4351,
+      "mse": 52174358.6174,
+      "params": {
+        "n": 400,
+        "lr": 0.06200985268621951,
+        "d": 5,
+        "l2": 1.0240106086082317
+      },
+      "seconds": 21.6
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8298,
+      "rmse": 9282.5368,
+      "mae": 5594.0237,
+      "mse": 86165490.1267,
+      "params": {
+        "n": 400,
+        "lr": 0.16523720593683863,
+        "d": 5,
+        "l2": 2.9635186704677974
+      },
+      "seconds": 30.5
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.872,
+      "rmse": 7424.0582,
+      "mae": 5341.1623,
+      "mse": 55116640.2,
+      "params": {
+        "n": 400,
+        "lr": 0.11289474791088404,
+        "d": 7,
+        "l2": 1.7259830323269219
+      },
+      "seconds": 41.1
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8686,
+      "rmse": 7495.9602,
+      "mae": 5240.5533,
+      "mse": 56189419.356,
+      "params": {
+        "n": 500,
+        "lr": 0.22930799531291646,
+        "d": 4,
+        "l2": 9.981746303400932
+      },
+      "seconds": 15.0
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.692,
+      "rmse": 12750.2675,
+      "mae": 6188.0776,
+      "mse": 162569321.5121,
+      "params": {
+        "n": 200,
+        "lr": 0.09483438696962276,
+        "d": 8,
+        "l2": 1.110091992680291
+      },
+      "seconds": 40.1
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8848,
+      "rmse": 6965.0369,
+      "mae": 5365.3187,
+      "mse": 48511738.442,
+      "params": {
+        "n": 300,
+        "lr": 0.22568067667976424,
+        "d": 6,
+        "l2": 17.328536584477988
+      },
+      "seconds": 28.5
+    }
+  ],
+  "summary": {
+    "CatBoost": {
+      "r2": {
+        "mean": 0.8302,
+        "std": 0.07
+      },
+      "rmse": {
+        "mean": 8722.5229,
+        "std": 1859.8053
+      },
+      "mae": {
+        "mean": 5455.6284,
+        "std": 376.9395
+      }
+    }
+  }
+}

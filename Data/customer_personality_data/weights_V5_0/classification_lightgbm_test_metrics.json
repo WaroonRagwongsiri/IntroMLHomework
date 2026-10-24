@@ -1,0 +1,72 @@
+{
+  "n_test": 448,
+  "seed": 42,
+  "models": [
+    {
+      "model": "LightGBM | base (22)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "f1": 0.5344,
+      "accuracy": 0.8638,
+      "precision": 0.5469,
+      "recall": 0.5224,
+      "roc_auc": 0.8859,
+      "threshold": 0.6041,
+      "bce": 0.3154,
+      "params": {
+        "n": 500,
+        "lr": 0.01064114320012471,
+        "nl": 29,
+        "mcs": 42,
+        "sub": 0.7241410100751793,
+        "col": 0.5160851334928218,
+        "lam": 0.040148546219784476,
+        "spw": 5.6946107784431135
+      }
+    },
+    {
+      "model": "LightGBM | + 3 modifiers (25)",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "f1": 0.5799,
+      "accuracy": 0.8415,
+      "precision": 0.4804,
+      "recall": 0.7313,
+      "roc_auc": 0.903,
+      "threshold": 0.4126,
+      "bce": 0.2964,
+      "params": {
+        "n": 500,
+        "lr": 0.01064114320012471,
+        "nl": 32,
+        "mcs": 42,
+        "sub": 0.7241410100751793,
+        "col": 0.5160846482676772,
+        "lam": 0.040148546219784476,
+        "spw": 5.6946107784431135
+      }
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "f1": 0.6061,
+      "accuracy": 0.8839,
+      "precision": 0.6154,
+      "recall": 0.597,
+      "roc_auc": 0.8954,
+      "threshold": 0.6235,
+      "bce": 0.3193,
+      "params": {
+        "n": 400,
+        "lr": 0.011825234445926563,
+        "nl": 16,
+        "mcs": 46,
+        "sub": 0.7953260870140564,
+        "col": 0.5320315732504938,
+        "lam": 0.0560481885387467,
+        "spw": 5.6946107784431135
+      }
+    }
+  ]
+}

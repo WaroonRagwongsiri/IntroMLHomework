@@ -1,0 +1,30 @@
+{
+  "n_test": 448,
+  "seed": 42,
+  "n_trials": 30,
+  "inner_k": 3,
+  "models": [
+    {
+      "model": "XGBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "f1": 0.6,
+      "accuracy": 0.875,
+      "precision": 0.5753,
+      "recall": 0.6269,
+      "roc_auc": 0.8829,
+      "threshold": 0.2688,
+      "bce": 0.2845,
+      "params": {
+        "n": 400,
+        "lr": 0.030816017044468066,
+        "d": 2,
+        "sub": 0.7243929286862649,
+        "col": 0.6625916610133735,
+        "mcw": 8,
+        "lam": 0.817847657433954,
+        "spw": 1.0
+      }
+    }
+  ]
+}

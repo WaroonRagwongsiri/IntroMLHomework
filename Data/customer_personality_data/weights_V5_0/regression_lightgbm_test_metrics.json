@@ -1,0 +1,42 @@
+{
+  "n_test": 443,
+  "seed": 42,
+  "models": [
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "r2": 0.8373,
+      "rmse": 8789.9742,
+      "mae": 5160.0675,
+      "mse": 77263645.9196,
+      "params": {
+        "n": 500,
+        "lr": 0.1189435191214821,
+        "nl": 57,
+        "mcs": 6,
+        "sub": 0.8803590935607193,
+        "col": 0.8185958863567472,
+        "lam": 0.04166060425298044
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "r2": 0.8281,
+      "rmse": 9035.2802,
+      "mae": 5065.5725,
+      "mse": 81636287.7305,
+      "params": {
+        "n": 500,
+        "lr": 0.1482435388592566,
+        "nl": 57,
+        "mcs": 38,
+        "sub": 0.9696523322574534,
+        "col": 0.9395157828883162,
+        "lam": 0.72390313230698
+      }
+    }
+  ]
+}

@@ -1,0 +1,696 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "folds": [
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8405,
+      "rmse": 8703.6798,
+      "mae": 5205.4541,
+      "mse": 75754041.9025,
+      "seconds": 38.6,
+      "params": {
+        "n": 500,
+        "lr": 0.030728623294256432,
+        "nl": 35,
+        "mcs": 9,
+        "sub": 0.8279606651376258,
+        "col": 0.8465944178193066,
+        "lam": 1.8392950539074673
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8497,
+      "rmse": 8449.8222,
+      "mae": 4918.0939,
+      "mse": 71399494.4028,
+      "seconds": 49.7,
+      "params": {
+        "n": 400,
+        "lr": 0.05690676169624913,
+        "nl": 34,
+        "mcs": 8,
+        "sub": 0.7009453676470296,
+        "col": 0.818499371124757,
+        "lam": 3.358948256426086
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7753,
+      "rmse": 10019.9583,
+      "mae": 5039.7866,
+      "mse": 100399564.6473,
+      "seconds": 69.6,
+      "params": {
+        "n": 400,
+        "lr": 0.03766525335499155,
+        "nl": 62,
+        "mcs": 8,
+        "sub": 0.8275960073164637,
+        "col": 0.8540125541632334,
+        "lam": 0.32752349619391324
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7837,
+      "rmse": 9830.1988,
+      "mae": 4962.8651,
+      "mse": 96632807.6066,
+      "seconds": 62.4,
+      "params": {
+        "n": 400,
+        "lr": 0.04202809095359905,
+        "nl": 51,
+        "mcs": 9,
+        "sub": 0.8796397677533072,
+        "col": 0.886942606381071,
+        "lam": 0.4383306472453488
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8837,
+      "rmse": 7220.8819,
+      "mae": 5132.501,
+      "mse": 52141135.5723,
+      "seconds": 59.4,
+      "params": {
+        "n": 600,
+        "lr": 0.034436400530699726,
+        "nl": 47,
+        "mcs": 22,
+        "sub": 0.9278323977526913,
+        "col": 0.8858103636939576,
+        "lam": 1.7089305933389947
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8951,
+      "rmse": 6856.8036,
+      "mae": 4839.2162,
+      "mse": 47015755.6184,
+      "seconds": 55.2,
+      "params": {
+        "n": 600,
+        "lr": 0.043840293876525716,
+        "nl": 54,
+        "mcs": 18,
+        "sub": 0.8932666551976732,
+        "col": 0.7582278706296,
+        "lam": 9.016786729468919
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7769,
+      "rmse": 10484.0347,
+      "mae": 6085.5154,
+      "mse": 109914983.5259,
+      "seconds": 32.6,
+      "params": {
+        "n": 600,
+        "lr": 0.06612746268954718,
+        "nl": 21,
+        "mcs": 12,
+        "sub": 0.6850175869097354,
+        "col": 0.7674946359275415,
+        "lam": 0.01384397534112362
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.8116,
+      "rmse": 9635.1566,
+      "mae": 5668.6004,
+      "mse": 92836241.8837,
+      "seconds": 27.0,
+      "params": {
+        "n": 500,
+        "lr": 0.04276564712769459,
+        "nl": 20,
+        "mcs": 14,
+        "sub": 0.6805912713101611,
+        "col": 0.9800475515122504,
+        "lam": 0.27704760702792597
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8166,
+      "rmse": 9073.5286,
+      "mae": 5853.4339,
+      "mse": 82328920.5956,
+      "seconds": 21.2,
+      "params": {
+        "n": 400,
+        "lr": 0.03738540315600558,
+        "nl": 30,
+        "mcs": 36,
+        "sub": 0.846206638730801,
+        "col": 0.5647823474588507,
+        "lam": 5.983353239693057
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8226,
+      "rmse": 8925.1567,
+      "mae": 5613.0858,
+      "mse": 79658421.6154,
+      "seconds": 19.2,
+      "params": {
+        "n": 500,
+        "lr": 0.028602293002434234,
+        "nl": 46,
+        "mcs": 40,
+        "sub": 0.7457518333132145,
+        "col": 0.6109331746322618,
+        "lam": 7.386527892976508
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8425,
+      "rmse": 8665.4665,
+      "mae": 5573.6272,
+      "mse": 75090309.3081,
+      "seconds": 27.3,
+      "params": {
+        "n": 300,
+        "lr": 0.03625345929616555,
+        "nl": 39,
+        "mcs": 17,
+        "sub": 0.8276048917539256,
+        "col": 0.7289818173957534,
+        "lam": 0.06071021780326649
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8467,
+      "rmse": 8548.7097,
+      "mae": 5394.0339,
+      "mse": 73080437.2013,
+      "seconds": 31.4,
+      "params": {
+        "n": 400,
+        "lr": 0.028183743393177394,
+        "nl": 23,
+        "mcs": 19,
+        "sub": 0.8034493775471009,
+        "col": 0.5435734474748561,
+        "lam": 0.08047781245101525
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7676,
+      "rmse": 10072.5425,
+      "mae": 5510.2122,
+      "mse": 101456112.8524,
+      "seconds": 57.6,
+      "params": {
+        "n": 600,
+        "lr": 0.09656261692156577,
+        "nl": 25,
+        "mcs": 15,
+        "sub": 0.8950432221040621,
+        "col": 0.9632841104266601,
+        "lam": 0.3852788072000169
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7876,
+      "rmse": 9628.7216,
+      "mae": 5212.1982,
+      "mse": 92712280.0618,
+      "seconds": 49.7,
+      "params": {
+        "n": 600,
+        "lr": 0.05138358005375483,
+        "nl": 37,
+        "mcs": 13,
+        "sub": 0.6531726239588412,
+        "col": 0.9909346446569806,
+        "lam": 0.12830825838285834
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8907,
+      "rmse": 7135.5769,
+      "mae": 5366.4524,
+      "mse": 50916458.2774,
+      "seconds": 24.3,
+      "params": {
+        "n": 500,
+        "lr": 0.13268199123035115,
+        "nl": 9,
+        "mcs": 6,
+        "sub": 0.913396756105796,
+        "col": 0.6377700201967333,
+        "lam": 0.029385042720880147
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8783,
+      "rmse": 7530.4327,
+      "mae": 5287.5481,
+      "mse": 56707417.0727,
+      "seconds": 32.3,
+      "params": {
+        "n": 500,
+        "lr": 0.16351315343527778,
+        "nl": 8,
+        "mcs": 7,
+        "sub": 0.6349325171527365,
+        "col": 0.9361052425940319,
+        "lam": 0.17754011803587413
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7241,
+      "rmse": 11086.0663,
+      "mae": 5988.702,
+      "mse": 122900866.5662,
+      "seconds": 16.2,
+      "params": {
+        "n": 200,
+        "lr": 0.046329022237151525,
+        "nl": 18,
+        "mcs": 5,
+        "sub": 0.8528440831650468,
+        "col": 0.8682851742907992,
+        "lam": 0.014633134228967186
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.8056,
+      "rmse": 9305.3443,
+      "mae": 5419.2586,
+      "mse": 86589431.7087,
+      "seconds": 32.2,
+      "params": {
+        "n": 500,
+        "lr": 0.053478778853987864,
+        "nl": 37,
+        "mcs": 39,
+        "sub": 0.8974083923450663,
+        "col": 0.714043482999173,
+        "lam": 9.564827878181916
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8778,
+      "rmse": 7718.0121,
+      "mae": 5098.1536,
+      "mse": 59567711.2109,
+      "seconds": 58.7,
+      "params": {
+        "n": 600,
+        "lr": 0.03278535250971311,
+        "nl": 56,
+        "mcs": 15,
+        "sub": 0.7613015622344269,
+        "col": 0.7516253924119749,
+        "lam": 0.6768886755252145
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8781,
+      "rmse": 7710.048,
+      "mae": 5217.8097,
+      "mse": 59444840.6531,
+      "seconds": 21.3,
+      "params": {
+        "n": 200,
+        "lr": 0.04283053078143817,
+        "nl": 24,
+        "mcs": 16,
+        "sub": 0.8827895346394738,
+        "col": 0.9478877473194429,
+        "lam": 0.025655317038641105
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7821,
+      "rmse": 10503.7861,
+      "mae": 5792.7597,
+      "mse": 110329521.7431,
+      "seconds": 54.5,
+      "params": {
+        "n": 600,
+        "lr": 0.0712780523180641,
+        "nl": 62,
+        "mcs": 5,
+        "sub": 0.6688765358071858,
+        "col": 0.8456669812633348,
+        "lam": 0.03521963080520839
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7812,
+      "rmse": 10526.7348,
+      "mae": 5753.3048,
+      "mse": 110812145.2865,
+      "seconds": 57.0,
+      "params": {
+        "n": 600,
+        "lr": 0.09957631383965161,
+        "nl": 55,
+        "mcs": 7,
+        "sub": 0.6731021168008252,
+        "col": 0.9648711016610625,
+        "lam": 0.09993139605297262
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8589,
+      "rmse": 7792.9273,
+      "mae": 5557.9756,
+      "mse": 60729715.4613,
+      "seconds": 25.1,
+      "params": {
+        "n": 400,
+        "lr": 0.04385917195704215,
+        "nl": 17,
+        "mcs": 13,
+        "sub": 0.8373644633861522,
+        "col": 0.6427084610341629,
+        "lam": 0.7475665701003209
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8591,
+      "rmse": 7789.2374,
+      "mae": 5295.2305,
+      "mse": 60672218.7797,
+      "seconds": 23.3,
+      "params": {
+        "n": 400,
+        "lr": 0.05558240229423871,
+        "nl": 10,
+        "mcs": 14,
+        "sub": 0.7741018848956526,
+        "col": 0.8722324270090334,
+        "lam": 1.3626881217799571
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.838,
+      "rmse": 8322.1246,
+      "mae": 4879.0066,
+      "mse": 69257757.0344,
+      "seconds": 53.7,
+      "params": {
+        "n": 600,
+        "lr": 0.05869096533173971,
+        "nl": 52,
+        "mcs": 5,
+        "sub": 0.8030465887047442,
+        "col": 0.7491226911737204,
+        "lam": 0.6226111628586151
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8383,
+      "rmse": 8315.6071,
+      "mae": 4838.0963,
+      "mse": 69149321.3293,
+      "seconds": 52.3,
+      "params": {
+        "n": 400,
+        "lr": 0.027120806480447596,
+        "nl": 59,
+        "mcs": 5,
+        "sub": 0.8648368290804513,
+        "col": 0.8618493203467436,
+        "lam": 0.09200299561272031
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6636,
+      "rmse": 13324.8283,
+      "mae": 6395.2886,
+      "mse": 177551049.4184,
+      "seconds": 27.7,
+      "params": {
+        "n": 500,
+        "lr": 0.033529491278737715,
+        "nl": 12,
+        "mcs": 7,
+        "sub": 0.9258616006895087,
+        "col": 0.9530290566834088,
+        "lam": 0.011084179723213074
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6835,
+      "rmse": 12923.8219,
+      "mae": 5934.4403,
+      "mse": 167025172.3069,
+      "seconds": 25.2,
+      "params": {
+        "n": 500,
+        "lr": 0.047401493960942856,
+        "nl": 15,
+        "mcs": 14,
+        "sub": 0.8892173164841574,
+        "col": 0.7961124188499413,
+        "lam": 0.01586561442729801
+      }
+    },
+    {
+      "model": "LightGBM | 13 features",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8636,
+      "rmse": 7579.1537,
+      "mae": 5542.6659,
+      "mse": 57443571.3489,
+      "seconds": 30.6,
+      "params": {
+        "n": 500,
+        "lr": 0.03868524744580378,
+        "nl": 53,
+        "mcs": 37,
+        "sub": 0.980334155265966,
+        "col": 0.8299396633946138,
+        "lam": 4.297882827801861
+      }
+    },
+    {
+      "model": "LightGBM | + Teenhome (14)",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8733,
+      "rmse": 7305.9524,
+      "mae": 5262.1335,
+      "mse": 53376940.4231,
+      "seconds": 18.8,
+      "params": {
+        "n": 300,
+        "lr": 0.04739854422073596,
+        "nl": 25,
+        "mcs": 23,
+        "sub": 0.6484601688517186,
+        "col": 0.5875658998594093,
+        "lam": 1.2776219486877085
+      }
+    }
+  ],
+  "summary": {
+    "LightGBM | + Teenhome (14)": {
+      "r2": {
+        "mean": 0.8263,
+        "std": 0.0541
+      },
+      "rmse": {
+        "mean": 8885.4499,
+        "std": 1531.6808
+      },
+      "mae": {
+        "mean": 5307.7277,
+        "std": 334.3782
+      }
+    },
+    "LightGBM | 13 features": {
+      "r2": {
+        "mean": 0.8135,
+        "std": 0.0644
+      },
+      "rmse": {
+        "mean": 9180.1712,
+        "std": 1724.7894
+      },
+      "mae": {
+        "mean": 5534.769,
+        "std": 429.6971
+      }
+    }
+  }
+}

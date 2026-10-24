@@ -1,0 +1,50 @@
+{
+  "n_test": 443,
+  "seed": 42,
+  "models": [
+    {
+      "model": "NAM (log1p + Huber) | ReLU | 13 features",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.7194,
+      "rmse": 11544.4114,
+      "mae": 7211.3892,
+      "mse": 133273434.3123,
+      "epochs": 95.0,
+      "n_params": 2510.0
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU | + Teenhome (14)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.7412,
+      "rmse": 11087.5382,
+      "mae": 6871.7098,
+      "mse": 122933503.2855,
+      "epochs": 99.0,
+      "n_params": 2703.0
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU | 13 features + 4 pair nets",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.719,
+      "rmse": 11553.6648,
+      "mae": 7330.6867,
+      "mse": 133487169.1932,
+      "epochs": 95.0,
+      "n_params": 3538.0
+    },
+    {
+      "model": "NAM (log1p + Huber) | ReLU | + Teenhome + 5 Teenhome pairs",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "r2": 0.7638,
+      "rmse": 10592.4222,
+      "mae": 6394.1013,
+      "mse": 112199408.4589,
+      "epochs": 95.0,
+      "n_params": 3988.0
+    }
+  ]
+}

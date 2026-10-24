@@ -1,0 +1,48 @@
+{
+  "n_test": 448,
+  "seed": 42,
+  "models": [
+    {
+      "model": "FT-Transformer-lite | ReLU | base (22)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "f1": 0.4681,
+      "accuracy": 0.7768,
+      "precision": 0.3636,
+      "recall": 0.6567,
+      "roc_auc": 0.8357,
+      "bce": 0.5692,
+      "threshold": 0.6932,
+      "epochs": 12,
+      "n_params": 18625
+    },
+    {
+      "model": "FT-Transformer-lite | ReLU | + 3 modifiers (25)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "f1": 0.4769,
+      "accuracy": 0.8482,
+      "precision": 0.4921,
+      "recall": 0.4627,
+      "roc_auc": 0.8067,
+      "bce": 0.5166,
+      "threshold": 0.8247,
+      "epochs": 34,
+      "n_params": 18817
+    },
+    {
+      "model": "FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "f1": 0.5036,
+      "accuracy": 0.846,
+      "precision": 0.4861,
+      "recall": 0.5224,
+      "roc_auc": 0.8164,
+      "bce": 0.4853,
+      "threshold": 0.7546,
+      "epochs": 17,
+      "n_params": 19137
+    }
+  ]
+}

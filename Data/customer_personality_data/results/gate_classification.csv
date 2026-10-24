@@ -1,0 +1,15 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,curriculum,extracurricular,mean_a,mean_b
+15,0.0462,0.00262,0.11105,0.0225,0.0702,LightGBM | + 3 modifiers + 5 pairs,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.60415,0.55795
+15,0.05701,0.0008,0.01121,0.0405,0.0746,LightGBM | + 3 modifiers + 5 pairs,FT-Transformer-lite | ReLU (baseline),0.60415,0.54714
+15,0.03164,0.04791,0.32013,0.00486,0.05795,LightGBM,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.58959,0.55795
+15,0.04245,0.00061,0.06268,0.02521,0.0613,LightGBM,FT-Transformer-lite | ReLU (baseline),0.58959,0.54714
+15,0.02867,0.07359,0.33037,0.00452,0.05299,CatBoost,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.58662,0.55795
+15,0.03948,0.00153,0.07396,0.02139,0.05741,CatBoost,FT-Transformer-lite | ReLU (baseline),0.58662,0.54714
+15,0.02555,0.0946,0.38344,0.00141,0.05005,XGBoost,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.58351,0.55795
+15,0.03637,0.00427,0.14549,0.01577,0.05647,XGBoost,FT-Transformer-lite | ReLU (baseline),0.58351,0.54714
+15,0.02049,0.15143,0.44255,-0.00167,0.04325,HistGradientBoosting,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.57844,0.55795
+15,0.0313,0.00116,0.10362,0.01576,0.04726,HistGradientBoosting,FT-Transformer-lite | ReLU (baseline),0.57844,0.54714
+15,0.01625,0.25238,0.57784,-0.00888,0.04079,Stacking,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.57421,0.55795
+15,0.02707,0.00836,0.18147,0.00972,0.04297,Stacking,FT-Transformer-lite | ReLU (baseline),0.57421,0.54714
+15,-0.01845,0.25589,0.55253,-0.04478,0.00793,Logistic regression,FT-Transformer-lite | ReLU | + 3 modifiers + 5 pairs,0.5395,0.55795
+15,-0.00764,0.71973,0.78185,-0.03283,0.01457,Logistic regression,FT-Transformer-lite | ReLU (baseline),0.5395,0.54714

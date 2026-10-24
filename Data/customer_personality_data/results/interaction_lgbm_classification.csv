@@ -1,0 +1,4 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,model,reference,mean,std
+15,0.00385,0.48871,0.79005,-0.00883,0.01545,LightGBM | + 3 modifiers (25),LightGBM | base (22),0.58506,0.04963
+15,0.02294,0.03015,0.22746,0.00736,0.03851,LightGBM | + 3 modifiers + 5 pairs,LightGBM | base (22),0.60415,0.04401
+15,0.0,,,,,LightGBM | base (22),LightGBM | base (22),0.58121,0.04976

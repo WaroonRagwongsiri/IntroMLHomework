@@ -1,0 +1,4 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,model,reference,mean,std
+15,-0.02656,0.0946,0.3706,-0.05201,-0.00309,"FT-Transformer-lite | ReGLU, param-matched",FT-Transformer-lite | ReLU (baseline),0.52058,0.0602
+15,-0.00268,0.84692,0.91202,-0.02332,0.01754,"FT-Transformer-lite | ReGLU, same hidden",FT-Transformer-lite | ReLU (baseline),0.54446,0.0504
+15,0.0,,,,,FT-Transformer-lite | ReLU (baseline),FT-Transformer-lite | ReLU (baseline),0.54714,0.03662

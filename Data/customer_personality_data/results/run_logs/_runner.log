@@ -1,0 +1,41 @@
+[   0.0 min] start sk_clf_V6_1
+[   0.0 min] start sk_reg_V6_1
+[   0.0 min] start pt_clf_V5_1
+[   0.0 min] start pt_reg_V5_1
+[   0.0 min] start scr_clf_V4_0
+[   0.0 min] start scr_clf_V4_1_f1
+[   0.0 min] start scr_clf_V4_1_f2
+[   0.2 min] scr_clf_V4_1_f1 -> fail (0.2 min)
+[   0.2 min] scr_clf_V4_1_f2 -> fail (0.2 min)
+[   0.2 min] start scr_clf_V4_1_f3
+[   0.2 min] start scr_clf_V4_1_f4
+[   0.3 min] scr_clf_V4_1_f3 -> fail (0.2 min)
+[   0.3 min] scr_clf_V4_1_f4 -> fail (0.2 min)
+[   0.3 min] start scr_clf_V4_1_f5
+[   0.3 min] start lgb_clf_V5_1
+[   0.5 min] scr_clf_V4_1_f5 -> fail (0.2 min)
+[   0.5 min] start lgb_reg_V5_1
+[   1.8 min] scr_clf_V4_0 -> ok (1.8 min)
+[   1.8 min] start pt_clf_V5_0
+[   8.2 min] pt_clf_V5_0 -> ok (6.3 min)
+[   8.2 min] start scr_clf_V5_0
+[  10.7 min] scr_clf_V5_0 -> fail (2.5 min)
+[  10.7 min] start pt_reg_V5_0
+[  14.7 min] pt_reg_V5_0 -> ok (4.0 min)
+[  14.7 min] start scr_reg_V4_1
+[  15.4 min] scr_reg_V4_1 -> ok (0.7 min)
+[  15.4 min] start sk_clf_V6_0
+[  20.0 min] lgb_reg_V5_1 -> ok (19.5 min)
+[  20.0 min] start scr_reg_V5_0
+[  20.2 min] scr_reg_V5_0 -> fail (0.2 min)
+[  20.2 min] start lgb_clf_V5_0
+[  21.9 min] lgb_clf_V5_0 -> ok (1.7 min)
+[  21.9 min] start lgb_reg_V5_0
+[  23.5 min] lgb_clf_V5_1 -> ok (23.2 min)
+[  23.5 min] lgb_reg_V5_0 -> ok (1.7 min)
+[  25.4 min] sk_clf_V6_0 -> ok (10.0 min)
+[  39.0 min] pt_reg_V5_1 -> ok (39.0 min)
+[  57.2 min] pt_clf_V5_1 -> ok (57.2 min)
+[  74.9 min] sk_reg_V6_1 -> ok (74.9 min)
+[ 143.5 min] sk_clf_V6_1 -> ok (143.5 min)
+ALL DONE {'wait': 0, 'run': 0, 'ok': 13, 'fail': 7, 'skip': 0} 143.7 min

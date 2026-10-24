@@ -1,0 +1,26 @@
+name,mean,std,folds,tier
+CatBoost,0.8302,0.07,15,curriculum family
+LightGBM | + Teenhome (14),0.8263,0.0541,15,curriculum family
+ExtraTrees,0.8208,0.0692,15,curriculum family
+Gradient boosting,0.8168,0.0693,15,curriculum family
+XGBoost,0.8142,0.0646,15,curriculum family
+LightGBM,0.8135,0.0629,15,curriculum family
+LightGBM | 13 features,0.8135,0.0644,15,curriculum family
+HistGradientBoosting,0.8133,0.0633,15,curriculum family
+Random forest,0.7969,0.0588,15,curriculum family
+SVR (RBF),0.7889,0.06,15,curriculum family
+MLP (sklearn),0.7692,0.0921,15,curriculum family
+kNN,0.7686,0.0592,15,curriculum family
+NAM (log1p + Huber) | ReLU | + Teenhome + 5 Teenhome pairs,0.7567,0.0743,15,extracurricular
+Polynomial regression,0.7511,0.0692,15,curriculum
+NAM (log1p + Huber) | ReLU | + Teenhome (14),0.7477,0.0678,15,extracurricular
+Decision tree,0.7383,0.0781,15,curriculum family
+NAM (log1p + Huber) | ReLU | 13 features,0.7353,0.0651,15,extracurricular
+NAM (log1p + Huber) | ReLU (baseline),0.7353,0.0651,15,extracurricular
+Multiple regression,0.7332,0.0431,15,curriculum
+NAM (log1p + Huber) | ReLU (baseline) [scratch],0.7327,0.0381,5,extracurricular
+"NAM (log1p + Huber) | ReGLU, param-matched [scratch]",0.7325,0.0501,5,extracurricular
+"NAM (log1p + Huber) | ReGLU, param-matched",0.7257,0.0944,15,extracurricular
+NAM (log1p + Huber) | ReLU | 13 features + 4 pair nets,0.7246,0.0665,15,extracurricular
+"NAM (log1p + Huber) | ReGLU, same hidden",0.7239,0.0986,15,extracurricular
+Linear regression (1 feature),0.4463,0.0643,15,curriculum

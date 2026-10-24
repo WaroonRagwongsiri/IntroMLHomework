@@ -1,0 +1,353 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "n_trials": 30,
+  "folds": [
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7956,
+      "rmse": 9853.7924,
+      "mae": 5618.4353,
+      "mse": 97097223.8969,
+      "params": {
+        "n": 400,
+        "lr": 0.09000608077079161,
+        "d": 3,
+        "sub": 0.7875354450702553,
+        "col": 0.93081310492434,
+        "mcw": 3,
+        "lam": 1.4302058765393082
+      },
+      "seconds": 8.6
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7725,
+      "rmse": 10081.541,
+      "mae": 5257.0676,
+      "mse": 101637467.935,
+      "params": {
+        "n": 600,
+        "lr": 0.03604265569026234,
+        "d": 6,
+        "sub": 0.8229489820951275,
+        "col": 0.8630930876951873,
+        "mcw": 8,
+        "lam": 0.060836267190935045
+      },
+      "seconds": 17.6
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8862,
+      "rmse": 7144.6091,
+      "mae": 5095.3179,
+      "mse": 51045439.191,
+      "params": {
+        "n": 600,
+        "lr": 0.04774302215687874,
+        "d": 7,
+        "sub": 0.6388998125204376,
+        "col": 0.8778604224531075,
+        "mcw": 10,
+        "lam": 8.95673234408221
+      },
+      "seconds": 17.0
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.781,
+      "rmse": 10387.5023,
+      "mae": 6071.1313,
+      "mse": 107900203.7171,
+      "params": {
+        "n": 400,
+        "lr": 0.07783638906959776,
+        "d": 4,
+        "sub": 0.7611749064089208,
+        "col": 0.7335954130210647,
+        "mcw": 9,
+        "lam": 0.959509899443856
+      },
+      "seconds": 9.9
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.812,
+      "rmse": 9187.0603,
+      "mae": 5746.9205,
+      "mse": 84402076.0984,
+      "params": {
+        "n": 200,
+        "lr": 0.08882126316190248,
+        "d": 5,
+        "sub": 0.9295828893475849,
+        "col": 0.6936349833627281,
+        "mcw": 2,
+        "lam": 0.02620746336744623
+      },
+      "seconds": 9.9
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.8937,
+      "rmse": 7119.4832,
+      "mae": 5111.9872,
+      "mse": 50687041.3389,
+      "params": {
+        "n": 300,
+        "lr": 0.13560948550907365,
+        "d": 7,
+        "sub": 0.8645867642693609,
+        "col": 0.6987674280616266,
+        "mcw": 5,
+        "lam": 0.16282708300755283
+      },
+      "seconds": 9.7
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.7853,
+      "rmse": 9682.3814,
+      "mae": 5705.4141,
+      "mse": 93748509.9273,
+      "params": {
+        "n": 400,
+        "lr": 0.049192945292682755,
+        "d": 4,
+        "sub": 0.9410897811902087,
+        "col": 0.8188767559726059,
+        "mcw": 1,
+        "lam": 0.062191871143665985
+      },
+      "seconds": 13.8
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8736,
+      "rmse": 7674.8365,
+      "mae": 5574.9467,
+      "mse": 58903115.5343,
+      "params": {
+        "n": 600,
+        "lr": 0.029279345618848308,
+        "d": 6,
+        "sub": 0.9938760213478117,
+        "col": 0.5999222331880139,
+        "mcw": 8,
+        "lam": 2.3217010689885433
+      },
+      "seconds": 19.0
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.6767,
+      "rmse": 12001.2687,
+      "mae": 6192.5519,
+      "mse": 144030449.4526,
+      "params": {
+        "n": 600,
+        "lr": 0.049412678947295445,
+        "d": 3,
+        "sub": 0.9895522824987687,
+        "col": 0.8845401542559823,
+        "mcw": 5,
+        "lam": 0.01616913867467273
+      },
+      "seconds": 11.9
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8555,
+      "rmse": 8394.7332,
+      "mae": 5559.3773,
+      "mse": 70471545.0857,
+      "params": {
+        "n": 100,
+        "lr": 0.07381394282533792,
+        "d": 8,
+        "sub": 0.6896029408097458,
+        "col": 0.8065764206752817,
+        "mcw": 10,
+        "lam": 0.024401764750137146
+      },
+      "seconds": 11.9
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 443,
+      "r2": 0.7784,
+      "rmse": 10592.3671,
+      "mae": 5935.7796,
+      "mse": 112198241.0677,
+      "params": {
+        "n": 600,
+        "lr": 0.05417621832126539,
+        "d": 6,
+        "sub": 0.9543172960520945,
+        "col": 0.9877804867909159,
+        "mcw": 8,
+        "lam": 0.02603115713208412
+      },
+      "seconds": 15.4
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 443,
+      "r2": 0.8636,
+      "rmse": 7661.9164,
+      "mae": 5573.7267,
+      "mse": 58704963.4113,
+      "params": {
+        "n": 500,
+        "lr": 0.06905780329949796,
+        "d": 4,
+        "sub": 0.7247168063170903,
+        "col": 0.766074000251233,
+        "mcw": 8,
+        "lam": 2.635594292261463
+      },
+      "seconds": 12.0
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 442,
+      "r2": 0.8479,
+      "rmse": 8063.0628,
+      "mae": 4916.4362,
+      "mse": 65012981.0328,
+      "params": {
+        "n": 500,
+        "lr": 0.052784163979186435,
+        "d": 6,
+        "sub": 0.7964960459720136,
+        "col": 0.5420970938758982,
+        "mcw": 2,
+        "lam": 0.2607893653476146
+      },
+      "seconds": 12.9
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 442,
+      "r2": 0.7144,
+      "rmse": 12276.4315,
+      "mae": 5741.5057,
+      "mse": 150710769.717,
+      "params": {
+        "n": 600,
+        "lr": 0.14881917952603563,
+        "d": 5,
+        "sub": 0.9737302009659138,
+        "col": 0.6165030619759038,
+        "mcw": 1,
+        "lam": 2.252756243652453
+      },
+      "seconds": 17.7
+    },
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 442,
+      "r2": 0.8763,
+      "rmse": 7218.2304,
+      "mae": 5517.7147,
+      "mse": 52102849.8224,
+      "params": {
+        "n": 500,
+        "lr": 0.026344369476711014,
+        "d": 5,
+        "sub": 0.7525974081285998,
+        "col": 0.9237972625092746,
+        "mcw": 4,
+        "lam": 0.19744111465909264
+      },
+      "seconds": 18.6
+    }
+  ],
+  "summary": {
+    "XGBoost": {
+      "r2": {
+        "mean": 0.8142,
+        "std": 0.0646
+      },
+      "rmse": {
+        "mean": 9155.9478,
+        "std": 1715.105
+      },
+      "mae": {
+        "mean": 5574.5542,
+        "std": 360.2223
+      }
+    }
+  }
+}

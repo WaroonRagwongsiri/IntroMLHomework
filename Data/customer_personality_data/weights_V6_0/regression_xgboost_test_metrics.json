@@ -1,0 +1,26 @@
+{
+  "n_test": 443,
+  "seed": 42,
+  "n_trials": 30,
+  "inner_k": 3,
+  "models": [
+    {
+      "model": "XGBoost",
+      "tier": "curriculum family",
+      "selection": "inner validation",
+      "r2": 0.8306,
+      "rmse": 8969.4745,
+      "mae": 5114.3778,
+      "mse": 80451472.6069,
+      "params": {
+        "n": 400,
+        "lr": 0.08800772495767324,
+        "d": 6,
+        "sub": 0.9116805319122259,
+        "col": 0.8979888490578186,
+        "mcw": 3,
+        "lam": 0.7192128970520779
+      }
+    }
+  ]
+}

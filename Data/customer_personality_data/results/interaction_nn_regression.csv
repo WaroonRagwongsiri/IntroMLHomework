@@ -1,0 +1,5 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,model,reference,mean,std
+15,0.01237,0.00262,0.0861,0.00635,0.01795,NAM (log1p + Huber) | ReLU | + Teenhome (14),NAM (log1p + Huber) | ReLU | 13 features,0.74767,0.06785
+15,0.02141,0.04126,0.29005,0.0046,0.03788,NAM (log1p + Huber) | ReLU | + Teenhome + 5 Teenhome pairs,NAM (log1p + Huber) | ReLU | 13 features,0.75671,0.0743
+15,0.0,,,,,NAM (log1p + Huber) | ReLU | 13 features,NAM (log1p + Huber) | ReLU | 13 features,0.73529,0.06506
+15,-0.01074,0.00262,0.1263,-0.01691,-0.00513,NAM (log1p + Huber) | ReLU | 13 features + 4 pair nets,NAM (log1p + Huber) | ReLU | 13 features,0.72455,0.06646

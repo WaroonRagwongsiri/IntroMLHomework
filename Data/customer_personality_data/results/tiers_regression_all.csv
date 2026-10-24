@@ -1,0 +1,4 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,a,b,tier_a,tier_b
+15,-0.07906,0.00012,0.00575,-0.09939,-0.05719,Polynomial regression,CatBoost,curriculum,curriculum family
+15,-0.0056,0.71973,0.84526,-0.02964,0.01905,Polynomial regression,NAM (log1p + Huber) | ReLU | + Teenhome + 5 Teenhome pairs,curriculum,extracurricular
+15,0.07346,0.00031,0.03442,0.04629,0.09971,CatBoost,NAM (log1p + Huber) | ReLU | + Teenhome + 5 Teenhome pairs,curriculum family,extracurricular

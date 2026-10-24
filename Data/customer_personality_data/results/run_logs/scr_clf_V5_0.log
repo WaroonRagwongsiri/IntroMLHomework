@@ -1,0 +1,180 @@
+[NbConvertApp] Converting notebook classification_scratch_V5_0.ipynb to notebook
+/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.
+  _validate(nbdict, ref, version, version_minor, relax_add_props)
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Traceback (most recent call last):
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/bin/jupyter-nbconvert", line 10, in <module>
+    sys.exit(main())
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/jupyter_core/application.py", line 284, in launch_instance
+    super().launch_instance(argv=argv, **kwargs)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/traitlets/config/application.py", line 1080, in launch_instance
+    app.start()
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 420, in start
+    self.convert_notebooks()
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 597, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 563, in convert_single_notebook
+    output, resources = self.export_single_notebook(
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/nbconvertapp.py", line 487, in export_single_notebook
+    output, resources = self.exporter.from_filename(
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 201, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 220, in from_file
+    return self.from_notebook_node(
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/exporters/notebook.py", line 36, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 154, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/exporters/exporter.py", line 353, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/preprocessors/base.py", line 48, in __call__
+    return self.preprocess(nb, resources)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/preprocessors/execute.py", line 103, in preprocess
+    self.preprocess_cell(cell, resources, index)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbconvert/preprocessors/execute.py", line 124, in preprocess_cell
+    cell = self.execute_cell(cell, index, store_history=True)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+  File "/Users/waroonragwongsiri/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/waroonragwongsiri/Playground/IntroMLHomework/Data/.venv/lib/python3.10/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import warnings
+import torch
+import torch.nn as nn
+from sklearn.model_selection import train_test_split, StratifiedKFold, KFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_score, roc_auc_score,
+                             log_loss, average_precision_score, mean_squared_error, mean_absolute_error, r2_score)
+warnings.filterwarnings("ignore")
+torch.set_num_threads(1)
+
+device = torch.device("cpu")
+
+
+class TransformerBlock(nn.Module):
+    """Pre-norm block. ffn='relu': Linear(d,hid) -> ReLU -> Linear(hid,d).
+       ffn='reglu': Linear(d,2*hid) split into (value, gate) -> value * ReLU(gate) -> Linear(hid,d)."""
+    def __init__(self, d=32, h=4, p=0.1, ffn="relu", hid=None):
+        super().__init__()
+        assert d % h == 0; self.h, self.dk, self.ffn = h, d // h, ffn
+        hid = hid or 2 * d
+        self.ln1 = nn.LayerNorm(d, eps=1e-5); self.ln2 = nn.LayerNorm(d, eps=1e-5)
+        self.wq = nn.Linear(d, d); self.wk = nn.Linear(d, d); self.wv = nn.Linear(d, d); self.wo = nn.Linear(d, d)
+        self.fc1 = nn.Linear(d, hid if ffn == "relu" else 2 * hid); self.fc2 = nn.Linear(hid, d)
+        self.relu = nn.ReLU(); self.drop = nn.Dropout(p); self.attn_drop = nn.Dropout(p)
+        for fc in (self.wq, self.wk, self.wv, self.wo, self.fc1, self.fc2):
+            nn.init.kaiming_normal_(fc.weight, nonlinearity="relu"); nn.init.zeros_(fc.bias)
+    def forward(self, t):
+        B, T, D = t.shape
+        h_in = self.ln1(t)
+        Q = self.wq(h_in).view(B, T, self.h, self.dk).transpose(1, 2)
+        K = self.wk(h_in).view(B, T, self.h, self.dk).transpose(1, 2)
+        V = self.wv(h_in).view(B, T, self.h, self.dk).transpose(1, 2)
+        s = (Q @ K.transpose(-2, -1)) / (self.dk ** 0.5)
+        p = self.attn_drop(torch.softmax(s, dim=-1))
+        o = (p @ V).transpose(1, 2).reshape(B, T, D)
+        u = t + self.wo(o)
+        z = self.fc1(self.ln2(u))
+        if self.ffn == "reglu":
+            val, gate = z.chunk(2, dim=-1); a = val * self.relu(gate)
+        else:
+            a = self.relu(z)
+        return u + self.fc2(self.drop(a))
+
+class FTTransformerLite(nn.Module):
+    def __init__(self, in_dim=22, d=32, layers=2, heads=4, p=0.1, ffn="relu", hid=None):
+        super().__init__()
+        # tokenizer: feature j has its own Linear(1 -> d). Stored as two tables (in_dim x d) so all
+        # features are embedded in one operation; the maths is identical to in_dim separate Linear(1, d).
+        self.tok_w = nn.Parameter(torch.randn(in_dim, d) * (2.0 ** 0.5))   # He init, fan_in = 1
+        self.tok_b = nn.Parameter(torch.zeros(in_dim, d))
+        self.cls = nn.Parameter(torch.randn(d) * 0.02)
+        self.blocks = nn.ModuleList([TransformerBlock(d, heads, p, ffn, hid) for _ in range(layers)])
+        self.ln_f = nn.LayerNorm(d, eps=1e-5)
+        self.head = nn.Linear(d, 1)
+        nn.init.kaiming_normal_(self.head.weight, nonlinearity="linear"); nn.init.zeros_(self.head.bias)
+    def forward(self, x):
+        B = x.shape[0]
+        t = x.unsqueeze(-1) * self.tok_w + self.tok_b                       # (B, in_dim, d)
+        t = torch.cat([self.cls.view(1, 1, -1).expand(B, 1, -1), t], dim=1)
+        for blk in self.blocks:
+            t = blk(t)
+        return self.head(self.ln_f(t[:, 0]))
+
+VARIANTS = {"ReLU (baseline)": dict(ffn="relu", hid=64)}
+def make_model(v, seed, in_dim=None):
+    torch.manual_seed(seed)
+    return FTTransformerLite(in_dim=in_dim or len(FEATURE_COLS), **VARIANTS[v]).to(device)
+
+
+def load_into_torch(m, Pn):
+    """Copy the scratch arrays into the PyTorch twin (Linear weights are stored transposed)."""
+    with torch.no_grad():
+        m.tok_w.copy_(torch.tensor(Pn["tokW"])); m.tok_b.copy_(torch.tensor(Pn["tokb"])); m.cls.copy_(torch.tensor(Pn["cls"]))
+        for l, b in enumerate(m.blocks):
+            b.ln1.weight.copy_(torch.tensor(Pn[f"g1{l}"])); b.ln1.bias.copy_(torch.tensor(Pn[f"b1{l}"]))
+            b.ln2.weight.copy_(torch.tensor(Pn[f"g2{l}"])); b.ln2.bias.copy_(torch.tensor(Pn[f"b2{l}"]))
+            for nm, lin in (("q", b.wq), ("k", b.wk), ("v", b.wv), ("o", b.wo)):
+                lin.weight.copy_(torch.tensor(Pn[f"W{nm}{l}"].T)); lin.bias.copy_(torch.tensor(Pn[f"b{nm}{l}"]))
+            b.fc1.weight.copy_(torch.tensor(Pn[f"F1{l}"].T)); b.fc1.bias.copy_(torch.tensor(Pn[f"f1b{l}"]))
+            b.fc2.weight.copy_(torch.tensor(Pn[f"F2{l}"].T)); b.fc2.bias.copy_(torch.tensor(Pn[f"f2b{l}"]))
+        m.ln_f.weight.copy_(torch.tensor(Pn["gf"])); m.ln_f.bias.copy_(torch.tensor(Pn["bf"]))
+        m.head.weight.copy_(torch.tensor(Pn["Wh"].T)); m.head.bias.copy_(torch.tensor(Pn["bh"]))
+
+name_map = {"tok_w": "tokW", "tok_b": "tokb", "cls": "cls", "ln_f.weight": "gf", "ln_f.bias": "bf", "head.weight": "Wh", "head.bias": "bh"}
+for l in range(LAYERS):
+    name_map.update({f"blocks.{l}.ln1.weight": f"g1{l}", f"blocks.{l}.ln1.bias": f"b1{l}", f"blocks.{l}.ln2.weight": f"g2{l}", f"blocks.{l}.ln2.bias": f"b2{l}"})
+    for nm in "qkvo":
+        name_map.update({f"blocks.{l}.w{nm}.weight": f"W{nm}{l}", f"blocks.{l}.w{nm}.bias": f"b{nm}{l}"})
+    name_map.update({f"blocks.{l}.fc1.weight": f"F1{l}", f"blocks.{l}.fc1.bias": f"f1b{l}", f"blocks.{l}.fc2.weight": f"F2{l}", f"blocks.{l}.fc2.bias": f"f2b{l}"})
+
+for vname in SETS:
+    use_set(vname); spec = VARS["ReLU (baseline)"]
+    xb, yb_ = Xte[:64], yte[:64]
+    FFN, HID = spec["ffn"], spec["hid"]; FFW = HID if FFN == "relu" else 2 * HID
+    P_ = runs[vname]["P"]
+    m = make_model("ReLU (baseline)", 0, IN_DIM).double().eval(); load_into_torch(m, P_)
+    loss_t = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([PW], dtype=torch.float64))(m(torch.tensor(xb)), torch.tensor(yb_).view(-1, 1)); loss_t.backward()
+    loss_s, dlogit, logit_s, cache, _ = fwd_loss(xb, yb_, False, True)
+    G = {k: np.zeros_like(a) for k, a in P_.items()}; model_bwd(dlogit, cache, G)
+    d_logit = float(np.abs(m(torch.tensor(xb)).detach().numpy() - logit_s).max())
+    d_loss = abs(float(loss_t) - float(loss_s))
+    d_grad, gmax = 0.0, max(float(p.grad.abs().max()) for p in m.parameters())   # key biases have an exactly-zero true gradient, so scale by the largest gradient
+    for pn, p in m.named_parameters():
+        g_s = G[name_map[pn]]; g_t = p.grad.numpy()
+        g_s = g_s.T if p.dim() == 2 and pn not in ("tok_w", "tok_b") else g_s
+        d_grad = max(d_grad, float(np.abs(g_t - g_s).max() / gmax))
+    print(f"{vname:26s} | in_dim {IN_DIM:3d} | max|dlogit| {d_logit:.2e} | dloss {d_loss:.2e} | max rel grad diff {d_grad:.2e}")
+    assert d_logit < 1e-8 and d_loss < 1e-8 and d_grad < 1e-6, "scratch and PyTorch disagree on identical weights"
+    assert sum(a.size for a in P_.values()) == ORA[NAME + vname]["n_params"], "parameter count differs from the pytorch twin"
+print("scratch forward and backward match PyTorch on identical weights; parameter counts match")
+for r in results:
+    o_ = ORA[r["model"]]
+    print(f"{r['model']:44s} dAUC {abs(r['roc_auc'] - o_['roc_auc']):.4f} | dF1 {abs(r['f1'] - o_['f1']):.4f} (different random init, same recipe)")
+    assert abs(r["roc_auc"] - o_["roc_auc"]) < 0.04
+
+------------------
+
+----- stdout -----
+base (22)                  | in_dim  22 | max|dlogit| 4.55e-15 | dloss 1.11e-16 | max rel grad diff 1.36e-15
++ 3 modifiers (25)         | in_dim  25 | max|dlogit| 4.66e-15 | dloss 5.00e-16 | max rel grad diff 1.09e-15
++ 3 modifiers + 5 pairs    | in_dim  30 | max|dlogit| 3.44e-15 | dloss 5.55e-17 | max rel grad diff 2.13e-15
+scratch forward and backward match PyTorch on identical weights; parameter counts match
+FT-Transformer-lite | ReLU | base (22)       dAUC 0.0129 | dF1 0.0033 (different random init, same recipe)
+FT-Transformer-lite | ReLU | + 3 modifiers (25) dAUC 0.0567 | dF1 0.0520 (different random init, same recipe)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAssertionError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[14], line 114[0m
+[1;32m    112[0m o_ [38;5;241m=[39m ORA[r[[38;5;124m"[39m[38;5;124mmodel[39m[38;5;124m"[39m]]
+[1;32m    113[0m [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;132;01m{[39;00mr[[38;5;124m'[39m[38;5;124mmodel[39m[38;5;124m'[39m][38;5;132;01m:[39;00m[38;5;124m44s[39m[38;5;132;01m}[39;00m[38;5;124m dAUC [39m[38;5;132;01m{[39;00m[38;5;28mabs[39m(r[[38;5;124m'[39m[38;5;124mroc_auc[39m[38;5;124m'[39m][38;5;250m [39m[38;5;241m-[39m[38;5;250m [39mo_[[38;5;124m'[39m[38;5;124mroc_auc[39m[38;5;124m'[39m])[38;5;132;01m:[39;00m[38;5;124m.4f[39m[38;5;132;01m}[39;00m[38;5;124m | dF1 [39m[38;5;132;01m{[39;00m[38;5;28mabs[39m(r[[38;5;124m'[39m[38;5;124mf1[39m[38;5;124m'[39m][38;5;250m [39m[38;5;241m-[39m[38;5;250m [39mo_[[38;5;124m'[39m[38;5;124mf1[39m[38;5;124m'[39m])[38;5;132;01m:[39;00m[38;5;124m.4f[39m[38;5;132;01m}[39;00m[38;5;124m (different random init, same recipe)[39m[38;5;124m"[39m)
+[0;32m--> 114[0m [38;5;28;01massert[39;00m [38;5;28mabs[39m(r[[38;5;124m"[39m[38;5;124mroc_auc[39m[38;5;124m"[39m] [38;5;241m-[39m o_[[38;5;124m"[39m[38;5;124mroc_auc[39m[38;5;124m"[39m]) [38;5;241m<[39m [38;5;241m0.04[39m
+
+[0;31mAssertionError[0m: 
+

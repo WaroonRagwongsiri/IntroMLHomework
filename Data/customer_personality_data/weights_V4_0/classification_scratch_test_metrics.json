@@ -1,0 +1,34 @@
+{
+  "n_test": 448,
+  "seed": 42,
+  "models": [
+    {
+      "model": "FT-Transformer-lite | ReLU (baseline)",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "f1": 0.4593,
+      "accuracy": 0.8371,
+      "precision": 0.4559,
+      "recall": 0.4627,
+      "roc_auc": 0.8361,
+      "bce": 0.4465,
+      "threshold": 0.7949,
+      "epochs": 16,
+      "n_params": 18625
+    },
+    {
+      "model": "FT-Transformer-lite | ReGLU, param-matched",
+      "tier": "extracurricular",
+      "selection": "inner validation",
+      "f1": 0.4834,
+      "accuracy": 0.7567,
+      "precision": 0.3542,
+      "recall": 0.7612,
+      "roc_auc": 0.8236,
+      "bce": 0.5801,
+      "threshold": 0.5657,
+      "epochs": 40,
+      "n_params": 18733
+    }
+  ]
+}

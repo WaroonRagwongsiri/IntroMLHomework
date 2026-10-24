@@ -1,0 +1,353 @@
+{
+  "k": 5,
+  "fracs": [
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "rows": [
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 1,
+      "f1": 0.5954,
+      "seconds": 10.9
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 1,
+      "f1": 0.5875,
+      "seconds": 4.4
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 1,
+      "f1": 0.6111,
+      "seconds": 20.3
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 1,
+      "f1": 0.6061,
+      "seconds": 8.6
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 1,
+      "f1": 0.6012,
+      "seconds": 31.7
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 1,
+      "f1": 0.5914,
+      "seconds": 11.6
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1788,
+      "fold": 1,
+      "f1": 0.6131,
+      "seconds": 47.4
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1788,
+      "fold": 1,
+      "f1": 0.6519,
+      "seconds": 9.3
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 2,
+      "f1": 0.4568,
+      "seconds": 13.8
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 2,
+      "f1": 0.5131,
+      "seconds": 4.7
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 2,
+      "f1": 0.5581,
+      "seconds": 22.3
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 2,
+      "f1": 0.586,
+      "seconds": 4.3
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 2,
+      "f1": 0.5045,
+      "seconds": 28.0
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 2,
+      "f1": 0.5401,
+      "seconds": 7.1
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 2,
+      "f1": 0.5594,
+      "seconds": 45.4
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 2,
+      "f1": 0.5342,
+      "seconds": 8.9
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 3,
+      "f1": 0.4706,
+      "seconds": 10.4
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 3,
+      "f1": 0.5369,
+      "seconds": 5.6
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 3,
+      "f1": 0.4483,
+      "seconds": 22.3
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 3,
+      "f1": 0.5802,
+      "seconds": 5.3
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 3,
+      "f1": 0.5217,
+      "seconds": 38.9
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 3,
+      "f1": 0.6289,
+      "seconds": 7.4
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 3,
+      "f1": 0.5333,
+      "seconds": 39.9
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 3,
+      "f1": 0.6627,
+      "seconds": 8.9
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 4,
+      "f1": 0.3299,
+      "seconds": 10.9
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 4,
+      "f1": 0.5224,
+      "seconds": 6.7
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 4,
+      "f1": 0.4231,
+      "seconds": 18.9
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 4,
+      "f1": 0.5,
+      "seconds": 6.5
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 4,
+      "f1": 0.5362,
+      "seconds": 29.4
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 4,
+      "f1": 0.5294,
+      "seconds": 13.2
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 4,
+      "f1": 0.5714,
+      "seconds": 42.3
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 4,
+      "f1": 0.5503,
+      "seconds": 14.4
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 5,
+      "f1": 0.4762,
+      "seconds": 9.3
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.25,
+      "n_train": 447,
+      "fold": 5,
+      "f1": 0.5111,
+      "seconds": 4.0
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 5,
+      "f1": 0.4862,
+      "seconds": 20.4
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.5,
+      "n_train": 894,
+      "fold": 5,
+      "f1": 0.5476,
+      "seconds": 5.6
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 5,
+      "f1": 0.4882,
+      "seconds": 33.5
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 0.75,
+      "n_train": 1341,
+      "fold": 5,
+      "f1": 0.5736,
+      "seconds": 7.8
+    },
+    {
+      "model": "FT-Transformer-lite | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 5,
+      "f1": 0.5405,
+      "seconds": 40.5
+    },
+    {
+      "model": "LightGBM | + 3 modifiers + 5 pairs",
+      "frac": 1.0,
+      "n_train": 1789,
+      "fold": 5,
+      "f1": 0.5891,
+      "seconds": 11.3
+    }
+  ],
+  "gap": [
+    {
+      "frac": 0.25,
+      "mean": 0.06842,
+      "std": 0.07499261296954518
+    },
+    {
+      "frac": 0.5,
+      "mean": 0.05861999999999999,
+      "std": 0.05172781650137578
+    },
+    {
+      "frac": 0.75,
+      "mean": 0.04232000000000001,
+      "std": 0.05300879172363766
+    },
+    {
+      "frac": 1.0,
+      "mean": 0.0341,
+      "std": 0.06300388876886885
+    }
+  ]
+}

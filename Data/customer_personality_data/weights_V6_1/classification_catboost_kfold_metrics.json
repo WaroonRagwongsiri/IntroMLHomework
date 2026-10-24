@@ -1,0 +1,380 @@
+{
+  "k": 5,
+  "repeats": 3,
+  "n_trials": 30,
+  "folds": [
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 1,
+      "n_test": 448,
+      "f1": 0.6565,
+      "accuracy": 0.8996,
+      "precision": 0.6719,
+      "recall": 0.6418,
+      "roc_auc": 0.9296,
+      "threshold": 0.6456,
+      "bce": 0.3399,
+      "params": {
+        "n": 400,
+        "lr": 0.020463555959628406,
+        "d": 4,
+        "l2": 17.932837570747477,
+        "acw": "Balanced"
+      },
+      "seconds": 52.7
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 2,
+      "n_test": 447,
+      "f1": 0.5634,
+      "accuracy": 0.8613,
+      "precision": 0.5333,
+      "recall": 0.597,
+      "roc_auc": 0.8586,
+      "threshold": 0.5849,
+      "bce": 0.3635,
+      "params": {
+        "n": 200,
+        "lr": 0.04661855394513428,
+        "d": 5,
+        "l2": 4.741416268305748,
+        "acw": "Balanced"
+      },
+      "seconds": 64.4
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 3,
+      "n_test": 447,
+      "f1": 0.6301,
+      "accuracy": 0.8792,
+      "precision": 0.5823,
+      "recall": 0.6866,
+      "roc_auc": 0.9097,
+      "threshold": 0.6509,
+      "bce": 0.383,
+      "params": {
+        "n": 100,
+        "lr": 0.1253922104650891,
+        "d": 3,
+        "l2": 10.957073752646627,
+        "acw": "Balanced"
+      },
+      "seconds": 36.8
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 4,
+      "n_test": 447,
+      "f1": 0.5241,
+      "accuracy": 0.8456,
+      "precision": 0.4872,
+      "recall": 0.5672,
+      "roc_auc": 0.8927,
+      "threshold": 0.2522,
+      "bce": 0.2753,
+      "params": {
+        "n": 500,
+        "lr": 0.025337474395869076,
+        "d": 3,
+        "l2": 2.5779119033149,
+        "acw": null
+      },
+      "seconds": 74.8
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 1,
+      "fold": 5,
+      "n_test": 447,
+      "f1": 0.5874,
+      "accuracy": 0.868,
+      "precision": 0.5455,
+      "recall": 0.6364,
+      "roc_auc": 0.9033,
+      "threshold": 0.2376,
+      "bce": 0.2593,
+      "params": {
+        "n": 400,
+        "lr": 0.02198946046875876,
+        "d": 7,
+        "l2": 7.963570859654546,
+        "acw": null
+      },
+      "seconds": 143.6
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 1,
+      "n_test": 448,
+      "f1": 0.5714,
+      "accuracy": 0.8661,
+      "precision": 0.5479,
+      "recall": 0.597,
+      "roc_auc": 0.8929,
+      "threshold": 0.2798,
+      "bce": 0.2766,
+      "params": {
+        "n": 400,
+        "lr": 0.14245941037946164,
+        "d": 4,
+        "l2": 11.893658769879808,
+        "acw": null
+      },
+      "seconds": 111.0
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 2,
+      "n_test": 447,
+      "f1": 0.6316,
+      "accuracy": 0.8747,
+      "precision": 0.5647,
+      "recall": 0.7164,
+      "roc_auc": 0.9167,
+      "threshold": 0.5934,
+      "bce": 0.3487,
+      "params": {
+        "n": 200,
+        "lr": 0.04694002643302434,
+        "d": 4,
+        "l2": 6.310259618272583,
+        "acw": "Balanced"
+      },
+      "seconds": 53.1
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 3,
+      "n_test": 447,
+      "f1": 0.5224,
+      "accuracy": 0.8568,
+      "precision": 0.5224,
+      "recall": 0.5224,
+      "roc_auc": 0.8825,
+      "threshold": 0.5972,
+      "bce": 0.3712,
+      "params": {
+        "n": 500,
+        "lr": 0.013464647512563025,
+        "d": 5,
+        "l2": 4.513117820042719,
+        "acw": "Balanced"
+      },
+      "seconds": 133.6
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 4,
+      "n_test": 447,
+      "f1": 0.5072,
+      "accuracy": 0.8479,
+      "precision": 0.493,
+      "recall": 0.5224,
+      "roc_auc": 0.8669,
+      "threshold": 0.283,
+      "bce": 0.2979,
+      "params": {
+        "n": 400,
+        "lr": 0.04727317980667327,
+        "d": 5,
+        "l2": 4.0620978494029485,
+        "acw": null
+      },
+      "seconds": 79.3
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 2,
+      "fold": 5,
+      "n_test": 447,
+      "f1": 0.6,
+      "accuracy": 0.8658,
+      "precision": 0.5357,
+      "recall": 0.6818,
+      "roc_auc": 0.9139,
+      "threshold": 0.6044,
+      "bce": 0.3831,
+      "params": {
+        "n": 400,
+        "lr": 0.019354653034386014,
+        "d": 4,
+        "l2": 3.201886546881958,
+        "acw": "Balanced"
+      },
+      "seconds": 67.7
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 1,
+      "n_test": 448,
+      "f1": 0.6286,
+      "accuracy": 0.8839,
+      "precision": 0.6027,
+      "recall": 0.6567,
+      "roc_auc": 0.8845,
+      "threshold": 0.6236,
+      "bce": 0.369,
+      "params": {
+        "n": 300,
+        "lr": 0.04777509559936343,
+        "d": 3,
+        "l2": 11.200189708629289,
+        "acw": "Balanced"
+      },
+      "seconds": 72.9
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 2,
+      "n_test": 447,
+      "f1": 0.5612,
+      "accuracy": 0.8635,
+      "precision": 0.5417,
+      "recall": 0.5821,
+      "roc_auc": 0.8877,
+      "threshold": 0.6069,
+      "bce": 0.3676,
+      "params": {
+        "n": 400,
+        "lr": 0.021713362174651186,
+        "d": 4,
+        "l2": 7.838758267690181,
+        "acw": "Balanced"
+      },
+      "seconds": 68.1
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 3,
+      "n_test": 447,
+      "f1": 0.5563,
+      "accuracy": 0.8501,
+      "precision": 0.5,
+      "recall": 0.6269,
+      "roc_auc": 0.8874,
+      "threshold": 0.5736,
+      "bce": 0.3975,
+      "params": {
+        "n": 500,
+        "lr": 0.016901088458969073,
+        "d": 4,
+        "l2": 1.667176926090543,
+        "acw": "Balanced"
+      },
+      "seconds": 110.8
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 4,
+      "n_test": 447,
+      "f1": 0.6389,
+      "accuracy": 0.8837,
+      "precision": 0.5974,
+      "recall": 0.6866,
+      "roc_auc": 0.9189,
+      "threshold": 0.2508,
+      "bce": 0.2545,
+      "params": {
+        "n": 500,
+        "lr": 0.01863048060193267,
+        "d": 6,
+        "l2": 12.071534569061638,
+        "acw": null
+      },
+      "seconds": 113.3
+    },
+    {
+      "model": "CatBoost",
+      "tier": "curriculum",
+      "selection": "inner validation",
+      "repeat": 3,
+      "fold": 5,
+      "n_test": 447,
+      "f1": 0.6202,
+      "accuracy": 0.8904,
+      "precision": 0.6349,
+      "recall": 0.6061,
+      "roc_auc": 0.9041,
+      "threshold": 0.3256,
+      "bce": 0.2515,
+      "params": {
+        "n": 500,
+        "lr": 0.030360708998475126,
+        "d": 3,
+        "l2": 19.007637130757566,
+        "acw": null
+      },
+      "seconds": 91.5
+    }
+  ],
+  "summary": {
+    "CatBoost": {
+      "f1": {
+        "mean": 0.5866,
+        "std": 0.0473
+      },
+      "accuracy": {
+        "mean": 0.8691,
+        "std": 0.016
+      },
+      "precision": {
+        "mean": 0.5574,
+        "std": 0.0525
+      },
+      "recall": {
+        "mean": 0.6218,
+        "std": 0.0589
+      },
+      "roc_auc": {
+        "mean": 0.8966,
+        "std": 0.0197
+      },
+      "bce": {
+        "mean": 0.3292,
+        "std": 0.0535
+      }
+    }
+  }
+}

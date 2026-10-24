@@ -1,0 +1,4 @@
+n,mean_diff,p_wilcoxon,p_nb,ci_lo,ci_hi,model,reference,mean,std
+15,-0.00957,0.55085,0.78477,-0.04001,0.02079,"NAM (log1p + Huber) | ReGLU, param-matched",NAM (log1p + Huber) | ReLU (baseline),0.72571,0.09441
+15,-0.01143,0.71973,0.78297,-0.04843,0.0231,"NAM (log1p + Huber) | ReGLU, same hidden",NAM (log1p + Huber) | ReLU (baseline),0.72385,0.09865
+15,0.0,,,,,NAM (log1p + Huber) | ReLU (baseline),NAM (log1p + Huber) | ReLU (baseline),0.73529,0.06506
