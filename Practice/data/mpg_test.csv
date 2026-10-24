@@ -1,0 +1,81 @@
+id,cylinders,displacement,horsepower,weight,acceleration,model_year,origin,name
+2,8,350.0,165.0,3693,11.5,70,usa,buick skylark 320
+5,8,302.0,140.0,3449,10.5,70,usa,ford torino
+13,8,400.0,150.0,3761,9.5,70,usa,chevrolet monte carlo
+16,6,198.0,95.0,2833,15.5,70,usa,plymouth duster
+18,6,200.0,85.0,2587,16.0,70,usa,ford maverick
+38,6,232.0,100.0,3288,15.5,71,usa,amc matador
+41,8,351.0,153.0,4154,13.5,71,usa,ford galaxie 500
+42,8,318.0,150.0,4096,13.0,71,usa,plymouth fury iii
+44,8,400.0,170.0,4746,12.0,71,usa,ford country squire (sw)
+53,4,88.0,76.0,2065,14.5,71,europe,fiat 124b
+58,4,113.0,95.0,2278,15.5,72,japan,toyota corona hardtop
+62,4,122.0,86.0,2226,16.5,72,usa,ford pinto runabout
+73,8,304.0,150.0,3892,12.5,72,usa,amc matador (sw)
+74,8,307.0,130.0,4098,14.0,72,usa,chevrolet chevelle concours (sw)
+77,4,121.0,112.0,2933,14.5,72,europe,volvo 145e (sw)
+78,4,121.0,76.0,2511,18.0,72,europe,volkswagen 411 (sw)
+87,8,304.0,150.0,3672,11.5,73,usa,amc matador
+93,8,351.0,158.0,4363,13.0,73,usa,ford ltd
+94,8,318.0,150.0,4237,14.5,73,usa,plymouth fury gran sedan
+98,6,225.0,105.0,3121,16.5,73,usa,plymouth valiant
+100,6,232.0,100.0,2945,16.0,73,usa,amc hornet
+102,6,198.0,95.0,2904,16.0,73,usa,plymouth duster
+106,8,360.0,170.0,4654,13.0,73,usa,plymouth custom suburb
+115,4,98.0,90.0,2265,15.5,73,europe,fiat 124 sport coupe
+121,4,121.0,112.0,2868,15.5,73,europe,volvo 144ea
+144,4,97.0,78.0,2300,14.5,74,europe,opel manta
+153,6,225.0,95.0,3264,16.0,75,usa,plymouth valiant custom
+157,8,400.0,170.0,4668,11.5,75,usa,pontiac catalina
+162,6,250.0,105.0,3897,18.5,75,usa,chevroelt chevelle malibu
+165,6,231.0,110.0,3039,15.0,75,usa,buick skyhawk
+166,8,262.0,110.0,3221,13.5,75,usa,chevrolet monza 2+2
+172,4,134.0,96.0,2702,13.5,75,japan,toyota corona
+174,4,119.0,97.0,2545,17.0,75,japan,datsun 710
+177,6,232.0,90.0,3211,17.0,75,usa,amc pacer
+187,4,101.0,83.0,2202,15.3,76,europe,renault 12tl
+189,8,318.0,150.0,4190,13.0,76,usa,dodge coronet brougham
+191,8,351.0,152.0,4215,12.8,76,usa,ford gran torino
+192,6,225.0,100.0,3233,15.4,76,usa,plymouth valiant
+193,6,250.0,105.0,3353,14.5,76,usa,chevrolet nova
+201,6,250.0,78.0,3574,21.0,76,usa,ford granada ghia
+211,6,156.0,108.0,2930,15.5,76,japan,toyota mark ii
+219,4,79.0,58.0,1825,18.6,77,europe,renault 5 gtl
+221,4,85.0,70.0,1945,16.8,77,japan,datsun f-10 hatchback
+234,4,97.0,78.0,1940,14.5,77,europe,volkswagen rabbit custom
+241,4,97.0,78.0,2190,14.1,77,europe,volkswagen dasher
+244,3,80.0,110.0,2720,13.5,77,japan,mazda rx-4
+245,4,90.0,48.0,1985,21.5,78,europe,volkswagen rabbit custom diesel
+248,4,85.0,70.0,2070,18.6,78,japan,datsun b210 gx
+261,6,225.0,110.0,3620,18.7,78,usa,dodge aspen
+264,6,231.0,165.0,3445,13.4,78,usa,buick regal sport coupe (turbo)
+265,8,302.0,139.0,3205,11.2,78,usa,ford futura
+267,4,98.0,68.0,2155,16.5,78,usa,chevrolet chevette
+270,4,105.0,75.0,2230,14.5,78,usa,dodge omni
+273,4,151.0,85.0,2855,17.6,78,usa,oldsmobile starfire sx
+277,4,121.0,115.0,2795,15.7,78,europe,saab 99gle
+279,4,89.0,71.0,1990,14.9,78,europe,volkswagen scirocco
+281,6,231.0,115.0,3245,15.4,79,usa,pontiac lemans v6
+284,6,232.0,90.0,3265,18.2,79,usa,amc concord dl 6
+297,4,121.0,80.0,2670,15.0,79,usa,amc spirit dl
+298,5,183.0,77.0,3530,20.1,79,europe,mercedes benz 300d
+301,8,260.0,90.0,3420,22.2,79,usa,oldsmobile cutlass salon brougham
+305,4,91.0,69.0,2130,14.7,79,europe,fiat strada custom
+307,6,173.0,115.0,2595,11.3,79,usa,chevrolet citation
+325,4,85.0,65.0,2110,19.2,80,japan,datsun 210
+337,4,140.0,,2905,14.3,80,usa,ford mustang cobra
+338,4,107.0,72.0,2290,17.0,80,japan,honda accord
+340,4,151.0,84.0,2635,16.4,81,usa,buick skylark
+343,4,135.0,84.0,2385,12.9,81,usa,plymouth reliant
+347,4,97.0,67.0,2065,17.8,81,japan,subaru
+351,4,105.0,63.0,2215,14.9,81,usa,plymouth horizon 4
+355,4,100.0,,2320,15.8,81,europe,renault 18i
+358,4,119.0,100.0,2615,14.8,81,japan,datsun 200sx
+373,4,151.0,90.0,2735,18.0,82,usa,pontiac phoenix
+374,4,140.0,92.0,2865,16.4,82,usa,ford fairmont futura
+375,4,151.0,,3035,20.5,82,usa,amc concord dl
+379,4,105.0,63.0,2125,14.7,82,usa,plymouth horizon miser
+380,4,98.0,70.0,2125,17.3,82,usa,mercury lynx l
+387,6,181.0,110.0,2945,16.4,82,usa,buick century limited
+390,6,232.0,112.0,2835,14.7,82,usa,ford granada l
+392,4,135.0,84.0,2370,13.0,82,usa,dodge charger 2.2
